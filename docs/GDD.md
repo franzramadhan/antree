@@ -18,7 +18,7 @@ All numbers live in data files and are tunable.
 
 | Meter | Range | Start | Direction |
 |---|---|---|---|
-| Days | 0 to quest deadline | 0 | Up is bad |
+| Days | 1 to quest deadline | 1 | Up is bad |
 | Money | 0 to starting budget | quest budget | Down is bad |
 | Conscience | 0 to 100 | 100 | Down is bad |
 
@@ -77,7 +77,7 @@ Office floor plan with 6 to 10 desks. Exactly one clerk holds the stamp. Other c
 The clerk lists requirements for 4 seconds: copy count, duty stamp value, folder colour, certified or not. The player runs to the BKFN photocopy stall across the road, picks items from a shelf, and runs back. Travel 15 minutes each way. Wrong item: the clerk rejects, run again. Failure: the office closes at 11:30 for new files. Money: each copy and duty stamp costs Kv.
 
 ### 5.4 The Queue
-Queue of 8 to 20 people. Each tick one event may fire: a fixer sells a slot ahead of you, the inside man walks past, an auntie cuts in with "just a quick question". Actions: stay quiet (lose the place), confront (roll per section 3), cut the line (Conscience -10), pay the fixer (Money, Conscience -15). The counter serves one number every 2 to 4 ticks. Failure: the counter closes before your number.
+Queue of 6 to 14 people. Each tick one event may fire: an auntie cuts in with "just a quick question" (15 percent), the inside man walks past (8 percent), a fixer offers a slot (15 percent). Actions: stay quiet (lose the place), confront (roll per section 3), cut the line (Conscience -10), pay the fixer (Money, Conscience -15). The counter serves one number every 1 to 2 ticks, so a patient player is served in 10 to 30 ticks. Failure: the counter closes before your number.
 
 ### 5.5 System Down
 A progress bar that stalls at random points. Actions: wait (10 minutes per press), refresh (asks the clerk, 3 refreshes in a row annoy them and add 20 minutes), go home (lose the number, come back tomorrow), ask Mas Honorer (he knows the system comes back in N minutes, costs a cup of coffee, 15 Kv, no Conscience cost). Failure: the office closes.

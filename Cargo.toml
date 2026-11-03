@@ -7,6 +7,8 @@ description = "A 2D satire game about bureaucracy in the fictional Republik Kuvu
 
 [dependencies]
 macroquad = "0.4"
+ron = "0.12"
+serde = { version = "1", features = ["derive"] }
 
 [profile.release]
 opt-level = "z"

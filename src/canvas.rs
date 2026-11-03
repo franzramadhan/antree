@@ -43,7 +43,6 @@ impl Canvas {
     }
 
     /// Mouse position in canvas coordinates.
-    #[allow(dead_code)]
     pub fn mouse(&self) -> Vec2 {
         let (mx, my) = mouse_position();
         let (x, y, w, _) = fit(screen_width(), screen_height());

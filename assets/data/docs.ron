@@ -1,0 +1,6 @@
+// Every document id used anywhere, with its display name.
+[
+    (id: "ktpss", name: "KTPSS"),
+    (id: "loss_report", name: "Loss Report from Polsek SK"),
+    (id: "sktpa", name: "SKTPA"),
+]

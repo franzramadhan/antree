@@ -1,0 +1,15 @@
+// Quest definitions. Edit text freely, ids must match offices.ron and docs.ron.
+[
+    (
+        id: "ktpss_hilang",
+        title: "Lost KTPSS",
+        goal_doc: "ktpss",
+        par_days: 4,
+        deadline: 8,
+        budget: 400,
+        official_fees: 0,
+        // What the information board claims you need. Not all of it is true.
+        board: ["loss_report", "sktpa", "ktpss"],
+        intro: "Your KTPSS fell out of your pocket somewhere between the bus and the office. Without it you cannot do anything, including replacing it. Start at Polsek SK.",
+    ),
+]

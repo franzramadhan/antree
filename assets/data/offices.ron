@@ -1,0 +1,44 @@
+// Offices on the overworld. pos and size are canvas pixels on a 640x360 map.
+[
+    (
+        id: "polsek_sk",
+        name: "Kantor Polisi Sektor Surat Keterangan",
+        short: "Polsek SK",
+        pos: (80, 70),
+        size: (128, 72),
+        grants: [
+            (doc: "loss_report", requires: []),
+        ],
+        greet: [
+            "Yes? Lost something? Everybody has.",
+            "Take a number. The machine is broken, so take a mental one.",
+        ],
+        missing: ["You are missing the {doc}. Did you photocopy it?"],
+        issued: [
+            "Loss report. Signed, stamped, slightly crooked. Next.",
+            "Here. Try not to lose this one as well.",
+        ],
+        nothing: ["We already gave you your paper, sir. Go bother Dukcatan."],
+    ),
+    (
+        id: "dukcatan",
+        name: "Dinas Kependudukan dan Pencatatan Antrian",
+        short: "Dukcatan",
+        pos: (400, 180),
+        size: (160, 88),
+        grants: [
+            (doc: "ktpss", requires: ["loss_report"], fee: 0),
+        ],
+        greet: [
+            "Did you take a number? The number machine is at the back. It is also broken.",
+            "KTPSS? New or lost? Lost. Of course lost.",
+        ],
+        missing: [
+            "No {doc}, no KTPSS. Polsek SK is across the field. They close at eleven thirty.",
+        ],
+        issued: [
+            "Congratulations. Your temporary card is valid until further notice. Further notice never comes.",
+        ],
+        nothing: ["Sir, you already have a KTPSS. Why are you here? Go home."],
+    ),
+]
