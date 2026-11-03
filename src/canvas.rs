@@ -24,15 +24,17 @@ impl Canvas {
         set_camera(&self.camera);
     }
 
-    /// Blit the internal canvas to the window with integer scale and black bars.
-    pub fn end(&self) {
+    /// Blit the internal canvas to the window with integer scale and black bars,
+    /// moved by `shake` canvas pixels.
+    pub fn end(&self, shake: Vec2) {
         set_default_camera();
         clear_background(BLACK);
         let (x, y, w, h) = fit(screen_width(), screen_height());
+        let scale = w / WIDTH;
         draw_texture_ex(
             &self.target.texture,
-            x,
-            y,
+            x + shake.x * scale,
+            y + shake.y * scale,
             WHITE,
             DrawTextureParams {
                 dest_size: Some(vec2(w, h)),

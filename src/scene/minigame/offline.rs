@@ -3,6 +3,7 @@ use macroquad::prelude::*;
 use super::{cannot_pay, pass_time, Outcome};
 use crate::canvas;
 use crate::data::Data;
+use crate::fx::Sfx;
 use crate::game::offline::{Act, SystemDown, COFFEE};
 use crate::game::run::Run;
 use crate::scene::{say, Ctx};
@@ -41,6 +42,9 @@ impl OfflineGame {
                 }
             }
         };
+        if act == Act::Refresh {
+            ctx.fx.play(Sfx::Dialup);
+        }
         let tick = self.sys.act(act);
         run.meters.spend(tick.money);
         if let Some(closed) = pass_time(run, tick.minutes, d, office) {

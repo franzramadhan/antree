@@ -1,16 +1,16 @@
 # Antri: Game Design Document
 
-Working title: Antri. Setting: Republik Kuvukiland. Version: Phase 1 draft.
+Working title: Antri. Setting: Republik Kuvukiland.
 
 ## 1. Pitch
 
-Antri is a 2D top-down satire game about getting one piece of paper from the government of Kuvukiland. The player is an ordinary citizen with a simple goal, a lost identity card or a birth certificate. The game turns that goal into a chain of offices, stamps, photocopies, and queues. Each office is a small desk minigame. Three meters track the cost: days, money, and conscience. The joke is never exaggerated. Every obstacle in the game is one that a real citizen recognizes. The player finishes a run and says "yeah, that is exactly how it goes."
+Antri is a 2D top-down satire game about getting one piece of paper from the government of Kuvukiland. The player is an ordinary citizen with a simple goal, a lost identity card or a birth certificate. The game turns that goal into a chain of offices, stamps, photocopies, and queues. Each office is a small desk minigame. Three meters track the cost: days, money, and conscience. Every obstacle is one a real citizen recognizes. The player finishes a run and says "yeah, that is exactly how it goes."
 
 All in-game text is English, written in the register of a counter clerk: "Did you photocopy it?", "The system is down. Head office.", "Come back tomorrow.", "Anything for cigarettes?". Proper nouns (offices, documents, titles) use the Kuvukiland naming table in section 9. Code, comments, commits, and docs are English.
 
 ## 2. Player fantasy
 
-The player is not a hero. The player is someone who took a day off work to fix a document and wants to go home. The fantasy is survival with dignity: can you get through the system without becoming part of it? The game offers shortcuts at every step. A fixer, an inside man, grease money, cutting the line. Each one works. Each one costs something. The player decides what kind of citizen they are, and the ending tells them, with no mercy and no praise.
+The player took a day off work to fix a document and wants to go home. The fantasy is survival with dignity: can you get through the system without becoming part of it? The game offers shortcuts at every step. A fixer, an inside man, grease money, cutting the line. Each one works. Each one costs something. The player decides what kind of citizen they are, and the ending tells them, with no mercy and no praise.
 
 ## 3. The three meters
 
@@ -61,11 +61,11 @@ Quests unlock in order. Finishing a quest with any grade except F unlocks the ne
 | 4 | Birth certificate | Puskesnung (birth note), Pak Kaling, Kelurahan, Dukcatan (certificate) | Parent names must match the KTPSS exactly, one typo triggers the data correction loop | Marriage certificate certified by BKFN | 5 | 10 | 500 Kv | 0 Kv |
 | 5 | Building permit (PBYM) | BPYMS (land letter), DTRYB (zoning recommendation), Kelurahan (neighbour no-objection), DPSPTD (PBYM) | DPSPTD front door is locked, side door opens via the inside man or after 2 days of waiting; SPUSP needed before the cover letter | SKTPA, health letter | 8 | 16 | 1500 Kv | 250 Kv |
 
-Chain resolution rule: a document is granted when the office accepts the required inputs. Inputs are document ids. The quest is complete when the final document is in the player inventory. The chain data is a directed graph, so the player can visit offices in any order and discover dead ends.
+Chain resolution: an office grants a document when the player holds its required document ids. The quest completes when the final document is in the inventory. The chain is a directed graph, so offices can be visited in any order.
 
 ## 5. Minigame catalog
 
-Each office runs one minigame per visit, chosen from a list in office data. Failure states always cost time, never a game over.
+Each office runs one minigame per visit, picked from office data. Failure costs time, never the run.
 
 ### 5.1 Form Filling
 Form with 6 to 10 fields about the player's own data. Rules at the top set the date format, capitals, and dashes in numbers. Order, labels, and rules change per visit. Each field cycles through three values: correct, wrong format, typo. Timer 60 seconds. Submit with one wrong field: "Rejected. Fill it in again, sir.", 30 minutes lost. Three rejections: "Come back tomorrow.", visit ends. Option "Fill with nonsense": instant pass, Conscience -5, flagged for a later data correction.
@@ -86,7 +86,7 @@ A progress bar that stalls at random points. Actions: wait (10 minutes per press
 Dialog tree. The clerk hints at an "unofficial administrative fee" without ever saying a number first. Options: pay (Money, Conscience -20, skip remaining obstacles here today), decline politely (no cost, obstacle roll gets +20 weight on bad outcomes), report it (10 percent: free pass and a clerk replaced, 90 percent: your file becomes "under review" for 2 days). A fixer cannot be reported. The game never comments on the choice.
 
 ### 5.7 Queue Theory Test
-Quest 3 only. Ten multiple choice questions about queue etiquette in Kuvukiland, written as a real theory test with absurd content. Pass at 7 correct. Fail: retake tomorrow, 25 Kv per attempt.
+Quest 3 only. Ten multiple choice questions about queue etiquette, written as a real theory test with absurd content. Pass at 7 correct. Fail: retake tomorrow, 25 Kv per attempt.
 
 ## 6. Obstacle table
 
@@ -125,9 +125,11 @@ Title screen disclaimer: "Kuvukiland is a fictional country. Any resemblance to 
 
 Internal canvas 640x360, integer scaled, letterboxed. Pixel art, 16x16 tiles. Palette: faded government beige, mint green walls, brown wood counters, one saturated red for stamps and "REJECTED". Overworld tiles and characters from Kenney CC0 packs (Tiny Town, Roguelike Characters, Roguelike Modern City). Office interiors are code-drawn rectangles plus Kenney furniture tiles. UI panels look like carbon copy forms with dotted lines. Font: Pixel Operator (CC0), 8 and 16 pixel sizes.
 
-Audio: all CC0 from Kenney Interface Sounds and Kenney UI Audio. A stamp thud for approvals, a dot matrix printer for forms, a counter bell "ting" for queue advances, a dial-up style stutter for system down, a coin clink for Money. No music in scope. One ambient fan loop is in the cut list.
+Audio: synthesized in code at boot, no third-party files. A stamp thud for approvals, a buzz for refusals, a dot matrix printer for forms, a counter bell for queue advances, a modem stutter for system down, a coin clink for Money. M mutes. No music.
 
-Juice: screen shake on "REJECTED", a slow stamp slam on approval, the Conscience bar cracks visibly below 40.
+Juice: screen shake and a red "REJECTED" stamp on every refusal, a slow stamp slam on approval and on the title, cracks in the Conscience bar below 40.
+
+Tutorial: form ORI-01 before the first errand. Each row explains one control. Blank rows are refused, and the complete form is refused once for the wrong ink. Tab on quest select replays it.
 
 ## 9. Kuvukiland naming table
 
@@ -163,7 +165,7 @@ Juice: screen shake on "REJECTED", a slow stamp slam on approval, the Conscience
 
 Drop from the top when time runs out.
 
-1. Ambient fan audio loop.
+1. Ambient fan audio loop (cut in Phase 5).
 2. Quest 5 (PBYM). Longest chain, most new offices.
 3. Queue Theory Test minigame (Quest 3 falls back to Form Filling).
 4. Report option in Negotiation.
@@ -174,6 +176,6 @@ Drop from the top when time runs out.
 9. Seed sharing UI (seed still shown on the ending screen).
 10. Inside man contact unlock.
 
-Phase 4 cut nothing. The fan loop is Phase 5 work, touch stays optional.
+Phase 4 cut nothing. Phase 5 cut item 1. Kenney blocks scripted downloads, so sounds are synthesized, and a fan loop needs a recording. Touch stays optional.
 
 Minimum shippable: Quests 1 to 3, minigames 5.1 to 5.6, obstacle table, grades, save, title with disclaimer.

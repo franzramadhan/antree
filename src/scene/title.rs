@@ -1,14 +1,32 @@
 use macroquad::prelude::*;
 
-use super::{confirm_pressed, Ctx, QuestSelect, Scene};
+use super::{confirm_pressed, Ctx, QuestSelect, Scene, Tutorial};
 use crate::canvas;
+use crate::fx::Slam;
+use crate::save::Save;
 use crate::ui;
 
-pub struct Title;
+pub struct Title {
+    slam: Slam,
+}
 
 impl Title {
-    pub fn update(&mut self, _ctx: &Ctx) -> Option<Scene> {
-        confirm_pressed().then(|| Scene::QuestSelect(QuestSelect::new()))
+    pub fn new() -> Self {
+        Self {
+            slam: Slam::approve(),
+        }
+    }
+
+    pub fn update(&mut self, ctx: &Ctx) -> Option<Scene> {
+        self.slam.update(ctx.fx, ctx.dt);
+        if !confirm_pressed() {
+            return None;
+        }
+        Some(if Save::load().tutorial_done {
+            Scene::QuestSelect(QuestSelect::new())
+        } else {
+            Scene::Tutorial(Tutorial::new(&ctx.assets.data))
+        })
     }
 
     pub fn draw(&self, ctx: &Ctx) {
@@ -25,16 +43,12 @@ impl Title {
             64,
             ui::INK,
         );
-        draw_texture_ex(
+        self.slam.draw_texture(
             &ctx.assets.stamp,
-            canvas::WIDTH / 2.0 + 96.0,
-            56.0,
-            WHITE,
-            DrawTextureParams {
-                dest_size: Some(vec2(48.0, 48.0)),
-                rotation: -0.3,
-                ..Default::default()
-            },
+            canvas::WIDTH / 2.0 + 120.0,
+            80.0,
+            48.0,
+            -0.3,
         );
         ui::text_centered(
             font,
@@ -51,6 +65,14 @@ impl Title {
             230.0,
             16,
             ui::INK,
+        );
+        ui::text_centered(
+            font,
+            &d.s("sound_hint", &[]),
+            canvas::WIDTH / 2.0,
+            252.0,
+            16,
+            ui::FADED,
         );
         ui::text_wrapped(
             font,

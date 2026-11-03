@@ -143,6 +143,17 @@ pub fn hud(font: &Font, data: &Data, run: &Run) {
         PAPER
     };
     draw_rectangle(bar_x, 7.0, fill, 10.0, color);
+    if run.meters.conscience <= 40 {
+        // Cracks through what is left of the bar, more of them the lower it goes.
+        let cracks = 1 + (40 - run.meters.conscience.max(0)) / 14;
+        for c in 0..cracks {
+            let x = bar_x + 6.0 + (fill - 12.0).max(0.0) * (c + 1) as f32 / (cracks + 1) as f32;
+            let zig = [(0.0, 4.0), (3.0, 9.0), (-2.0, 13.0), (2.0, 20.0)];
+            for w in zig.windows(2) {
+                draw_line(x + w[0].0, w[0].1, x + w[1].0, w[1].1, 2.0, INK);
+            }
+        }
+    }
 }
 
 /// Bottom dialog box with a speaker name.

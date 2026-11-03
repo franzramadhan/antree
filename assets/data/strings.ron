@@ -4,6 +4,8 @@
     "subtitle": "A day off, a lost card, a Republic.",
     "disclaimer": "Kuvukiland is a fictional country. Any resemblance to any real country is purely coincidental, allegedly.",
     "press_start": "Press Enter to take a number",
+    "sound_hint": "M: sound on/off",
+    "stamp_rejected": "REJECTED",
 
     "qs_title": "Which errand today?",
     "qs_locked": "(locked)",
@@ -13,7 +15,7 @@
     "qs_seed_random": "random",
     "qs_seed_hint": "Type a 6 letter seed code to replay a run. Backspace clears.",
     "qs_inside_man": "You have an inside man. One call per run.",
-    "qs_hint": "Up/Down choose. Enter start. Esc title.",
+    "qs_hint": "Up/Down choose. Enter start. Tab orientation form. Esc title.",
 
     "hud_day": "Day {days}/{deadline}",
     "hud_money": "Kv {money}",

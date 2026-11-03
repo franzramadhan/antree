@@ -1,6 +1,7 @@
 use macroquad::prelude::*;
 
 use super::{cannot_pay, pass_time, Outcome};
+use crate::fx::Sfx;
 use crate::game::queue::{Action, Event, Outcome as Step, Queue, TICK_MINUTES};
 use crate::game::run::Run;
 use crate::scene::{say, Ctx};
@@ -39,7 +40,11 @@ impl QueueGame {
                 return Outcome::Running;
             }
         }
+        let ahead = self.queue.ahead;
         let step = self.queue.step(action);
+        if self.queue.ahead < ahead || step.outcome == Step::Served {
+            ctx.fx.play(Sfx::Ting);
+        }
         run.meters.spend(step.money);
         run.meters.shortcut(step.conscience);
         self.msg = say(d, office, step.message, run);

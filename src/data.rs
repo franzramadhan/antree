@@ -41,6 +41,25 @@ pub struct DocDef {
     pub phrase: Option<String>,
 }
 
+#[derive(Clone, Debug, Deserialize)]
+pub struct TutorialRow {
+    pub label: String,
+    pub text: String,
+    /// The first option is the blank.
+    pub options: Vec<String>,
+}
+
+#[derive(Clone, Debug, Deserialize)]
+pub struct TutorialForm {
+    pub title: String,
+    pub rows: Vec<TutorialRow>,
+    pub blank: String,
+    pub ink: String,
+    pub approved: String,
+    pub hint: String,
+    pub hint_done: String,
+}
+
 type Dialog = HashMap<String, Vec<String>>;
 
 pub struct Data {
@@ -51,12 +70,13 @@ pub struct Data {
     pub obstacles: Vec<(Obstacle, u32)>,
     pub form_fields: Vec<FieldDef>,
     pub theory: Vec<Question>,
+    pub tutorial: TutorialForm,
     /// "common" plus one entry per office id.
     dialog: HashMap<String, Dialog>,
 }
 
 const DIR: &str = "assets/data";
-const FILES: [&str; 7] = [
+const FILES: [&str; 8] = [
     "quests.ron",
     "offices.ron",
     "docs.ron",
@@ -64,6 +84,7 @@ const FILES: [&str; 7] = [
     "obstacles.ron",
     "forms.ron",
     "theory.ron",
+    "tutorial.ron",
 ];
 
 impl Data {
@@ -102,6 +123,7 @@ impl Data {
             obstacles: parse("obstacles.ron", &get("obstacles.ron")),
             form_fields: parse("forms.ron", &get("forms.ron")),
             theory: parse("theory.ron", &get("theory.ron")),
+            tutorial: parse("tutorial.ron", &get("tutorial.ron")),
             dialog,
         };
         data.validate();
@@ -163,6 +185,10 @@ impl Data {
                     }
                 }
             }
+        }
+        assert!(!self.tutorial.rows.is_empty());
+        for r in &self.tutorial.rows {
+            assert!(r.options.len() >= 2, "tutorial: {}", r.label);
         }
         assert!(self.theory.len() >= crate::game::theory::LENGTH);
         for q in &self.theory {

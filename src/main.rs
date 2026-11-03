@@ -1,6 +1,7 @@
 mod assets;
 mod canvas;
 mod data;
+mod fx;
 mod game;
 mod save;
 mod scene;
@@ -23,21 +24,26 @@ fn window_conf() -> Conf {
 #[macroquad::main(window_conf)]
 async fn main() {
     let assets = assets::Assets::load().await;
+    let fx = fx::Fx::load().await;
     let canvas = Canvas::new();
-    let mut scene = Scene::Title(Title);
+    let mut scene = Scene::Title(Title::new());
 
     loop {
         let ctx = Ctx {
             assets: &assets,
+            fx: &fx,
             mouse: canvas.mouse(),
             dt: get_frame_time().min(0.1),
         };
+        if is_key_pressed(KeyCode::M) {
+            fx.toggle_mute();
+        }
         if let Some(next) = scene.update(&ctx) {
             scene = next;
         }
         canvas.begin();
         scene.draw(&ctx);
-        canvas.end();
+        canvas.end(fx.tick(ctx.dt));
         next_frame().await;
     }
 }

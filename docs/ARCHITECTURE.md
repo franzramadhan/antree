@@ -18,6 +18,7 @@ No other runtime dependencies. RNG is a hand-written SplitMix64 in `game/rng.rs`
 src/
   main.rs            macroquad entry, game loop, calls scene::update and scene::draw
   canvas.rs          640x360 render target, integer scale, letterbox, mouse coordinate mapping
+  fx.rs              synthesized sounds as WAV bytes, mute, screen shake, stamp slam animation
   assets.rs          loads the font, sprites, and Data once at boot
   data.rs            Rust structs mirroring the RON files, loading, validation, dialog lookup
   save.rs            quad-storage read and write of Save
@@ -40,6 +41,7 @@ src/
   scene/
     mod.rs           Scene enum, shared helpers (say, escape_pressed)
     title.rs
+    tutorial.rs      orientation form ORI-01, shown until approved once
     quest_select.rs  quest list, lock state, best results, seed entry
     overworld.rs     map, information board, travel
     office.rs        greeting, chain check, obstacle roll, minigame host, issue
@@ -60,7 +62,8 @@ pub enum Outcome { Running, Passed(Option<String>), Granted(String), Failed { li
 ## 3. Scene state machine
 
 ```
-Boot -> Title -> QuestSelect -> Overworld
+Boot -> Title -> Tutorial (until approved once) -> QuestSelect -> Overworld
+QuestSelect -> Tutorial        Tab
 Overworld -> Office(id)        enter a building
 Office: Say | Greet -> [obstacles] -> [minigame steps] -> Issue -> Overworld
 Office -> Overworld            walk out (Esc), fail, or office closed
@@ -132,10 +135,10 @@ The seed is a u64 shown as a 6 character base32 code. Quest select has a text fi
 One key in quad-storage, `antri.save.v1`, holding RON text. RON rather than JSON because serde_json would be the only reason to add another crate.
 
 ```ron
-(version:1,unlocked:["sktpa"],best:{"ktpss_hilang":(grade:S,total:89,days:4,money:329,conscience:80,seed:"PVZZ3T")},inside_man:true)
+(version:1,unlocked:["sktpa"],best:{"ktpss_hilang":(grade:S,total:89,days:4,money:329,conscience:80,seed:"PVZZ3T")},inside_man:true,tutorial_done:true)
 ```
 
-The first quest is always unlocked. A non-F ending unlocks the next quest and the inside man. Best keeps the highest total, and an F never replaces a completion. Unknown version or unparsable text: ignore the save and start fresh. Written after every ending. Nothing is saved mid-run, a reload restarts the quest.
+The first quest is always unlocked. A non-F ending unlocks the next quest and the inside man. Best keeps the highest total, and an F never replaces a completion. Unknown version or unparsable text: ignore the save and start fresh. `tutorial_done` defaults to false, so saves from before it still load. Written after every ending and when the tutorial is approved. Nothing is saved mid-run, a reload restarts the quest.
 
 ## 7. Rendering and scaling
 

@@ -1,6 +1,6 @@
 use macroquad::prelude::*;
 
-use super::{escape_pressed, Ctx, Overworld, Scene, Title};
+use super::{escape_pressed, Ctx, Overworld, Scene, Title, Tutorial};
 use crate::canvas;
 use crate::game::rng::code_to_seed;
 use crate::game::run::Run;
@@ -32,7 +32,10 @@ impl QuestSelect {
         let d = &ctx.assets.data;
         let n = d.quests.len();
         if escape_pressed() {
-            return Some(Scene::Title(Title));
+            return Some(Scene::Title(Title::new()));
+        }
+        if is_key_pressed(KeyCode::Tab) {
+            return Some(Scene::Tutorial(Tutorial::new(d)));
         }
         if is_key_pressed(KeyCode::Up) {
             self.cursor = (self.cursor + n - 1) % n;

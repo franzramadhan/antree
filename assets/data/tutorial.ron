@@ -1,0 +1,42 @@
+// The orientation form shown before the first errand. Every row explains one
+// control. The first option of a row is the blank the form starts with.
+(
+    title: "FORM ORI-01  Declaration of Citizen Orientation",
+    rows: [
+        (
+            label: "1. Walking",
+            text: "WASD or the arrow keys walk you through town. E goes into an office. H goes home and ends the day.",
+            options: ["________", "Noted", "Noted with concern"],
+        ),
+        (
+            label: "2. Meters",
+            text: "Days, Money and Conscience sit at the top of the screen. The final grade weighs all three.",
+            options: ["________", "Noted", "I prefer not to know"],
+        ),
+        (
+            label: "3. Counters",
+            text: "At a counter, number keys or the mouse pick an answer. Esc walks out, and your place goes with you.",
+            options: ["________", "Noted", "Noted, sadly"],
+        ),
+        (
+            label: "4. Forms",
+            text: "On a form, Up and Down pick a line, Left and Right change it, Enter submits. You are doing it now.",
+            options: ["________", "Noted", "Noted, recursively"],
+        ),
+        (
+            label: "5. Shortcuts",
+            text: "Fixers, cutting the line and knowing someone save days. They cost Conscience. Nobody will stop you.",
+            options: ["________", "Noted", "Asking for a friend"],
+        ),
+        (
+            label: "6. Declaration",
+            text: "I declare the above is true, and that I will come back tomorrow if asked.",
+            options: ["________", "I declare", "I declare, again"],
+        ),
+    ],
+    blank: "Field {n} is blank. Blank fields are not accepted.",
+    ink: "Wrong ink colour. Please submit the identical form again.",
+    approved: "Approved. Welcome to the Republic of Kuvukiland. Your errands await.",
+    hint: "Up/Down choose a line. Left/Right fill it. Enter submit.",
+    hint_done: "Enter: proceed to the waiting area",
+)

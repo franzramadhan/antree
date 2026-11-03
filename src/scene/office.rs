@@ -4,6 +4,7 @@ use super::minigame::{Kind, Minigame, Outcome};
 use super::{confirm_pressed, escape_pressed, say, Ctx, Overworld, Scene};
 use crate::canvas;
 use crate::data::Data;
+use crate::fx::{Sfx, Slam};
 use crate::game::nego::Who;
 use crate::game::obstacle::{roll, Obstacle};
 use crate::game::quest::Task;
@@ -38,6 +39,8 @@ pub struct Office {
     phase: Phase,
     /// Minigames still to clear before the clerk issues anything, next first.
     steps: Vec<Kind>,
+    /// The stamp on the current verdict: REJECTED on a refusal, the seal on issue.
+    slam: Option<Slam>,
 }
 
 impl Office {
@@ -69,6 +72,7 @@ impl Office {
             return_pos,
             phase,
             steps: Vec::new(),
+            slam: None,
         }
     }
 
@@ -95,6 +99,7 @@ impl Office {
         };
         if let Some(doc) = self.run.missing(&grant.doc).first().cloned() {
             self.run.learn(&doc);
+            self.slam = Some(Slam::reject());
             self.phase = Phase::Say {
                 line: self.say(d, "missing").replace("{doc}", d.doc_phrase(&doc)),
                 end_day: false,
@@ -208,6 +213,7 @@ impl Office {
             line.push(' ');
             line.push_str(&d.s("issued_fee", &[("fee", &grant.fee.to_string())]));
         }
+        self.slam = Some(Slam::approve());
         self.phase = Phase::Issue {
             doc: grant.doc,
             line,
@@ -227,6 +233,18 @@ impl Office {
     }
 
     pub fn update(&mut self, ctx: &Ctx) -> Option<Scene> {
+        let money = self.run.meters.money;
+        let next = self.step(ctx);
+        if self.run.meters.money < money {
+            ctx.fx.play(Sfx::Coin);
+        }
+        if let Some(s) = &mut self.slam {
+            s.update(ctx.fx, ctx.dt);
+        }
+        next
+    }
+
+    fn step(&mut self, ctx: &Ctx) -> Option<Scene> {
         let d = &ctx.assets.data;
         match &mut self.phase {
             Phase::Say { end_day, .. } => {
@@ -262,7 +280,10 @@ impl Office {
                     Outcome::Passed(Some(line)) => self.phase = Phase::Note(line),
                     Outcome::Passed(None) => self.next_step(d),
                     Outcome::Granted(line) => self.issue(d, Some(line)),
-                    Outcome::Failed { line, end_day } => self.phase = Phase::Say { line, end_day },
+                    Outcome::Failed { line, end_day } => {
+                        self.slam = Some(Slam::reject());
+                        self.phase = Phase::Say { line, end_day };
+                    }
                 }
             }
             Phase::Issue { doc, .. } => {
@@ -289,6 +310,14 @@ impl Office {
 
         match &self.phase {
             Phase::Say { line, .. } => {
+                if let Some(s) = self.slam.as_ref().filter(|s| s.rejects()) {
+                    s.draw_word(
+                        font,
+                        &d.s("stamp_rejected", &[]),
+                        canvas::WIDTH / 2.0,
+                        140.0,
+                    );
+                }
                 ui::dialog(font, &office.short, line);
                 ui::hint(font, &d.s("hint_leave", &[]));
             }
@@ -306,16 +335,9 @@ impl Office {
                 ui::hint(font, &d.s("hint_continue", &[]));
             }
             Phase::Issue { line, .. } => {
-                draw_texture_ex(
-                    &ctx.assets.stamp,
-                    canvas::WIDTH / 2.0 - 32.0,
-                    100.0,
-                    WHITE,
-                    DrawTextureParams {
-                        dest_size: Some(vec2(64.0, 64.0)),
-                        ..Default::default()
-                    },
-                );
+                if let Some(s) = &self.slam {
+                    s.draw_texture(&ctx.assets.stamp, canvas::WIDTH / 2.0, 132.0, 64.0, 0.0);
+                }
                 ui::dialog(font, &office.short, line);
                 ui::hint(font, &d.s("hint_take", &[]));
             }

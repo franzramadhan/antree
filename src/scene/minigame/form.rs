@@ -3,6 +3,7 @@ use macroquad::prelude::*;
 use super::{pass_time, Outcome};
 use crate::canvas;
 use crate::data::Data;
+use crate::fx::{Sfx, Slam};
 use crate::game::form::{DateFmt, Form, MAX_REJECTIONS, REJECT_MINUTES, TIME_LIMIT};
 use crate::game::run::Run;
 use crate::scene::{say, Ctx};
@@ -19,6 +20,7 @@ pub struct FormGame {
     time_left: f32,
     rejections: u32,
     msg: String,
+    slam: Option<Slam>,
 }
 
 fn row_rect(i: usize) -> Rect {
@@ -40,6 +42,7 @@ impl FormGame {
             time_left: TIME_LIMIT,
             rejections: 0,
             msg: say(d, office, "f_intro", run),
+            slam: None,
         }
     }
 
@@ -47,6 +50,9 @@ impl FormGame {
         let d = &ctx.assets.data;
         let n = self.form.fields.len();
         self.time_left -= ctx.dt;
+        if let Some(s) = &mut self.slam {
+            s.update(ctx.fx, ctx.dt);
+        }
 
         if is_key_pressed(KeyCode::Up) || is_key_pressed(KeyCode::W) {
             self.cursor = (self.cursor + n - 1) % n;
@@ -77,6 +83,7 @@ impl FormGame {
         if !(timed_out || is_key_pressed(KeyCode::Enter)) {
             return Outcome::Running;
         }
+        ctx.fx.play(Sfx::Printer);
         let wrong = self.form.wrong(&self.picks);
         if wrong == 0 && !timed_out {
             return Outcome::Passed(None);
@@ -92,6 +99,7 @@ impl FormGame {
             };
         }
         self.time_left = TIME_LIMIT;
+        self.slam = Some(Slam::reject());
         self.msg = if timed_out {
             say(d, office, "f_timeout", run)
         } else {
@@ -161,6 +169,9 @@ impl FormGame {
             16,
             ui::INK,
         );
+        if let Some(s) = &self.slam {
+            s.draw_word(font, &d.s("stamp_rejected", &[]), 470.0, 150.0);
+        }
         ui::hint(font, &d.s("form_hint", &[]));
     }
 }

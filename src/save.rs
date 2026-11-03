@@ -27,6 +27,9 @@ pub struct Save {
     pub best: BTreeMap<String, Best>,
     /// Any quest completed once. The inside man takes your calls from then on.
     pub inside_man: bool,
+    /// The orientation form was approved once.
+    #[serde(default)]
+    pub tutorial_done: bool,
 }
 
 impl Default for Save {
@@ -36,6 +39,7 @@ impl Default for Save {
             unlocked: Vec::new(),
             best: BTreeMap::new(),
             inside_man: false,
+            tutorial_done: false,
         }
     }
 }
@@ -128,6 +132,9 @@ mod tests {
         assert_eq!(Save::parse(Some(text.clone())), s);
         assert_eq!(Save::parse(Some("{".into())), Save::default());
         assert_eq!(Save::parse(None), Save::default());
+        let before_tutorial = "(version:1,unlocked:[],best:{},inside_man:true)";
+        let s = Save::parse(Some(before_tutorial.into()));
+        assert!(s.inside_man && !s.tutorial_done);
         let old = text.replace("version:1", "version:0");
         assert_eq!(Save::parse(Some(old)), Save::default());
     }
