@@ -1,0 +1,7 @@
+{
+    "greet": ["\"Queue psychology test. We measure whether you can wait. Please wait.\""],
+    "missing": ["\"The psychologist needs your {doc} first. The psychologist is very thorough about other people's papers.\""],
+    "issued": ["\"You are psychologically fit to stand in line. Fee Kv 50.\""],
+    "nothing": ["\"You already passed. Twice would be suspicious.\""],
+    "f_intro": ["\"Fill in the questionnaire. There are no wrong answers. Only wrong formats.\""],
+}

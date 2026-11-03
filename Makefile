@@ -10,7 +10,7 @@ web:
 	rm -rf dist
 	mkdir -p dist
 	cp $(WASM) dist/antri.wasm
-	cp web/index.html web/mq_js_bundle.js dist/
+	cp web/index.html web/mq_js_bundle.js web/sapp_jsutils.js web/quad-storage.js dist/
 	cp -r assets dist/assets
 
 serve:

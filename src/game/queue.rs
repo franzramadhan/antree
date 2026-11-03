@@ -32,6 +32,7 @@ pub struct Step {
     pub outcome: Outcome,
     pub money: i64,
     pub conscience: i32,
+    /// Dialog key for what happened.
     pub message: &'static str,
 }
 
@@ -82,52 +83,52 @@ impl Queue {
             message: "",
         };
         if !self.can(action) {
-            step.message = "Nothing to do about that right now.";
+            step.message = "q_nothing";
             return step;
         }
 
         match (action, self.pending.take()) {
             (Action::Wait, Some(Event::Auntie)) => {
                 self.ahead += 1;
-                step.message = "She just had a quick question. It took a while.";
+                step.message = "q_auntie_wait";
             }
             (Action::Wait, Some(Event::InsideMan)) => {
                 self.ahead += 1;
-                step.message = "He walked straight in. Nobody said anything. Neither did you.";
+                step.message = "q_inside_wait";
             }
             (Action::Wait, Some(Event::FixerOffer { .. })) => {
-                step.message = "You looked at your shoes. The fixer moved on.";
+                step.message = "q_fixer_ignored";
             }
-            (Action::Wait, None) => step.message = "You wait.",
+            (Action::Wait, None) => step.message = "q_wait",
             (Action::Confront, _) => {
                 let roll = self.rng.range(0, 100);
                 if roll < 50 {
-                    step.message = "\"Oh, sorry sir, did not see you.\" The line is restored.";
+                    step.message = "q_confront_ok";
                 } else if roll < 70 {
                     step.outcome = Outcome::Fight;
-                    step.message = "Voices rise. The guard picks you. Come back tomorrow.";
+                    step.message = "q_confront_fight";
                     return step;
                 } else {
                     self.ahead += 1;
-                    step.message = "\"I am only asking!\" She stays. So does everyone behind you.";
+                    step.message = "q_confront_fail";
                 }
             }
             (Action::Cut, _) => {
                 step.conscience = 10;
                 if self.rng.chance(15) {
                     self.ahead = self.start_ahead;
-                    step.message = "\"Sir. Sir! Back of the line.\" Everyone watched.";
+                    step.message = "q_cut_caught";
                 } else {
                     let skip = self.rng.range(3, 7);
                     self.ahead = self.ahead.saturating_sub(skip);
-                    step.message = "You slid forward. Nobody said anything. You feel it anyway.";
+                    step.message = "q_cut_ok";
                 }
             }
             (Action::PayFixer, Some(Event::FixerOffer { price })) => {
                 step.money = price;
                 step.conscience = 15;
                 self.ahead = 0;
-                step.message = "A folded note, a nod, and your name is suddenly next.";
+                step.message = "q_fixer_paid";
             }
             (Action::PayFixer, _) => unreachable!("guarded by can()"),
         }

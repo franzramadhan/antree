@@ -1,6 +1,39 @@
-//! Document inventory and chain resolution.
+//! Quests, document inventory, and chain resolution.
 
 use serde::Deserialize;
+
+use super::grade::Par;
+
+#[derive(Clone, Debug, Deserialize)]
+pub struct QuestDef {
+    pub id: String,
+    pub title: String,
+    pub intro: String,
+    pub goal_doc: String,
+    #[serde(default)]
+    pub start_docs: Vec<String>,
+    pub par_days: u32,
+    pub deadline: u32,
+    pub budget: i64,
+    pub official_fees: i64,
+    /// What the information board claims you need.
+    pub board: Vec<String>,
+    /// (document, the document whose grant secretly requires it). One per run.
+    pub hidden_pool: Vec<(String, String)>,
+    /// Listed on the board, needed by nobody. One per run.
+    pub wrong_pool: Vec<String>,
+}
+
+impl QuestDef {
+    pub fn par(&self) -> Par {
+        Par {
+            par_days: self.par_days,
+            deadline: self.deadline,
+            budget: self.budget,
+            official_fees: self.official_fees,
+        }
+    }
+}
 
 #[derive(Clone, Debug, Default)]
 pub struct Inventory(Vec<String>);
@@ -17,29 +50,39 @@ impl Inventory {
     }
 }
 
+/// The minigame a counter runs before it hands anything over.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize)]
+pub enum Task {
+    Queue,
+    Form,
+    Stamp,
+    Photocopy,
+    Theory,
+}
+
 /// One document an office can issue and what it asks for in return.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Deserialize)]
 pub struct Grant {
     pub doc: String,
     pub requires: Vec<String>,
     #[serde(default)]
     pub fee: i64,
+    /// Overrides the office's task list for this document.
+    #[serde(default)]
+    pub task: Option<Task>,
 }
 
-impl Grant {
-    pub fn missing<'a>(&'a self, inv: &Inventory) -> Vec<&'a str> {
-        self.requires
-            .iter()
-            .filter(|d| !inv.has(d))
-            .map(String::as_str)
-            .collect()
+/// `roots` plus every document needed, transitively, to obtain them.
+pub fn closure(roots: &[&str], requires: impl Fn(&str) -> Vec<String>) -> Vec<String> {
+    let mut out: Vec<String> = Vec::new();
+    let mut stack: Vec<String> = roots.iter().map(|s| s.to_string()).collect();
+    while let Some(doc) = stack.pop() {
+        if !out.contains(&doc) {
+            stack.extend(requires(&doc));
+            out.push(doc);
+        }
     }
-}
-
-/// First grant at an office the player does not hold yet, or None when the
-/// office has nothing left to give.
-pub fn next_grant<'a>(grants: &'a [Grant], inv: &Inventory) -> Option<&'a Grant> {
-    grants.iter().find(|g| !inv.has(&g.doc))
+    out
 }
 
 #[cfg(test)]
@@ -51,25 +94,36 @@ mod tests {
             doc: doc.into(),
             requires: req.iter().map(|s| s.to_string()).collect(),
             fee: 0,
+            task: None,
         }
     }
 
     #[test]
-    fn chain_resolves_in_order() {
-        let polsek = [g("loss_report", &[])];
-        let dukcatan = [g("ktpss", &["loss_report", "ksk_copy"])];
-        let mut inv = Inventory::default();
-
-        let grant = next_grant(&dukcatan, &inv).unwrap();
-        assert_eq!(grant.missing(&inv), vec!["loss_report", "ksk_copy"]);
-
-        inv.add(next_grant(&polsek, &inv).unwrap().doc.as_str());
-        assert!(next_grant(&polsek, &inv).is_none());
-        assert_eq!(grant.missing(&inv), vec!["ksk_copy"]);
-
-        inv.add("ksk_copy");
-        assert!(grant.missing(&inv).is_empty());
-        inv.add("ktpss");
-        assert!(inv.has("ktpss"));
+    fn closure_follows_chains_and_survives_cycles() {
+        let grants = [
+            g("ktpss", &["kelurahan_letter", "loss_report"]),
+            g("kelurahan_letter", &["kaling_letter"]),
+            g("kaling_letter", &["ksk"]),
+            g("spusp", &["kaling_letter", "spusp"]),
+        ];
+        let req = |d: &str| {
+            grants
+                .iter()
+                .find(|x| x.doc == d)
+                .map_or(vec![], |x| x.requires.clone())
+        };
+        let mut c = closure(&["ktpss"], req);
+        c.sort();
+        assert_eq!(
+            c,
+            [
+                "kaling_letter",
+                "kelurahan_letter",
+                "ksk",
+                "ktpss",
+                "loss_report"
+            ]
+        );
+        assert_eq!(closure(&["spusp"], req).len(), 3);
     }
 }

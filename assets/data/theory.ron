@@ -1,0 +1,17 @@
+// Queue Theory Test questions. answer is the 0-based index of the correct option.
+[
+    (q: "An auntie asks to go in front of you for \"just a quick question\". How long is a quick question?", options: ["Under a minute", "Five minutes", "Forty minutes", "Until the counter closes"], answer: 2),
+    (q: "The number machine is broken. What number are you?", options: ["The next one", "Whatever the clerk feels", "Zero", "There are no numbers, only people"], answer: 1),
+    (q: "The sign says the counter opens at 08:00. When does it open?", options: ["08:00", "08:30", "After the morning meeting", "When the clerk finishes breakfast"], answer: 3),
+    (q: "\"The system is down.\" Where is it down?", options: ["Here", "At head office", "Everywhere", "Nobody knows, that is the system"], answer: 1),
+    (q: "A man walks past the whole line and is served at once. He is:", options: ["A VIP", "The clerk's cousin", "A man with an inside contact", "Any of these, do not ask"], answer: 3),
+    (q: "How many photocopies should you bring?", options: ["One", "Three", "Whatever the clerk said", "One more than the clerk said"], answer: 3),
+    (q: "Which pen colour is accepted on official forms?", options: ["Black", "Blue", "The other one", "It depends on the counter"], answer: 2),
+    (q: "You have been waiting three hours. The correct reaction is:", options: ["Complain", "Leave", "Smile and wait", "Ask the fixer"], answer: 2),
+    (q: "A form says \"fill in capitals\". The next counter says \"no capitals\". You:", options: ["Fill in two forms", "Ask which is right", "Cry", "Fill in two forms and cry"], answer: 0),
+    (q: "Lunch break is 12:00 to 13:00. When is the clerk back?", options: ["13:00", "13:30", "14:00", "Tomorrow"], answer: 2),
+    (q: "The queue psychology test checks:", options: ["Your patience", "Your obedience", "Your wallet", "Whether you passed the queue psychology test"], answer: 3),
+    (q: "What does \"come back tomorrow\" mean?", options: ["Tomorrow", "Not tomorrow", "Never", "It means come back tomorrow"], answer: 3),
+    (q: "You see the stamp on an empty desk. Can you use it?", options: ["Yes", "No, the stamp has an owner", "Only on Fridays", "Only if nobody sees"], answer: 1),
+    (q: "Which of these is an official fee?", options: ["The one on the board", "The one the clerk whispers", "The one for the coffee", "The board is from last year"], answer: 0),
+]

@@ -1,0 +1,7 @@
+{
+    "greet": ["\"Zoning? Which year's zoning? It changed this morning. And at lunch.\""],
+    "missing": ["\"We cannot zone without the {doc}. Zoning is a precise art.\""],
+    "issued": ["\"Recommendation granted. Valid until the next plan, which is Thursday.\""],
+    "nothing": ["\"You have your recommendation. Do not ask about the new plan.\""],
+    "ob_moved": ["\"Spatial planning moved to the third floor of the other building. It had to be planned.\" 20 minutes."],
+}

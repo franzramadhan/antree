@@ -1,8 +1,10 @@
 //! End-of-run grade. Formula from GDD section 3, table from section 7.
 
+use serde::{Deserialize, Serialize};
+
 use super::meters::Meters;
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Grade {
     S,
     A,

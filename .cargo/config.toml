@@ -1,0 +1,4 @@
+# quad-storage and sapp-jsutils declare their JS imports as plain extern "C".
+# Recent rustc no longer turns undefined symbols into wasm imports by default.
+[target.wasm32-unknown-unknown]
+rustflags = ["-C", "link-arg=--allow-undefined"]

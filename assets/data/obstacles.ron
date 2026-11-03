@@ -1,0 +1,11 @@
+// Default obstacle weights, GDD section 6. Offices override single entries.
+[
+    (Smooth, 25),
+    (SystemDown, 15),
+    (ClerkBreak, 15),
+    (MissingPaperwork, 15),
+    (FormChanged, 10),
+    (FixerOffer, 10),
+    (CounterMoved, 5),
+    (CollectiveLeave, 5),
+]

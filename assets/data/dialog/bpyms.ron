@@ -1,0 +1,6 @@
+{
+    "greet": ["\"Land letter? Whose land? Ah. There are three claims on your land. You are one of them.\""],
+    "missing": ["\"The {doc}, please. Land is complicated. Paper makes it simple, then complicated again.\""],
+    "issued": ["\"Your land letter. It says the land is probably yours. Probably is very strong, legally.\""],
+    "nothing": ["\"You have your letter. The other two claimants have theirs. Everybody is happy.\""],
+}

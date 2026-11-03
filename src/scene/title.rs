@@ -1,26 +1,14 @@
 use macroquad::prelude::*;
 
-use super::{confirm_pressed, Ctx, Overworld, Scene};
+use super::{confirm_pressed, Ctx, QuestSelect, Scene};
 use crate::canvas;
-use crate::game::run::Run;
 use crate::ui;
 
 pub struct Title;
 
 impl Title {
-    pub fn update(&mut self, ctx: &Ctx) -> Option<Scene> {
-        if !confirm_pressed() {
-            return None;
-        }
-        let quest = &ctx.assets.data.quests[0];
-        // ponytail: seed from the wall clock, a seed entry field comes with Phase 4.
-        let seed = (get_time() * 1000.0) as u64 & ((1 << 30) - 1);
-        let run = Run::new(seed, &quest.goal_doc, quest.par());
-        Some(Scene::Overworld(Overworld::at(
-            run,
-            vec2(300.0, 300.0),
-            Some(quest.intro.clone()),
-        )))
+    pub fn update(&mut self, _ctx: &Ctx) -> Option<Scene> {
+        confirm_pressed().then(|| Scene::QuestSelect(QuestSelect::new()))
     }
 
     pub fn draw(&self, ctx: &Ctx) {

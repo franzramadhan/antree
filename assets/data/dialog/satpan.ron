@@ -1,0 +1,6 @@
+{
+    "greet": ["\"SIM? Renewal or new? Renewal. Expired? Expired yesterday? Oh no.\""],
+    "missing": ["\"Where is your {doc}? Every SIM needs one. It is the law. Since last week.\""],
+    "issued": ["\"Your new Surat Izin Mengantri. You may now queue legally for five years.\""],
+    "nothing": ["\"Your SIM is in your hand. Go and queue somewhere with it.\""],
+}

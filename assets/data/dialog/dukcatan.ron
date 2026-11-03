@@ -1,0 +1,7 @@
+{
+    "greet": ["\"Did you take a number? The number machine is at the back. It is also broken.\"", "\"KTPSS? New or lost? Lost. Of course lost.\""],
+    "missing": ["\"No {doc}, no processing. The other offices close at eleven thirty, sir.\""],
+    "issued": ["\"Congratulations. Valid until further notice. Further notice never comes.\""],
+    "nothing": ["\"Sir, there is nothing more for you here. Why are you here? Go home.\""],
+    "ob_system": ["\"The system is down. Head office. Again. Still.\""],
+}

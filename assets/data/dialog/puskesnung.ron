@@ -1,0 +1,7 @@
+{
+    "greet": ["\"Registration is over there. The doctor is over there. The over there is closed.\""],
+    "missing": ["\"For that I need the {doc}. Health is important. So is paperwork.\""],
+    "issued": ["\"You are healthy. The letter says so. Your back does not, but the letter wins.\""],
+    "nothing": ["\"You are not sick and you have your letter. Please leave room for the sick.\""],
+    "ob_break": ["\"Doctor is visiting another clinic.\" You wait {min} minutes on a plastic chair shaped like suffering."],
+}

@@ -46,6 +46,28 @@ pub fn text_centered(font: &Font, s: &str, cx: f32, y: f32, size: u16, color: Co
     );
 }
 
+/// Splits `s` into lines no wider than `max_w`.
+pub fn wrap(font: &Font, s: &str, max_w: f32, size: u16) -> Vec<String> {
+    let mut lines = Vec::new();
+    let mut line = String::new();
+    for word in s.split(' ') {
+        let candidate = if line.is_empty() {
+            word.to_owned()
+        } else {
+            format!("{line} {word}")
+        };
+        if text_width(font, &candidate, size) > max_w && !line.is_empty() {
+            lines.push(std::mem::replace(&mut line, word.to_owned()));
+        } else {
+            line = candidate;
+        }
+    }
+    if !line.is_empty() {
+        lines.push(line);
+    }
+    lines
+}
+
 /// Word-wrapped text. Returns the y after the last line.
 pub fn text_wrapped(
     font: &Font,
@@ -57,23 +79,8 @@ pub fn text_wrapped(
     color: Color,
 ) -> f32 {
     let line_h = size as f32 * 1.25;
-    let mut line = String::new();
     let mut cy = y;
-    for word in s.split(' ') {
-        let candidate = if line.is_empty() {
-            word.to_owned()
-        } else {
-            format!("{line} {word}")
-        };
-        if text_width(font, &candidate, size) > max_w && !line.is_empty() {
-            text(font, &line, x, cy, size, color);
-            cy += line_h;
-            line = word.to_owned();
-        } else {
-            line = candidate;
-        }
-    }
-    if !line.is_empty() {
+    for line in wrap(font, s, max_w, size) {
         text(font, &line, x, cy, size, color);
         cy += line_h;
     }
@@ -145,6 +152,69 @@ pub fn dialog(font: &Font, speaker: &str, body: &str) {
     draw_rectangle(x, y, w, 20.0, WOOD);
     text(font, speaker, x + 8.0, y + 15.0, 16, PAPER);
     text_wrapped(font, body, x + 10.0, y + 40.0, w - 20.0, 16, INK);
+}
+
+/// Message strip above the choice buttons.
+pub fn message(font: &Font, s: &str) {
+    panel(16.0, 196.0, canvas::WIDTH - 32.0, 48.0);
+    text_wrapped(font, s, 24.0, 214.0, canvas::WIDTH - 48.0, 16, INK);
+}
+
+/// Two-column grid of choice buttons under the message strip.
+pub fn choice_rect(i: usize) -> Rect {
+    let col = (i % 2) as f32;
+    let row = (i / 2) as f32;
+    Rect::new(16.0 + col * 308.0, 252.0 + row * 44.0, 300.0, 36.0)
+}
+
+pub fn choice_buttons(
+    font: &Font,
+    labels: &[String],
+    mouse: Vec2,
+    enabled: impl Fn(usize) -> bool,
+) {
+    for (i, label) in labels.iter().enumerate() {
+        button(font, label, choice_rect(i), mouse, enabled(i));
+    }
+}
+
+/// The choice picked this frame by number key or click, among `n` enabled ones.
+pub fn choice_input(n: usize, mouse: Vec2, enabled: impl Fn(usize) -> bool) -> Option<usize> {
+    let clicked = is_mouse_button_pressed(MouseButton::Left)
+        .then(|| (0..n).find(|&i| choice_rect(i).contains(mouse)))
+        .flatten();
+    number_pressed()
+        .or(clicked)
+        .filter(|&i| i < n && enabled(i))
+}
+
+/// 0-based index of a number key pressed this frame: 1 to 9 give 0 to 8, 0 gives 9.
+pub fn number_pressed() -> Option<usize> {
+    const KEYS: [KeyCode; 10] = [
+        KeyCode::Key1,
+        KeyCode::Key2,
+        KeyCode::Key3,
+        KeyCode::Key4,
+        KeyCode::Key5,
+        KeyCode::Key6,
+        KeyCode::Key7,
+        KeyCode::Key8,
+        KeyCode::Key9,
+        KeyCode::Key0,
+    ];
+    KEYS.iter().position(|&k| is_key_pressed(k))
+}
+
+/// One "label   < value >" row, highlighted when selected.
+pub fn picker_row(font: &Font, label: &str, value: &str, r: Rect, selected: bool) {
+    if selected {
+        draw_rectangle(r.x, r.y, r.w, r.h, Color::new(1.0, 0.98, 0.9, 1.0));
+        draw_rectangle_lines(r.x, r.y, r.w, r.h, 1.0, INK);
+    }
+    let y = r.y + r.h / 2.0 + 5.0;
+    text(font, label, r.x + 6.0, y, 16, FADED);
+    let v = format!("< {value} >");
+    text(font, &v, r.x + r.w * 0.38, y, 16, INK);
 }
 
 pub fn hint(font: &Font, s: &str) {

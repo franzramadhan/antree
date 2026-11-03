@@ -1,12 +1,19 @@
 use macroquad::prelude::*;
 
-use super::{confirm_pressed, Ctx, Overworld, Scene};
+use super::minigame::{Kind, Minigame, Outcome};
+use super::{confirm_pressed, escape_pressed, say, Ctx, Overworld, Scene};
 use crate::canvas;
 use crate::data::Data;
-use crate::game::quest::{next_grant, Grant};
-use crate::game::queue::{Action, Outcome, Queue, TICK_MINUTES};
+use crate::game::nego::Who;
+use crate::game::obstacle::{roll, Obstacle};
+use crate::game::quest::Task;
 use crate::game::run::Run;
 use crate::ui;
+
+const INSIDE_MAN_CONSCIENCE: i32 = 25;
+const MOVED_MINUTES: u32 = 20;
+/// "Counter moved" rerolls at most this many times before the counter gives up moving.
+const MAX_MOVES: u32 = 3;
 
 enum Phase {
     /// A line from the clerk, then leave. `end_day` says whether leaving ends the day.
@@ -15,12 +22,11 @@ enum Phase {
         end_day: bool,
     },
     Greet(String),
-    Queue {
-        queue: Queue,
-        last: String,
-    },
+    /// A line, then the next step.
+    Note(String),
+    Play(Minigame),
     Issue {
-        grant: Grant,
+        doc: String,
         line: String,
     },
 }
@@ -30,26 +36,39 @@ pub struct Office {
     office_id: String,
     return_pos: Vec2,
     phase: Phase,
+    /// Minigames still to clear before the clerk issues anything, next first.
+    steps: Vec<Kind>,
 }
 
 impl Office {
     pub fn new(mut run: Run, office_id: String, return_pos: Vec2, d: &Data) -> Self {
         let office = d.office(&office_id);
-        let mut rng = run.rng(&format!("greet:{office_id}"));
+        let line = |key, run: &Run| say(d, &office_id, key, run);
         let phase = if !run.clock.numbers_open() {
-            run.end_day();
             Phase::Say {
-                line: d.s("numbers_closed", &[]),
+                line: line("numbers_closed", &run),
+                end_day: true,
+            }
+        } else if run.meters.days < office.opens_day && !run.connected {
+            Phase::Say {
+                line: line("locked", &run),
+                end_day: false,
+            }
+        } else if run.frozen(&office_id) {
+            Phase::Say {
+                line: line("under_review", &run),
                 end_day: false,
             }
         } else {
-            Phase::Greet(rng.pick(&office.greet).clone())
+            Phase::Greet(line("greet", &run))
         };
+        run.enter(&office_id);
         Self {
             run,
             office_id,
             return_pos,
             phase,
+            steps: Vec::new(),
         }
     }
 
@@ -61,132 +80,194 @@ impl Office {
         )))
     }
 
-    fn after_greet(&mut self, d: &Data) {
-        let office = d.office(&self.office_id);
-        let mut rng = self.run.rng(&format!("lines:{}", self.office_id));
-        self.phase = match next_grant(&office.grants, &self.run.inv) {
-            None => Phase::Say {
-                line: rng.pick(&office.nothing).clone(),
-                end_day: false,
-            },
-            Some(g) => {
-                let missing = g.missing(&self.run.inv);
-                if let Some(doc) = missing.first() {
-                    Phase::Say {
-                        line: rng.pick(&office.missing).replace("{doc}", d.doc_name(doc)),
-                        end_day: false,
-                    }
-                } else {
-                    Phase::Queue {
-                        queue: Queue::new(self.run.rng(&format!("queue:{}", self.office_id))),
-                        last: String::new(),
-                    }
-                }
-            }
-        };
+    fn say(&self, d: &Data, key: &str) -> String {
+        say(d, &self.office_id, key, &self.run)
     }
 
-    fn queue_action(&mut self, action: Action, d: &Data) {
+    fn after_greet(&mut self, d: &Data) {
         let office = d.office(&self.office_id);
-        let Phase::Queue { queue, last } = &mut self.phase else {
+        let Some(grant) = self.run.offer(&office.grants).cloned() else {
+            self.phase = Phase::Say {
+                line: self.say(d, "nothing"),
+                end_day: false,
+            };
             return;
         };
-        if !queue.can(action) {
+        if let Some(doc) = self.run.missing(&grant.doc).first().cloned() {
+            self.run.learn(&doc);
+            self.phase = Phase::Say {
+                line: self.say(d, "missing").replace("{doc}", d.doc_phrase(&doc)),
+                end_day: false,
+            };
             return;
         }
-        if let Some(price) = queue.fixer_price() {
-            if action == Action::PayFixer && !self.run.meters.can_afford(price) {
-                *last = d.s("cannot_pay", &[("fee", &price.to_string())]);
-                return;
-            }
-        }
-        let step = queue.step(action);
-        self.run.meters.spend(step.money);
-        self.run.meters.shortcut(step.conscience);
-        *last = step.message.to_owned();
-        let day_over = self.run.advance(TICK_MINUTES);
 
-        match step.outcome {
-            Outcome::Served => {
-                let grant = next_grant(&office.grants, &self.run.inv)
-                    .expect("queue only runs with a grant pending")
-                    .clone();
-                let mut rng = self.run.rng(&format!("issued:{}", self.office_id));
-                if !self.run.meters.spend(grant.fee) {
+        let main = grant.task.unwrap_or_else(|| {
+            *self
+                .run
+                .visit_rng("task", &self.office_id)
+                .pick(&office.tasks)
+        });
+        let weights = d.weights(&self.office_id);
+        let mut rng = self.run.rng(&format!("obstacle:{}", self.office_id));
+        let mut notes: Vec<String> = Vec::new();
+        let mut pre = None;
+        for moves in 0.. {
+            match roll(&mut rng, &weights, self.run.mods(&self.office_id)) {
+                Obstacle::CounterMoved if moves < MAX_MOVES => {
+                    notes.push(self.say(d, "ob_moved"));
+                    if self.run.advance(MOVED_MINUTES) {
+                        return self.closed(d);
+                    }
+                    continue;
+                }
+                Obstacle::Smooth | Obstacle::CounterMoved => {}
+                Obstacle::SystemDown => pre = Some(Kind::Offline),
+                Obstacle::ClerkBreak => {
+                    let mins = rng.range(3, 7) * 10;
+                    notes.push(self.say(d, "ob_break").replace("{min}", &mins.to_string()));
+                    if self.run.advance(mins) {
+                        return self.closed(d);
+                    }
+                }
+                Obstacle::MissingPaperwork => {
+                    notes.push(self.say(d, "ob_paperwork"));
+                    pre = Some(Kind::Task(Task::Photocopy));
+                }
+                Obstacle::FormChanged => {
+                    notes.push(self.say(d, "ob_form"));
+                    pre = Some(Kind::Task(Task::Form));
+                }
+                Obstacle::FixerOffer => {
+                    let who = if rng.chance(50) {
+                        Who::Clerk
+                    } else {
+                        Who::Fixer
+                    };
+                    pre = Some(Kind::Nego(who));
+                }
+                Obstacle::CollectiveLeave => {
                     self.phase = Phase::Say {
-                        line: d.s("cannot_pay", &[("fee", &grant.fee.to_string())]),
-                        end_day: false,
+                        line: self.say(d, "leave_closed"),
+                        end_day: true,
                     };
                     return;
                 }
-                let mut line = rng.pick(&office.issued).clone();
-                if grant.fee > 0 {
-                    line.push(' ');
-                    line.push_str(&d.s("issued_fee", &[("fee", &grant.fee.to_string())]));
-                }
-                self.phase = Phase::Issue { grant, line };
             }
-            Outcome::Fight => {
-                self.phase = Phase::Say {
-                    line: step.message.to_owned(),
-                    end_day: true,
-                };
-            }
-            Outcome::Waiting if day_over => {
-                self.phase = Phase::Say {
-                    line: d.s("queue_closed", &[]),
-                    end_day: true,
-                };
-            }
-            Outcome::Waiting => {}
+            break;
         }
+
+        // Next step is at the end so `pop` takes it.
+        self.steps = vec![Kind::Task(main)];
+        if let Some(p) = pre.filter(|&p| p != Kind::Task(main)) {
+            self.steps.push(p);
+        }
+        if notes.is_empty() {
+            self.next_step(d);
+        } else {
+            self.phase = Phase::Note(notes.join(" "));
+        }
+    }
+
+    fn closed(&mut self, d: &Data) {
+        self.phase = Phase::Say {
+            line: self.say(d, "closed_now"),
+            end_day: true,
+        };
+    }
+
+    fn next_step(&mut self, d: &Data) {
+        match self.steps.pop() {
+            Some(kind) => {
+                self.phase = Phase::Play(Minigame::new(kind, &mut self.run, &self.office_id, d));
+            }
+            None => self.issue(d, None),
+        }
+    }
+
+    /// Hand over the document, after the official fee. `lead` is said first.
+    fn issue(&mut self, d: &Data, lead: Option<String>) {
+        let office = d.office(&self.office_id);
+        let grant = self
+            .run
+            .offer(&office.grants)
+            .expect("an office only plays minigames for a grant it can give")
+            .clone();
+        if !self.run.meters.spend(grant.fee) {
+            self.phase = Phase::Say {
+                line: self
+                    .say(d, "cannot_pay")
+                    .replace("{fee}", &grant.fee.to_string()),
+                end_day: false,
+            };
+            return;
+        }
+        let mut line = lead.map(|l| l + " ").unwrap_or_default();
+        line.push_str(&self.say(d, "issued"));
+        if grant.fee > 0 {
+            line.push(' ');
+            line.push_str(&d.s("issued_fee", &[("fee", &grant.fee.to_string())]));
+        }
+        self.phase = Phase::Issue {
+            doc: grant.doc,
+            line,
+        };
+    }
+
+    fn call_inside_man(&mut self, d: &Data) {
+        self.run.inside_man = false;
+        self.run.connected = true;
+        self.run.meters.shortcut(INSIDE_MAN_CONSCIENCE);
+        let lead = self.say(d, "inside_man");
+        self.issue(d, Some(lead));
+    }
+
+    fn can_call_inside_man(&self, d: &Data) -> bool {
+        self.run.inside_man && self.run.offer(&d.office(&self.office_id).grants).is_some()
     }
 
     pub fn update(&mut self, ctx: &Ctx) -> Option<Scene> {
         let d = &ctx.assets.data;
-        match &self.phase {
+        match &mut self.phase {
             Phase::Say { end_day, .. } => {
                 if confirm_pressed() {
-                    let toast = if *end_day {
+                    let toast = end_day.then(|| {
                         self.run.end_day();
-                        Some(d.s("day_ended", &[]))
-                    } else {
-                        None
-                    };
+                        d.s("day_ended", &[])
+                    });
                     return self.leave(toast);
                 }
             }
             Phase::Greet(_) => {
-                if confirm_pressed() {
+                if escape_pressed() {
+                    return self.leave(None);
+                }
+                if is_key_pressed(KeyCode::I) && self.can_call_inside_man(d) {
+                    self.call_inside_man(d);
+                } else if confirm_pressed() {
                     self.after_greet(d);
                 }
             }
-            Phase::Queue { queue, .. } => {
-                let keys = [
-                    (KeyCode::Key1, Action::Wait),
-                    (KeyCode::Key2, Action::Confront),
-                    (KeyCode::Key3, Action::Cut),
-                    (KeyCode::Key4, Action::PayFixer),
-                ];
-                let mut chosen = keys
-                    .iter()
-                    .find(|(k, _)| is_key_pressed(*k))
-                    .map(|(_, a)| *a);
-                for (i, (_, action)) in keys.iter().enumerate() {
-                    if is_mouse_button_pressed(MouseButton::Left)
-                        && action_rect(i).contains(ctx.mouse)
-                        && queue.can(*action)
-                    {
-                        chosen = Some(*action);
-                    }
-                }
-                if let Some(a) = chosen {
-                    self.queue_action(a, d);
+            Phase::Note(_) => {
+                if confirm_pressed() {
+                    self.next_step(d);
                 }
             }
-            Phase::Issue { grant, .. } => {
+            Phase::Play(game) => {
+                if escape_pressed() {
+                    return self.leave(None);
+                }
+                match game.update(ctx, &mut self.run, &self.office_id) {
+                    Outcome::Running => {}
+                    Outcome::Passed(Some(line)) => self.phase = Phase::Note(line),
+                    Outcome::Passed(None) => self.next_step(d),
+                    Outcome::Granted(line) => self.issue(d, Some(line)),
+                    Outcome::Failed { line, end_day } => self.phase = Phase::Say { line, end_day },
+                }
+            }
+            Phase::Issue { doc, .. } => {
                 if confirm_pressed() {
-                    let doc = grant.doc.clone();
+                    let doc = doc.clone();
                     self.run.inv.add(&doc);
                     return self.leave(None);
                 }
@@ -213,7 +294,16 @@ impl Office {
             }
             Phase::Greet(line) => {
                 ui::dialog(font, &office.short, line);
-                ui::hint(font, &d.s("hint_counter", &[]));
+                let key = if self.can_call_inside_man(d) {
+                    "hint_counter_im"
+                } else {
+                    "hint_counter"
+                };
+                ui::hint(font, &d.s(key, &[]));
+            }
+            Phase::Note(line) => {
+                ui::dialog(font, &office.short, line);
+                ui::hint(font, &d.s("hint_continue", &[]));
             }
             Phase::Issue { line, .. } => {
                 draw_texture_ex(
@@ -229,62 +319,8 @@ impl Office {
                 ui::dialog(font, &office.short, line);
                 ui::hint(font, &d.s("hint_take", &[]));
             }
-            Phase::Queue { queue, last } => self.draw_queue(ctx, queue, last),
+            Phase::Play(game) => game.draw(ctx),
         }
         ui::hud(font, d, &self.run);
     }
-
-    fn draw_queue(&self, ctx: &Ctx, queue: &Queue, last: &str) {
-        let font = &ctx.assets.font;
-        let d = &ctx.assets.data;
-        // People ahead, drawn as a snake toward the counter.
-        for i in 0..queue.ahead.min(30) {
-            let x = 40.0 + (i % 15) as f32 * 38.0;
-            let y = 140.0 - (i / 15) as f32 * 36.0;
-            draw_rectangle(x, y, 10.0, 16.0, ui::INK);
-            draw_rectangle(x + 2.0, y - 5.0, 6.0, 6.0, Color::new(0.85, 0.65, 0.5, 1.0));
-        }
-        let me_x = 40.0 + (queue.ahead.min(30) % 15) as f32 * 38.0;
-        let me_y = 140.0 - (queue.ahead.min(30) / 15) as f32 * 36.0;
-        draw_rectangle(me_x, me_y, 10.0, 16.0, ui::STAMP);
-        draw_rectangle(
-            me_x + 2.0,
-            me_y - 5.0,
-            6.0,
-            6.0,
-            Color::new(0.85, 0.65, 0.5, 1.0),
-        );
-        ui::text(font, "you", me_x - 6.0, me_y + 30.0, 16, ui::PAPER);
-
-        let ahead = d.s("queue_ahead", &[("n", &queue.ahead.to_string())]);
-        ui::text(font, &ahead, 16.0, 190.0, 16, ui::PAPER);
-
-        ui::panel(16.0, 206.0, canvas::WIDTH - 32.0, 36.0);
-        ui::text_wrapped(font, last, 24.0, 228.0, canvas::WIDTH - 48.0, 16, ui::INK);
-
-        let labels = [
-            d.s("act_wait", &[]),
-            d.s("act_confront", &[]),
-            d.s("act_cut", &[]),
-            match queue.fixer_price() {
-                Some(p) => d.s("act_fixer", &[("price", &p.to_string())]),
-                None => d.s("act_fixer_none", &[]),
-            },
-        ];
-        let actions = [
-            Action::Wait,
-            Action::Confront,
-            Action::Cut,
-            Action::PayFixer,
-        ];
-        for (i, (label, action)) in labels.iter().zip(actions).enumerate() {
-            ui::button(font, label, action_rect(i), ctx.mouse, queue.can(action));
-        }
-    }
-}
-
-fn action_rect(i: usize) -> Rect {
-    let col = (i % 2) as f32;
-    let row = (i / 2) as f32;
-    Rect::new(16.0 + col * 308.0, 252.0 + row * 44.0, 300.0, 36.0)
 }

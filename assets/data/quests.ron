@@ -1,15 +1,60 @@
-// Quest definitions. Edit text freely, ids must match offices.ron and docs.ron.
+// Quests in unlock order. Finishing one with any grade but F unlocks the next.
+// hidden_pool: (document, the document that secretly requires it). One is picked per run.
+// wrong_pool: listed on the board, needed by nobody. One is picked per run.
 [
     (
         id: "ktpss_hilang",
         title: "Lost KTPSS",
+        intro: "Your KTPSS fell out of your pocket somewhere between the bus and the office. Without it you cannot do anything, including replacing it. The board by the road lists what you need. Start at Polsek SK.",
         goal_doc: "ktpss",
-        par_days: 4,
-        deadline: 8,
-        budget: 400,
-        official_fees: 0,
-        // What the information board claims you need. Not all of it is true.
-        board: ["loss_report", "sktpa", "ktpss"],
-        intro: "Your KTPSS fell out of your pocket somewhere between the bus and the office. Without it you cannot do anything, including replacing it. Start at Polsek SK.",
+        start_docs: ["ksk"],
+        par_days: 4, deadline: 8, budget: 400, official_fees: 0,
+        board: ["loss_report", "kaling_letter", "kelurahan_letter", "ktpss"],
+        hidden_pool: [("ksk_copy_3", "ktpss"), ("photo_red", "ktpss")],
+        wrong_pool: ["sktpa", "duty_stamps_2"],
+    ),
+    (
+        id: "sktpa",
+        title: "Get an SKTPA",
+        intro: "A job offer. They need an SKTPA, proof that you have never cut a queue. Getting one will test that.",
+        goal_doc: "sktpa",
+        start_docs: ["ksk", "ktpss"],
+        par_days: 5, deadline: 10, budget: 500, official_fees: 30,
+        board: ["kaling_letter", "kelurahan_letter", "ktpss_copies", "sktpa"],
+        hidden_pool: [("photo_4x6", "sktpa"), ("health_letter", "sktpa")],
+        wrong_pool: ["spusp", "yellow_folder"],
+    ),
+    (
+        id: "sim",
+        title: "Renew the SIM",
+        intro: "Your Surat Izin Mengantri expired yesterday. Renewal is a formality, they say. Formalities are what this country does best.",
+        goal_doc: "sim",
+        start_docs: ["ksk", "ktpss", "old_sim"],
+        par_days: 3, deadline: 7, budget: 600, official_fees: 120,
+        board: ["health_letter", "psych_result", "sim"],
+        hidden_pool: [("theory_pass", "sim")],
+        wrong_pool: ["kelurahan_letter", "photo_4x6"],
+    ),
+    (
+        id: "birth_cert",
+        title: "Birth certificate",
+        intro: "Your child is three weeks old and does not legally exist. The baby does not mind. The state does.",
+        goal_doc: "birth_cert",
+        start_docs: ["ksk", "ktpss"],
+        par_days: 5, deadline: 10, budget: 500, official_fees: 0,
+        board: ["birth_note", "kaling_letter", "kelurahan_letter", "birth_cert"],
+        hidden_pool: [("data_correction", "birth_cert"), ("ksk_copy_3", "birth_cert")],
+        wrong_pool: ["marriage_copy"],
+    ),
+    (
+        id: "pbym",
+        title: "Building permit",
+        intro: "You want to add one room to your house. The DPSPTD has one door for everything. It is locked. Good luck.",
+        goal_doc: "pbym",
+        start_docs: ["ksk", "ktpss"],
+        par_days: 8, deadline: 16, budget: 1500, official_fees: 250,
+        board: ["land_letter", "zoning_rec", "neighbour_letter", "pbym"],
+        hidden_pool: [("spusp", "neighbour_letter"), ("spusp", "kaling_letter")],
+        wrong_pool: ["sktpa", "health_letter"],
     ),
 ]

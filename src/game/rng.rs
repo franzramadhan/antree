@@ -4,7 +4,7 @@
 #[derive(Clone, Debug)]
 pub struct Rng(u64);
 
-const ALPHABET: &[u8] = b"ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+const ALPHABET: &[u8] = b"ABCDEFGHJKMNPQRSTUVWXYZ023456789";
 
 fn mix(mut z: u64) -> u64 {
     z = (z ^ (z >> 30)).wrapping_mul(0xbf58_476d_1ce4_e5b9);
@@ -46,6 +46,13 @@ impl Rng {
     pub fn pick<'a, T>(&mut self, items: &'a [T]) -> &'a T {
         &items[self.range(0, items.len() as u32) as usize]
     }
+
+    /// Fisher-Yates.
+    pub fn shuffle<T>(&mut self, items: &mut [T]) {
+        for i in (1..items.len()).rev() {
+            items.swap(i, self.range(0, i as u32 + 1) as usize);
+        }
+    }
 }
 
 /// Six character share code from the low 30 bits of a seed.
@@ -53,6 +60,17 @@ pub fn seed_to_code(seed: u64) -> String {
     (0..6)
         .map(|i| ALPHABET[((seed >> (5 * i)) & 31) as usize] as char)
         .collect()
+}
+
+/// Inverse of `seed_to_code`. Case insensitive, None on any other character.
+pub fn code_to_seed(code: &str) -> Option<u64> {
+    if code.len() != 6 {
+        return None;
+    }
+    code.bytes().enumerate().try_fold(0u64, |acc, (i, b)| {
+        let v = ALPHABET.iter().position(|&a| a == b.to_ascii_uppercase())?;
+        Some(acc | (v as u64) << (5 * i))
+    })
 }
 
 #[cfg(test)]
@@ -99,7 +117,28 @@ mod tests {
     #[test]
     fn seed_code_is_six_chars_and_distinct() {
         assert_eq!(seed_to_code(0).len(), 6);
+        assert_eq!(ALPHABET.len(), 32);
+        assert_eq!(seed_to_code(u64::MAX), "999999");
         assert_ne!(seed_to_code(1), seed_to_code(2));
         assert_eq!(seed_to_code(5), seed_to_code(5 | (1 << 40)));
+    }
+
+    #[test]
+    fn seed_code_round_trips() {
+        for seed in [0, 1, 31, 12345, (1 << 30) - 1] {
+            assert_eq!(code_to_seed(&seed_to_code(seed)), Some(seed));
+        }
+        assert_eq!(code_to_seed("k7q2ma"), code_to_seed("K7Q2MA"));
+        assert_eq!(code_to_seed("K7Q2M"), None);
+        assert_eq!(code_to_seed("K7Q2MI"), None);
+    }
+
+    #[test]
+    fn shuffle_is_a_permutation() {
+        let mut v: Vec<u32> = (0..20).collect();
+        Rng::new(3).shuffle(&mut v);
+        assert_ne!(v, (0..20).collect::<Vec<_>>());
+        v.sort();
+        assert_eq!(v, (0..20).collect::<Vec<_>>());
     }
 }

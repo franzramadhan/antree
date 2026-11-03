@@ -31,7 +31,7 @@ Conscience costs per shortcut:
 | Cut the line | -10 | 0 | Skip 3 to 6 places, 15 percent chance of being sent to the back |
 | Pay the fixer | -15 | 50 to 150 Kv | Skip to the front of the queue |
 | Grease money (negotiation) | -20 | 100 to 300 Kv | Skip all remaining obstacles at that office today |
-| Call the inside man | -25 | 0 | Skip one office entirely, available once per run after unlock |
+| Call the inside man | -25 | 0 | The current counter issues at once. Once per run, after the first completed quest |
 | Fill the form with nonsense | -5 | 0 | Instant form, 30 percent chance of a "data correction" loop later |
 | Confront the line cutter | 0 | 0 | 50 percent the queue is restored, 20 percent a fight and a lost day |
 
@@ -51,7 +51,7 @@ A run fails when days exceeds the deadline or money reaches 0 with a required fe
 
 ## 4. Quests and document chains
 
-Quests unlock in order. Finishing a quest with any grade unlocks the next. Each chain has one hidden requirement that the first office does not mention, and one wrong requirement that the information board lists but no office asks for. Both are picked by seed from a small pool per quest.
+Quests unlock in order. Finishing a quest with any grade except F unlocks the next. Each chain has one hidden requirement that the first office does not mention, and one wrong requirement that the information board lists but no office asks for. Both are picked by seed from a small pool per quest.
 
 | # | Quest | Visible chain | Hidden requirement pool | Wrong requirement pool | Par days | Deadline | Budget | Official fees |
 |---|---|---|---|---|---|---|---|---|
@@ -68,7 +68,7 @@ Chain resolution rule: a document is granted when the office accepts the require
 Each office runs one minigame per visit, chosen from a list in office data. Failure states always cost time, never a game over.
 
 ### 5.1 Form Filling
-Form with 6 to 10 fields. The correct values are on the player's document cards, shown on the left. Field order, labels, and format (dd/mm/yyyy vs yyyy-mm-dd, uppercase vs normal) change between visits by seed. Timer 60 seconds. Submit with one wrong field: "Rejected. Fill it in again, sir.", 30 minutes lost. Three rejections: "Come back tomorrow.", visit ends. Option "Fill with nonsense": instant pass, Conscience -5, flagged for a later data correction.
+Form with 6 to 10 fields about the player's own data. Rules at the top set the date format, capitals, and dashes in numbers. Order, labels, and rules change per visit. Each field cycles through three values: correct, wrong format, typo. Timer 60 seconds. Submit with one wrong field: "Rejected. Fill it in again, sir.", 30 minutes lost. Three rejections: "Come back tomorrow.", visit ends. Option "Fill with nonsense": instant pass, Conscience -5, flagged for a later data correction.
 
 ### 5.2 Stamp Hunt
 Office floor plan with 6 to 10 desks. Exactly one clerk holds the stamp. Other clerks give directions, 30 percent of them wrong. Each visited desk costs 10 minutes. The holder has a status rolled per visit: present (35 percent), on break (25 percent), in a meeting (20 percent), out on field duty (20 percent). Break and meeting end after 30 to 60 minutes. Field duty ends the visit. Failure: the clock passes 14:30 before the stamp lands.
@@ -83,7 +83,7 @@ Queue of 6 to 14 people. Each tick one event may fire: an auntie cuts in with "j
 A progress bar that stalls at random points. Actions: wait (10 minutes per press), refresh (asks the clerk, 3 refreshes in a row annoy them and add 20 minutes), go home (lose the number, come back tomorrow), ask Mas Honorer (he knows the system comes back in N minutes, costs a cup of coffee, 15 Kv, no Conscience cost). Failure: the office closes.
 
 ### 5.6 Negotiation
-Dialog tree. The clerk hints at an "unofficial administrative fee" without ever saying a number first. Options: pay (Money, Conscience -20, skip remaining obstacles here today), decline politely (no cost, obstacle roll gets +20 weight on bad outcomes), report it (10 percent: free pass and a clerk replaced, 90 percent: your file becomes "under review" for 2 days). The game never comments on the choice.
+Dialog tree. The clerk hints at an "unofficial administrative fee" without ever saying a number first. Options: pay (Money, Conscience -20, skip remaining obstacles here today), decline politely (no cost, obstacle roll gets +20 weight on bad outcomes), report it (10 percent: free pass and a clerk replaced, 90 percent: your file becomes "under review" for 2 days). A fixer cannot be reported. The game never comments on the choice.
 
 ### 5.7 Queue Theory Test
 Quest 3 only. Ten multiple choice questions about queue etiquette in Kuvukiland, written as a real theory test with absurd content. Pass at 7 correct. Fail: retake tomorrow, 25 Kv per attempt.
@@ -99,11 +99,11 @@ Rolled once on arrival at each counter, seeded. Weights are per office in data a
 | Clerk on break | 15 | Wait 30 to 60 minutes |
 | Missing paperwork | 15 | Photocopy Run first |
 | Form format changed | 10 | Form Filling with a new layout even if already done |
-| Fixer offers help | 10 | Negotiation variant with a fixer instead of a clerk |
+| Fixer offers help | 10 | Negotiation, half the time with the clerk, half with a fixer at the door |
 | Counter moved buildings | 5 | 20 minutes travel, roll again |
 | Surprise collective leave | 5 | Office closed today, Days +1 |
 
-Modifiers: after declining politely in Negotiation, add 20 to every non-Smooth weight at that office for the rest of the run. After grease money, force Smooth at that office for the day. With an inside man contact, halve every non-Smooth weight.
+Modifiers: after declining politely in Negotiation, add 20 to every non-Smooth weight at that office for the rest of the run. After grease money, force Smooth at that office for the day. After calling the inside man, halve every non-Smooth weight for the rest of the run.
 
 ## 7. Endings and grades
 
@@ -173,5 +173,7 @@ Drop from the top when time runs out.
 8. Photocopy Run memory element (requirements stay on screen).
 9. Seed sharing UI (seed still shown on the ending screen).
 10. Inside man contact unlock.
+
+Phase 4 cut nothing. The fan loop is Phase 5 work, touch stays optional.
 
 Minimum shippable: Quests 1 to 3, minigames 5.1 to 5.6, obstacle table, grades, save, title with disclaimer.

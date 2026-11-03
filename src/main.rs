@@ -2,6 +2,7 @@ mod assets;
 mod canvas;
 mod data;
 mod game;
+mod save;
 mod scene;
 mod ui;
 

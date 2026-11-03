@@ -1,44 +1,136 @@
 // Offices on the overworld. pos and size are canvas pixels on a 640x360 map.
+// tasks: what the counter makes you do (Queue, Form, Stamp, Photocopy, Theory).
+// weights: overrides for obstacles.ron. opens_day: front door locked before that day.
+// Dialog for each office lives in dialog/<id>.ron.
 [
+    (
+        id: "pak_kaling",
+        name: "Pos Ketua Lingkungan",
+        short: "Pak Kaling",
+        pos: (12, 36), size: (88, 56),
+        grants: [
+            (doc: "kaling_letter", requires: ["ksk"]),
+            (doc: "spusp", requires: ["ksk"]),
+        ],
+        tasks: [Form, Queue],
+        weights: { SystemDown: 0, CounterMoved: 0, ClerkBreak: 30 },
+    ),
+    (
+        id: "kelurahan",
+        name: "Kelurahan Sabar Menanti",
+        short: "Kelurahan",
+        pos: (108, 36), size: (88, 56),
+        grants: [
+            (doc: "kelurahan_letter", requires: ["kaling_letter"]),
+            (doc: "neighbour_letter", requires: ["kaling_letter"]),
+        ],
+        tasks: [Stamp, Form, Queue],
+    ),
     (
         id: "polsek_sk",
         name: "Kantor Polisi Sektor Surat Keterangan",
         short: "Polsek SK",
-        pos: (80, 70),
-        size: (128, 72),
+        pos: (204, 36), size: (88, 56),
         grants: [
-            (doc: "loss_report", requires: []),
+            (doc: "loss_report", requires: ["ksk"]),
+            (doc: "sktpa", requires: ["kelurahan_letter", "ktpss_copies"], fee: 30),
         ],
-        greet: [
-            "Yes? Lost something? Everybody has.",
-            "Take a number. The machine is broken, so take a mental one.",
-        ],
-        missing: ["You are missing the {doc}. Did you photocopy it?"],
-        issued: [
-            "Loss report. Signed, stamped, slightly crooked. Next.",
-            "Here. Try not to lose this one as well.",
-        ],
-        nothing: ["We already gave you your paper, sir. Go bother Dukcatan."],
+        tasks: [Queue, Form],
     ),
     (
         id: "dukcatan",
         name: "Dinas Kependudukan dan Pencatatan Antrian",
         short: "Dukcatan",
-        pos: (400, 180),
-        size: (160, 88),
+        pos: (12, 104), size: (184, 56),
         grants: [
-            (doc: "ktpss", requires: ["loss_report"], fee: 0),
+            (doc: "ktpss", requires: ["loss_report", "kelurahan_letter"]),
+            (doc: "birth_cert", requires: ["birth_note", "kelurahan_letter"]),
+            (doc: "data_correction", requires: ["ksk"], task: Some(Form)),
         ],
-        greet: [
-            "Did you take a number? The number machine is at the back. It is also broken.",
-            "KTPSS? New or lost? Lost. Of course lost.",
+        tasks: [Queue, Form, Stamp],
+        weights: { SystemDown: 25 },
+    ),
+    (
+        id: "bkfn",
+        name: "Badan Koordinasi Fotokopi Nasional",
+        short: "BKFN",
+        pos: (204, 104), size: (88, 56),
+        grants: [
+            (doc: "ksk_copy_3", requires: ["ksk"]),
+            (doc: "photo_red", requires: []),
+            (doc: "photo_4x6", requires: []),
+            (doc: "duty_stamps_2", requires: []),
+            (doc: "ktpss_copies", requires: ["ktpss"]),
+            (doc: "yellow_folder", requires: []),
+            (doc: "marriage_copy", requires: ["ksk"]),
         ],
-        missing: [
-            "No {doc}, no KTPSS. Polsek SK is across the field. They close at eleven thirty.",
+        tasks: [Photocopy],
+        weights: { MissingPaperwork: 0, FormChanged: 0, CounterMoved: 0 },
+    ),
+    (
+        id: "puskesnung",
+        name: "Pusat Kesehatan Menunggu",
+        short: "Puskesnung",
+        pos: (348, 36), size: (88, 56),
+        grants: [
+            (doc: "health_letter", requires: ["ktpss"]),
+            (doc: "birth_note", requires: ["ksk"]),
         ],
-        issued: [
-            "Congratulations. Your temporary card is valid until further notice. Further notice never comes.",
+        tasks: [Queue],
+        weights: { ClerkBreak: 25 },
+    ),
+    (
+        id: "klinik_sabar",
+        name: "Klinik Sabar",
+        short: "Klinik Sabar",
+        pos: (444, 36), size: (88, 56),
+        grants: [
+            (doc: "psych_result", requires: ["health_letter"], fee: 50),
         ],
-        nothing: ["Sir, you already have a KTPSS. Why are you here? Go home."],
+        tasks: [Form],
+    ),
+    (
+        id: "satpan",
+        name: "Satuan Penyelenggara Antrian",
+        short: "Satpan",
+        pos: (540, 36), size: (88, 56),
+        grants: [
+            (doc: "theory_pass", requires: ["old_sim"], task: Some(Theory)),
+            (doc: "sim", requires: ["health_letter", "psych_result"], fee: 70),
+        ],
+        tasks: [Queue, Form],
+    ),
+    (
+        id: "dtryb",
+        name: "Dinas Tata Ruang Yang Berubah",
+        short: "DTRYB",
+        pos: (348, 104), size: (88, 56),
+        grants: [
+            (doc: "zoning_rec", requires: ["land_letter"], fee: 50),
+        ],
+        tasks: [Form, Stamp],
+        weights: { CounterMoved: 20 },
+    ),
+    (
+        id: "bpyms",
+        name: "Badan Pertanahan Yang Masih Sengketa",
+        short: "BPYMS",
+        pos: (444, 104), size: (88, 56),
+        grants: [
+            (doc: "land_letter", requires: ["ktpss"], fee: 100),
+        ],
+        tasks: [Stamp, Queue],
+    ),
+    (
+        id: "dpsptd",
+        name: "Dinas Perizinan Satu Pintu Tapi Pintunya Dikunci",
+        short: "DPSPTD",
+        pos: (540, 104), size: (88, 56),
+        grants: [
+            (doc: "pbym", requires: ["land_letter", "zoning_rec", "neighbour_letter"], fee: 100),
+        ],
+        tasks: [Queue, Stamp, Form],
+        weights: { CollectiveLeave: 10 },
+        opens_day: 3,
     ),
 ]

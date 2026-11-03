@@ -1,0 +1,9 @@
+// Pak Kaling runs the neighbourhood from his front porch.
+{
+    "greet": ["Pak Kaling comes out in a sarong. \"A letter? Sit. Tea? No tea. Sit.\"", "\"Ah, you. The one who never comes to the neighbourhood meetings.\""],
+    "missing": ["\"Bring the {doc} first. I know you, but the stamp does not know you.\""],
+    "issued": ["He stamps it on his knee. \"Do not forget the neighbourhood dues.\""],
+    "nothing": ["\"I already gave you a letter. A letter for a letter? Go to the Kelurahan.\""],
+    "ob_break": ["\"Pak Kaling is at a wedding, then at the coffee stall, then napping.\" You wait {min} minutes on his porch."],
+    "ob_nego": ["\"For the neighbourhood fund, some contribute a little. Voluntary. Very voluntary.\""],
+}
