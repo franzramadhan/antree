@@ -154,8 +154,8 @@ mod tests {
             f("Kota Antri Raya", Kind::Text),
             f("1987-03-09", Kind::Date),
             f("2026-11-02", Kind::Date),
-            f("3174-0909-0003", Kind::Number),
-            f("0812-3456-7890", Kind::Number),
+            f("9901-0909-0003", Kind::Number),
+            f("0999-1234-5678", Kind::Number),
             f("Private employee", Kind::Text),
             f("Jl. Sabar No. 3", Kind::Text),
         ]
