@@ -23,15 +23,18 @@ pub enum Sfx {
     Dialup,
     /// Coins leaving your pocket.
     Coin,
+    /// Soft key click for any confirm or choice that made no other sound.
+    Blip,
 }
 
-const ALL: [Sfx; 6] = [
+const ALL: [Sfx; 7] = [
     Sfx::Stamp,
     Sfx::Reject,
     Sfx::Printer,
     Sfx::Ting,
     Sfx::Dialup,
     Sfx::Coin,
+    Sfx::Blip,
 ];
 
 fn sine(f: f32, t: f32) -> f32 {
@@ -55,6 +58,7 @@ pub fn synth(sfx: Sfx) -> Vec<f32> {
         Sfx::Ting => 0.7,
         Sfx::Dialup => 0.9,
         Sfx::Coin => 0.35,
+        Sfx::Blip => 0.12,
     };
     let n = (secs * RATE as f32) as usize;
     let mut noise_state: u32 = 0x2545_f491;
@@ -100,6 +104,7 @@ pub fn synth(sfx: Sfx) -> Vec<f32> {
                     let f = if t < 0.06 { 1980.0 } else { 2640.0 };
                     sine(f, t) * (-t * 9.0).exp() * 0.5
                 }
+                Sfx::Blip => square(660.0, t) * (-t * 60.0).exp() * 0.35,
             };
             s.clamp(-1.0, 1.0)
         })
@@ -133,6 +138,7 @@ pub struct Fx {
     sounds: Vec<Sound>,
     muted: Cell<bool>,
     shake: Cell<f32>,
+    played: Cell<bool>,
 }
 
 impl Fx {
@@ -146,10 +152,12 @@ impl Fx {
             sounds,
             muted: Cell::new(false),
             shake: Cell::new(0.0),
+            played: Cell::new(false),
         }
     }
 
     pub fn play(&self, sfx: Sfx) {
+        self.played.set(true);
         if !self.muted.get() {
             play_sound_once(&self.sounds[sfx as usize]);
         }
@@ -163,8 +171,16 @@ impl Fx {
         self.shake.set(self.shake.get().max(secs));
     }
 
-    /// Advance the shake and return this frame's offset in canvas pixels.
+    /// Click for player input that no scene answered with a sound this frame.
+    pub fn blip_if_silent(&self, input: bool) {
+        if input && !self.played.get() {
+            self.play(Sfx::Blip);
+        }
+    }
+
+    /// End the frame: advance the shake and return its offset in canvas pixels.
     pub fn tick(&self, dt: f32) -> Vec2 {
+        self.played.set(false);
         let left = self.shake.get();
         if left <= 0.0 {
             return Vec2::ZERO;

@@ -41,6 +41,7 @@ async fn main() {
         if let Some(next) = scene.update(&ctx) {
             scene = next;
         }
+        fx.blip_if_silent(scene::input_pressed());
         canvas.begin();
         scene.draw(&ctx);
         canvas.end(fx.tick(ctx.dt));

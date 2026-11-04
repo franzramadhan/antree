@@ -73,6 +73,7 @@ impl Overworld {
                     return None;
                 }
                 let run = self.run.clone();
+                ctx.fx.play(crate::fx::Sfx::Ting);
                 return Some(Scene::Office(Office::new(run, id, self.player, d)));
             }
         }

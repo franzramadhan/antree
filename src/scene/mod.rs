@@ -67,6 +67,15 @@ fn confirm_pressed() -> bool {
     is_key_pressed(KeyCode::Enter) || is_key_pressed(KeyCode::Space) || is_key_pressed(KeyCode::E)
 }
 
+/// Any confirm, back, number key, or click: the inputs that deserve a click.
+pub fn input_pressed() -> bool {
+    use macroquad::prelude::*;
+    confirm_pressed()
+        || escape_pressed()
+        || crate::ui::number_pressed().is_some()
+        || is_mouse_button_pressed(MouseButton::Left)
+}
+
 fn escape_pressed() -> bool {
     macroquad::prelude::is_key_pressed(macroquad::prelude::KeyCode::Escape)
 }

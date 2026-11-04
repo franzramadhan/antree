@@ -125,7 +125,7 @@ Title screen disclaimer: "Kuvukiland is a fictional country. Any resemblance to 
 
 Internal canvas 640x360, integer scaled, letterboxed. Pixel art, 16x16 tiles. Palette: faded government beige, mint green walls, brown wood counters, one saturated red for stamps and "REJECTED". Overworld tiles and characters from Kenney CC0 packs (Tiny Town, Roguelike Characters, Roguelike Modern City). Office interiors are code-drawn rectangles plus Kenney furniture tiles. UI panels look like carbon copy forms with dotted lines. Font: Pixel Operator (CC0), 8 and 16 pixel sizes.
 
-Audio: synthesized in code at boot, no third-party files. A stamp thud for approvals, a buzz for refusals, a dot matrix printer for forms, a counter bell for queue advances, a modem stutter for system down, a coin clink for Money. M mutes. No music.
+Audio: synthesized at boot, no third-party files. Stamp thud for approvals, buzz for refusals, dot matrix printer for forms, counter bell for queue advances and doors, a modem stutter for system down, a coin clink for Money, a click for other input. M mutes. No music.
 
 Juice: screen shake and a red "REJECTED" stamp on every refusal, a slow stamp slam on approval and on the title, cracks in the Conscience bar below 40.
 

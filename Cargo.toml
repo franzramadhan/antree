@@ -6,7 +6,7 @@ license = "MIT"
 description = "A 2D satire game about bureaucracy in the fictional Republik Kuvukiland"
 
 [dependencies]
-macroquad = "0.4"
+macroquad = { version = "0.4", features = ["audio"] }
 quad-storage = "0.1.3"
 ron = "0.12"
 serde = { version = "1", features = ["derive"] }
