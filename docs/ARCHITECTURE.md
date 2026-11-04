@@ -18,7 +18,7 @@ No other runtime dependencies. RNG is a hand-written SplitMix64 in `game/rng.rs`
 ```
 src/
   main.rs            macroquad entry, game loop, calls scene::update and scene::draw
-  canvas.rs          640x360 render target, integer scale, letterbox, mouse coordinate mapping
+  canvas.rs          640x360 render target, integer scale (fractional below 2x), letterbox, mouse mapping
   fx.rs              synthesized sounds as WAV bytes, music loop, mute, screen shake, stamp slam animation
   music.rs           parses assets/music/hold.mid (midly) and renders it to samples, pure and tested
   assets.rs          loads the font, sprites, and Data once at boot

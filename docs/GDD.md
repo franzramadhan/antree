@@ -124,7 +124,7 @@ Title screen disclaimer: "Kuvukiland is a fictional country. Any resemblance to 
 
 ## 8. Art and audio direction
 
-Internal canvas 640x360, integer scaled, letterboxed. Pixel art, 16x16 tiles. Palette: faded government beige, mint green walls, brown wood counters, one saturated red for stamps and "REJECTED". Original cozy top-down art drawn by tools/sprites.py: 16x24 characters with 4-way walk cycles, composed buildings, trees, and a 3x office interior with a blinking clerk. UI panels look like carbon copy forms with dotted lines. Font: Pixel Operator (CC0), 8 and 16 pixel sizes.
+Internal canvas 640x360, integer scaled from 2x (fractional on phones), letterboxed. Pixel art, 16x16 tiles. Palette: faded government beige, mint green walls, brown wood counters, one saturated red for stamps and "REJECTED". Original cozy top-down art drawn by tools/sprites.py: 16x24 characters with 4-way walk cycles, composed buildings, trees, and a 3x office interior with a blinking clerk. UI panels look like carbon copy forms with dotted lines. Font: Pixel Operator (CC0), 8 and 16 pixel sizes.
 
 Audio: synthesized at boot. Stamp thud for approvals, buzz for refusals, dot matrix printer for forms, counter bell for queue advances and doors, a modem stutter for system down, a coin clink for Money, a click for other input. Music: "Please Hold", an original 2/4 hold tune that loops forever, synthesized from MIDI at boot. M mutes everything.
 

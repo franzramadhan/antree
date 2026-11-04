@@ -1,4 +1,5 @@
-//! Fixed 640x360 internal canvas, integer scaled and letterboxed to the window.
+//! Fixed 640x360 internal canvas, letterboxed to the window. Integer scaled
+//! from 2x up; a smaller window (a phone) gets a fractional scale that fits.
 
 use macroquad::prelude::*;
 
@@ -24,7 +25,7 @@ impl Canvas {
         set_camera(&self.camera);
     }
 
-    /// Blit the internal canvas to the window with integer scale and black bars,
+    /// Blit the internal canvas to the window, scaled by `fit`, with black bars,
     /// moved by `shake` canvas pixels.
     pub fn end(&self, shake: Vec2) {
         set_default_camera();
@@ -55,7 +56,8 @@ impl Canvas {
 
 /// Returns the destination rectangle (x, y, w, h) for the canvas in a window of the given size.
 pub fn fit(screen_w: f32, screen_h: f32) -> (f32, f32, f32, f32) {
-    let scale = (screen_w / WIDTH).min(screen_h / HEIGHT).floor().max(1.0);
+    let fits = (screen_w / WIDTH).min(screen_h / HEIGHT);
+    let scale = if fits < 2.0 { fits } else { fits.floor() };
     let w = WIDTH * scale;
     let h = HEIGHT * scale;
     (
@@ -75,11 +77,13 @@ mod tests {
         assert_eq!(fit(1280.0, 720.0), (0.0, 0.0, 1280.0, 720.0));
         assert_eq!(fit(1920.0, 1080.0), (0.0, 0.0, 1920.0, 1080.0));
         assert_eq!(fit(1366.0, 768.0), (43.0, 24.0, 1280.0, 720.0));
-        assert_eq!(fit(1000.0, 1000.0), (180.0, 320.0, 640.0, 360.0));
+        assert_eq!(fit(1000.0, 1000.0), (0.0, 218.0, 1000.0, 562.5));
+        // a phone in portrait, physical pixels
+        assert_eq!(fit(1170.0, 2532.0), (0.0, 936.0, 1170.0, 658.125));
     }
 
     #[test]
-    fn never_scales_below_one() {
-        assert_eq!(fit(320.0, 180.0), (-160.0, -90.0, 640.0, 360.0));
+    fn shrinks_to_fit_a_small_window() {
+        assert_eq!(fit(320.0, 180.0), (0.0, 0.0, 320.0, 180.0));
     }
 }
