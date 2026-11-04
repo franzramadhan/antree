@@ -1,0 +1,17 @@
+// Queue Theory Test questions. answer is the 0-based index of the correct option.
+[
+    (q: "Seorang ibu minta duluan karena \"cuma mau tanya sebentar\". Berapa lama tanya sebentar?", options: ["Di bawah semenit", "Lima menit", "Empat puluh menit", "Sampai konter tutup"], answer: 2),
+    (q: "Mesin nomor antrean rusak. Anda nomor berapa?", options: ["Nomor berikutnya", "Sesuka petugas", "Nol", "Tak ada nomor, hanya manusia"], answer: 1),
+    (q: "Papan bilang konter buka 08:00. Kapan bukanya?", options: ["08:00", "08:30", "Setelah apel pagi", "Setelah petugas sarapan"], answer: 3),
+    (q: "\"Sistemnya lagi down.\" Down di mana?", options: ["Di sini", "Di kantor pusat", "Di mana-mana", "Tak ada yang tahu, itulah sistem"], answer: 1),
+    (q: "Seorang pria melewati seluruh antrean dan langsung dilayani. Dia:", options: ["Tamu VIP", "Sepupu petugas", "Orang yang punya kenalan", "Salah satunya, jangan tanya"], answer: 3),
+    (q: "Berapa fotokopi yang harus dibawa?", options: ["Satu", "Tiga", "Sesuai kata petugas", "Satu lebih dari kata petugas"], answer: 3),
+    (q: "Warna pulpen apa yang diterima di formulir resmi?", options: ["Hitam", "Biru", "Yang satunya", "Tergantung konternya"], answer: 2),
+    (q: "Anda sudah menunggu tiga jam. Reaksi yang benar:", options: ["Mengeluh", "Pergi", "Senyum dan tunggu", "Tanya calo"], answer: 2),
+    (q: "Formulir bilang \"isi kapital\". Konter sebelah bilang \"jangan kapital\". Anda:", options: ["Isi dua formulir", "Tanya mana yang benar", "Menangis", "Isi dua lalu menangis"], answer: 0),
+    (q: "Istirahat siang 12:00 sampai 13:00. Kapan petugas kembali?", options: ["13:00", "13:30", "14:00", "Besok"], answer: 2),
+    (q: "Ujian psikologi antre memeriksa:", options: ["Kesabaran Anda", "Kepatuhan Anda", "Dompet Anda", "Apakah Anda lulus ujian psikologi antre"], answer: 3),
+    (q: "Apa arti \"kembali besok\"?", options: ["Besok", "Bukan besok", "Tidak pernah", "Artinya kembali besok"], answer: 3),
+    (q: "Ada stempel di meja kosong. Boleh dipakai?", options: ["Boleh", "Tidak, stempel ada pemiliknya", "Hanya hari Jumat", "Asal tak ada yang lihat"], answer: 1),
+    (q: "Mana yang biaya resmi?", options: ["Yang di papan", "Yang dibisikkan petugas", "Yang buat kopi", "Papannya dari tahun lalu"], answer: 0),
+]

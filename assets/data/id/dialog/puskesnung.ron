@@ -1,0 +1,10 @@
+{
+    "greet": ["\"Pendaftaran di sana. Dokter di sana. Yang di sana tutup.\""],
+    "missing": ["\"Untuk itu saya perlu {doc}. Kesehatan itu penting. Berkas juga.\""],
+    "issued": ["\"Bapak sehat. Suratnya bilang begitu. Punggung Bapak tidak, tapi suratnya menang.\""],
+    "issued.birth_note": ["\"Bayinya sehat. Datang lagi kalau dia perlu surat sehat.\""],
+    "issued.death_note": ["\"Penyebab kematian: menunggu. Penyebab paling umum di sini.\""],
+    "issued.hygiene_letter": ["Dokter mencium tanganmu. \"Cukup bersih untuk nasi goreng.\" Cap."],
+    "nothing": ["\"Bapak tidak sakit dan sudah punya surat. Beri tempat untuk yang sakit.\""],
+    "ob_break": ["\"Dokternya ke klinik lain.\" Kamu menunggu {min} menit di kursi plastik berbentuk penderitaan."],
+}

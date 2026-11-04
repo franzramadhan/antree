@@ -1,0 +1,16 @@
+// The player's own data. Form Filling picks 6 to 10 of these per visit.
+// kind: Text (capitals rule), Date (stored YYYY-MM-DD), Number (stored with dashes).
+[
+    (labels: ["Nama lengkap", "Nama (sesuai KTPSS)", "NAMA PEMOHON"], value: "Warga Biasa", kind: Text),
+    (labels: ["Tempat lahir", "Lahir di", "TEMPAT LAHIR"], value: "Kota Antree Raya", kind: Text),
+    (labels: ["Tanggal lahir", "Lahir pada", "TGL. LAHIR"], value: "1987-03-09", kind: Date),
+    (labels: ["Alamat", "Alamat rumah", "Domisili (saat ini)"], value: "Jl. Sabar No. 3", kind: Text),
+    (labels: ["Desa", "Distrik", "Small district"], value: "Sabar Menanti", kind: Text),
+    (labels: ["Sub-distrik", "Ketamacan"], value: "Besok Lagi", kind: Text),
+    (labels: ["Nomor KSK", "No. kartu kel.", "No. KSK"], value: "9901-0909-0003", kind: Number),
+    (labels: ["Telepon", "No. HP", "Kontak (aktif)"], value: "0999-1234-5678", kind: Number),
+    (labels: ["Pekerjaan", "Kerja", "Nafkah"], value: "Karyawan swasta", kind: Text),
+    (labels: ["Nama gadis ibu", "Ibu (nama)", "Ibu kandung"], value: "Sabariah", kind: Text),
+    (labels: ["Tanggal permohonan", "Hari ini", "Tgl. (hari ini)"], value: "2026-11-02", kind: Date),
+    (labels: ["Kode pos", "Kodepos"], value: "1-2345", kind: Number),
+]

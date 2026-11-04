@@ -17,6 +17,7 @@ enum Item {
     New,
     Orientation,
     Sound,
+    Language,
 }
 
 pub struct Title {
@@ -27,7 +28,7 @@ pub struct Title {
 
 impl Title {
     pub fn new() -> Self {
-        let mut items = vec![Item::New, Item::Orientation, Item::Sound];
+        let mut items = vec![Item::New, Item::Orientation, Item::Sound, Item::Language];
         if save::load_run(vec![]).is_some() {
             items.insert(0, Item::Continue);
         }
@@ -54,6 +55,14 @@ impl Title {
             Item::Sound => {
                 ctx.fx.toggle_mute();
                 None
+            }
+            Item::Language => {
+                let mut save = Save::load();
+                save.lang = save.lang.next();
+                save.store();
+                let mut title = Title::new();
+                title.cursor = picked;
+                Some(Scene::Title(title))
             }
         }
     }
@@ -98,6 +107,7 @@ impl Title {
                 Item::Orientation => d.s("menu_orientation", &[]),
                 Item::Sound if ctx.fx.muted() => d.s("menu_sound_off", &[]),
                 Item::Sound => d.s("menu_sound_on", &[]),
+                Item::Language => d.s("menu_lang", &[]),
             })
             .collect();
         let (x, y, w) = MENU;

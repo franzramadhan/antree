@@ -6,7 +6,7 @@ Working title: Antree. Setting: Republik Kuvukiland.
 
 Antree is a 2D top-down satire game about getting one piece of paper from the government of Kuvukiland. The player is an ordinary citizen with a simple goal, a lost identity card or a birth certificate. The game turns that goal into a chain of offices, stamps, photocopies, and queues. Each office is a small desk minigame. Three meters track the cost: days, money, and conscience.
 
-All in-game text is English, written in the register of a counter clerk: "Did you photocopy it?", "The system is down. Head office.", "Come back tomorrow.", "Anything for cigarettes?". Proper nouns use the Kuvukiland naming table in section 9.
+Text is English or Indonesian, written in the register of a counter clerk: "Did you photocopy it?", "The system is down. Head office.", "Come back tomorrow.", "Anything for cigarettes?". Proper nouns use the Kuvukiland naming table in section 9.
 
 ## 2. Player fantasy
 

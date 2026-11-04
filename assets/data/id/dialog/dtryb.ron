@@ -1,0 +1,7 @@
+{
+    "greet": ["\"Zonasi? Zonasi tahun berapa? Berubah tadi pagi. Dan tadi siang.\""],
+    "missing": ["\"Tanpa {doc}, kami tidak bisa menzonasi. Zonasi itu seni presisi.\""],
+    "issued": ["\"Rekomendasi disetujui. Berlaku sampai rencana berikutnya, hari Kamis.\""],
+    "nothing": ["\"Rekomendasi sudah di tangan. Jangan tanya soal rencana baru.\""],
+    "ob_moved": ["\"Tata ruang pindah ke lantai tiga gedung sebelah. Pindahnya harus direncanakan.\" 20 menit."],
+}

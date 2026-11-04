@@ -23,6 +23,7 @@ were.
 - Random obstacles: the system is down, the clerk is on a break, come back
   tomorrow, a guard who hates sandals and charges walkers for parking
 - A short orientation form that teaches the controls
+- English or Indonesian text, switched from the title menu
 - Save your progress in the browser and continue later
 - Original pixel art, synthesized sound, and an original hold-music loop, no downloads after the first load
 

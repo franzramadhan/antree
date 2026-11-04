@@ -1,0 +1,10 @@
+// The tax office. Very sure about the money, unsure about everything else.
+{
+    "greet": ["\"Mau bayar atau tanya? Tanya di antrean sebelah. Bayar di antrean ini.\"", "\"Wajib pajak? Semua orang wajib pajak. Ada yang belum tahu saja.\""],
+    "missing": ["\"Tanpa {doc} Bapak tidak ada untuk urusan pajak. Tapi tetap berutang.\""],
+    "issued.npws": ["\"NPWS Bapak. Selamat, negara sekarang bisa menemukan Bapak.\""],
+    "issued.tax_clear": ["\"Bapak bebas utang. Untuk sekarang. Berlaku sampai kami cek lagi.\""],
+    "issued": ["\"Dicap. Simpan kuitansinya. Simpan juga kuitansi kuitansinya.\""],
+    "nothing": ["\"Bapak bersih. Pergi sebelum kami menemukan sesuatu.\""],
+    "ob_system": ["\"Sistem pajak down. Dendanya tetap jalan. Denda punya server sendiri.\""],
+}

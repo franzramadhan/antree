@@ -1,0 +1,9 @@
+// One-stop licensing. One door. Locked.
+{
+    "greet": ["\"Selamat datang di layanan satu pintu. Pintu pertama dari banyak.\""],
+    "missing": ["\"Satu pintu, Pak, tapi semua harus dibawa dulu. Termasuk {doc}.\""],
+    "issued": ["\"PBYM Bapak. Membangun sekarang mungkin boleh. Jangan bangun apa-apa dulu.\""],
+    "issued.iums": ["\"IUMS Bapak. Sekarang boleh jualan nasi goreng. Jangan dekat kantor. Kami lapar, bukan bodoh.\""],
+    "nothing": ["\"Izin Bapak sudah selesai. Pintunya sekarang dikunci dari dalam. Silakan keluar lewat situ.\""],
+    "locked": ["Satu-satunya pintu terkunci. Penjaga bilang pintu samping buka \"dua hari lagi\". Tidak ada pintu samping."],
+}

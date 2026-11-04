@@ -1,0 +1,6 @@
+{
+    "greet": ["\"SIM? Perpanjang atau baru? Perpanjang. Mati? Mati kemarin? Aduh.\""],
+    "missing": ["\"Mana {doc} Bapak? Semua SIM wajib pakai itu. Itu aturan. Sejak minggu lalu.\""],
+    "issued": ["\"Surat Izin Mengantri baru Bapak. Sekarang boleh antre secara sah lima tahun.\""],
+    "nothing": ["\"SIM Bapak sudah di tangan. Sana, antre di mana saja pakai itu.\""],
+}

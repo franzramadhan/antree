@@ -1,0 +1,42 @@
+// The orientation form shown before the first errand. Every row explains one
+// control. The first option of a row is the blank the form starts with.
+(
+    title: "FORMULIR ORI-01  Pernyataan Orientasi Warga",
+    rows: [
+        (
+            label: "1. Berjalan",
+            text: "WASD atau tombol panah untuk jalan keliling kota. E masuk kantor. H pulang dan akhiri hari.",
+            options: ["________", "Dicatat", "Dicatat dengan cemas"],
+        ),
+        (
+            label: "2. Meter",
+            text: "Hari, Uang dan Nurani ada di atas layar. Nilai akhir menimbang ketiganya.",
+            options: ["________", "Dicatat", "Saya pilih tidak tahu"],
+        ),
+        (
+            label: "3. Konter",
+            text: "Di konter, tombol angka atau mouse memilih jawaban. Esc keluar, dan antrean Anda ikut hilang.",
+            options: ["________", "Dicatat", "Dicatat, sedih"],
+        ),
+        (
+            label: "4. Formulir",
+            text: "Di formulir, Atas dan Bawah pilih baris, Kiri dan Kanan ubah isinya, Enter kirim. Anda sedang melakukannya.",
+            options: ["________", "Dicatat", "Dicatat, berulang"],
+        ),
+        (
+            label: "5. Jalan pintas",
+            text: "Calo, serobot antrean dan kenal orang dalam menghemat hari. Biayanya Nurani. Tak ada yang melarang.",
+            options: ["________", "Dicatat", "Nanya buat teman"],
+        ),
+        (
+            label: "6. Pernyataan",
+            text: "Saya menyatakan hal di atas benar, dan saya akan kembali besok jika diminta.",
+            options: ["________", "Saya menyatakan", "Saya menyatakan, lagi"],
+        ),
+    ],
+    blank: "Isian {n} kosong. Isian kosong tidak diterima.",
+    ink: "Warna tinta salah. Kirim ulang formulir yang sama persis.",
+    approved: "Disetujui. Selamat datang di Republik Kuvukiland. Urusan Anda menanti.",
+    hint: "Atas/Bawah pilih baris. Kiri/Kanan isi. Enter kirim.",
+    hint_done: "Enter: lanjut ke ruang tunggu",
+)

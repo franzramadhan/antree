@@ -1,0 +1,9 @@
+// Vehicle registration. A yard full of motorbikes and one pencil.
+{
+    "greet": ["\"Motor? Bawa ke belakang. Bukan belakang situ. Belakang yang satunya.\"", "\"Balik nama? Pemilik lamanya harus datang. Tidak bisa? Nah, jadi rumit.\""],
+    "missing": ["\"{doc}-nya, Pak. Kendaraan tanpa itu cuma besi.\""],
+    "issued.vehicle_check": ["Petugas menggosok pensil di atas nomor mesin. Separuhnya kelihatan. \"Cukup.\""],
+    "issued.stnkk": ["\"STNKK Bapak. Motornya resmi milik Bapak. Begitu juga tilang parkir lamanya.\""],
+    "issued": ["\"Dicap. Motor berikutnya.\""],
+    "nothing": ["\"Surat Bapak sudah beres. Motornya belum. Itu urusan bengkel.\""],
+}

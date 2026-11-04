@@ -1,0 +1,12 @@
+// Pak Gnilak runs the neighbourhood from his front porch.
+{
+    "greet": ["Pak Gnilak keluar pakai sarung. \"Surat? Duduk. Teh? Tidak ada teh. Duduk.\"", "\"Ah, kamu. Yang tidak pernah datang rapat warga.\""],
+    "missing": ["\"Bawa {doc} dulu. Saya kenal kamu, tapi capnya tidak kenal kamu.\""],
+    "issued.life_proof": ["Dia mengecap di atas lutut. \"Dia masih hidup. Bulan lalu masih bayar iuran warga. Telat.\""],
+    "issued.return_letter": ["Dia menulis pelan. \"Saya, Pak Gnilak, menjamin warga ini pulang. Kalau tidak, ayamnya saya ambil.\""],
+    "issued.income_note": ["Dia menatapmu atas bawah. \"Penghasilan: pas-pasan. Sepatu: baru.\" Cap di lutut."],
+    "issued": ["Dia mengecap di atas lutut. \"Jangan lupa iuran warga.\""],
+    "nothing": ["\"Saya sudah kasih surat. Surat untuk surat? Ke Small District sana.\""],
+    "ob_break": ["\"Pak Gnilak ke kondangan, lalu ke warung kopi, lalu tidur siang.\" Kamu menunggu {min} menit di terasnya."],
+    "ob_nego": ["\"Untuk kas warga, ada yang menyumbang sedikit. Sukarela. Sangat sukarela.\""],
+}

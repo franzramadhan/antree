@@ -1,0 +1,7 @@
+{
+    "greet": ["\"Ya? Kehilangan apa? Semua juga.\"", "\"Ambil nomor. Mesinnya rusak, jadi ambil nomor dalam hati.\""],
+    "missing": ["\"Bapak belum bawa {doc}. Sudah difotokopi?\""],
+    "issued": ["\"Diteken, dicap, agak miring. Berikutnya.\"", "\"Ini. Jangan sampai hilang juga.\""],
+    "issued.no_theft_letter": ["\"Motor Bapak bukan curian. Sejauh yang kami tahu. Kami tidak tahu banyak.\""],
+    "nothing": ["\"Kertas Bapak sudah kami kasih, Pak. Ganggu orang lain sana.\""],
+}

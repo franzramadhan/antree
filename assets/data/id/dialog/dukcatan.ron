@@ -1,0 +1,9 @@
+{
+    "greet": ["\"Sudah ambil nomor? Mesin nomornya di belakang. Rusak juga.\"", "\"KTPSS? Baru atau hilang? Hilang. Jelas.\""],
+    "missing": ["\"Tanpa {doc}, tidak diproses. Kantor lain tutup jam setengah dua belas, Pak.\""],
+    "issued": ["\"Selamat. Berlaku sampai ada pemberitahuan. Yang tidak pernah datang.\""],
+    "issued.birth_cert": ["\"Anak Bapak kini ada. Silakan ikut antre.\""],
+    "issued.death_cert": ["\"Kakek Bapak resmi meninggal. Dia tetap di daftar pemilih. Itu meja lain.\""],
+    "nothing": ["\"Pak, tidak ada apa-apa lagi di sini. Ngapain di sini? Pulang sana.\""],
+    "ob_system": ["\"Sistemnya down. Dari pusat. Lagi. Masih.\""],
+}

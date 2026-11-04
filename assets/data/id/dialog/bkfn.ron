@@ -1,0 +1,9 @@
+// The national photocopy agency is a stall across the road with one copier.
+{
+    "greet": ["\"Fotokopi? Pas foto? Map? Meterai? Semua ada. Mesinnya lagi dipanaskan sejak 2009.\""],
+    "missing": ["\"Saya cuma fotokopi yang dibawa. Bawa {doc}.\""],
+    "issued": ["\"Nih. Masih anget. Lanjut!\"", "\"Ini. Warnanya mirip. Kira-kira.\""],
+    "issued.photo_white": ["\"Telinga kelihatan. Lagi. Jangan senyum, negara tidak senyum.\" Cekrek."],
+    "nothing": ["\"Tidak perlu apa-apa lagi? Terus ngapain di tukang fotokopi? Semua orang perlu sesuatu.\""],
+    "ob_system": ["\"Mesinnya macet. Teknisinya sedang di jalan. Sudah di jalan sejak Senin.\""],
+}

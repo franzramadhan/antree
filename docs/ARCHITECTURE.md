@@ -129,7 +129,9 @@ A grant may set a `fee`, and a `task` that replaces the random pick from the off
 
 `strings.ron`: UI strings such as meter labels, grades, hints, and the disclaimer.
 
-`dialog/common.ron` and `dialog/<office>.ron`: maps from a dialog key to a list of variants. An office file overrides single keys, and `common.ron` is the fallback. A missing key renders as `??key??`. The variant is picked from the clock, so it is stable within a moment. `{doc}`, `{fee}`, and similar placeholders are filled by the scene. All strings are English.
+`dialog/common.ron` and `dialog/<office>.ron`: maps from a dialog key to a list of variants. An office file overrides single keys, and `common.ron` is the fallback. A missing key renders as `??key??`. The variant is picked from the clock, so it is stable within a moment. `{doc}`, `{fee}`, and similar placeholders are filled by the scene.
+
+`id/` holds the Indonesian text. With `Lang::Id`, `Data::build` lays it over the English data: `strings.ron` and every dialog file merge by key, `quests.ron` maps a quest id to its title and intro, and `docs.ron`, `forms.ron`, `theory.ron`, and `tutorial.ron` replace the English lists. Ids, tuning, and answers come only from the English files. The title menu stores `lang` in the save and reopens, and main reloads `Data`. The test `id_overlay_matches_english` checks matching keys, placeholders, ids, answers, and ASCII only text.
 
 ## 5. Seeded randomness
 
@@ -140,10 +142,10 @@ The seed is a u64 shown as a 6 character base32 code. Quest select has a text fi
 One key in quad-storage, `antree.save.v1`, holding RON text. RON rather than JSON because serde_json would be the only reason to add another crate.
 
 ```ron
-(version:1,best:{"ktpss_hilang":(grade:S,total:89,days:4,money:329,conscience:80,seed:"PVZZ3T")},inside_man:true,tutorial_done:true)
+(version:1,best:{"ktpss_hilang":(grade:S,total:89,days:4,money:329,conscience:80,seed:"PVZZ3T")},inside_man:true,tutorial_done:true,lang:Id)
 ```
 
-Every quest is open. A non-F ending unlocks the inside man. Old saves with an `unlocked` list still load, and the field is ignored. Best keeps the highest total, and an F never replaces a completion. Unknown version or unparsable text: ignore the save and start fresh. `tutorial_done` defaults to false, so saves from before it still load. Written after every ending and when the tutorial is approved.
+Every quest is open. A non-F ending unlocks the inside man. Old saves with an `unlocked` list still load, and the field is ignored. Best keeps the highest total, and an F never replaces a completion. Unknown version or unparsable text: ignore the save and start fresh. `tutorial_done` defaults to false and `lang` to `En`, so older saves still load. Written after every ending and when the tutorial is approved.
 
 A run in progress goes in a second key, `antree.run.v1`, only when the player picks Save progress in the pause menu. It holds `(version, run, player)`: the whole `Run` and the player's position. Grants are not stored. They come back from the data files on load, so a data edit never fights an old save. The title shows Continue while this key parses. The ending removes it when its seed and quest match the finished run. Main menu without saving keeps the last saved state.
 

@@ -4,7 +4,7 @@ use std::task::Poll;
 use macroquad::prelude::*;
 
 use crate::art::Sprites;
-use crate::data::Data;
+use crate::data::{Data, Lang};
 
 pub struct Assets {
     pub font: Font,
@@ -14,7 +14,7 @@ pub struct Assets {
 }
 
 impl Assets {
-    pub async fn load() -> Assets {
+    pub async fn load(lang: Lang) -> Assets {
         let font = load_ttf_font("assets/fonts/PixelOperator.ttf")
             .await
             .expect("font");
@@ -26,7 +26,7 @@ impl Assets {
             font,
             stamp,
             art: Sprites::load().await,
-            data: Data::load().await,
+            data: Data::load(lang).await,
         }
     }
 }

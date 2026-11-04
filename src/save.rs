@@ -5,6 +5,7 @@ use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 
+use crate::data::Lang;
 use crate::game::grade::Grade;
 use crate::game::quest::Grant;
 use crate::game::run::Run;
@@ -33,6 +34,8 @@ pub struct Save {
     /// The orientation form was approved once.
     #[serde(default)]
     pub tutorial_done: bool,
+    #[serde(default)]
+    pub lang: Lang,
 }
 
 impl Default for Save {
@@ -42,6 +45,7 @@ impl Default for Save {
             best: BTreeMap::new(),
             inside_man: false,
             tutorial_done: false,
+            lang: Lang::En,
         }
     }
 }

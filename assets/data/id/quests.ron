@@ -1,0 +1,13 @@
+// Indonesian quest titles and intros, keyed by quest id. Tuning lives in ../quests.ron.
+{
+    "ktpss_hilang": (title: "KTPSS Hilang", intro: "KTPSS kamu jatuh dari saku, entah di antara bus dan kantor. Tanpa itu kamu tidak bisa apa-apa, termasuk menggantinya. Papan di pinggir jalan berisi syaratnya. Mulai dari Poldur SK."),
+    "sktpa": (title: "Urus SKTPA", intro: "Ada tawaran kerja. Syaratnya SKTPA, bukti kamu tidak pernah menyerobot antrean. Mengurusnya menguji itu."),
+    "sim": (title: "Perpanjang SIM", intro: "Surat Izin Mengantri kamu habis kemarin. Perpanjangan cuma formalitas, katanya. Formalitas adalah keahlian terbaik negeri ini."),
+    "birth_cert": (title: "Akta kelahiran", intro: "Anakmu sudah tiga minggu dan secara hukum belum ada. Bayinya tidak keberatan. Negara keberatan."),
+    "pbym": (title: "Izin bangunan", intro: "Kamu mau menambah satu kamar di rumah. DPSPTD punya satu pintu untuk semuanya. Pintunya dikunci. Semoga beruntung."),
+    "death_cert": (title: "Akta kematian", intro: "Kakek meninggal dengan tenang di usia 91. Bank tidak mau menutup rekeningnya sampai negara setuju dia sudah meninggal. Negara belum diberi tahu, dan perlu diyakinkan."),
+    "paspor": (title: "Paspor", intro: "Sepupumu menikah di luar negeri. Kamu butuh Paspor Pergi Belum Tentu Pulang. KUPJ itu gedung baru di seberang jalan besar. Negara ingin tahu kenapa kamu sampai mau pergi."),
+    "tax_clear": (title: "Surat bebas pajak", intro: "Surat dari KPYP: kamu berutang pajak atas penghasilan yang belum kamu dapat. Untuk membuktikan tidak berutang, perlu surat bebas pajak. Tenggatnya sebentar lagi. Selalu."),
+    "stnkk": (title: "Surat kendaraan", intro: "Kamu membeli motor bekas dari pamanmu. STNKK-nya masih atas nama orang yang tidak pernah ditemui siapa pun. Samsan bisa membereskannya, setelah memeriksa mesinnya."),
+    "iums": (title: "Izin jualan makanan", intro: "Kamu mau jualan nasi goreng pakai gerobak. Gerobak butuh IUMS. IUMS butuh nomor pajak, surat higiene, dan kantor satu pintu, yang satu-satunya pintunya dikunci."),
+}

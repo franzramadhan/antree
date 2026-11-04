@@ -1,0 +1,7 @@
+{
+    "greet": ["\"Tes psikologi antre. Kami ukur apakah Bapak bisa menunggu. Silakan tunggu.\""],
+    "missing": ["\"Psikolognya perlu {doc} Bapak dulu. Dia sangat teliti soal kertas orang lain.\""],
+    "issued": ["\"Bapak sehat jiwa untuk berdiri di antrean. Biaya Kv 50.\""],
+    "nothing": ["\"Bapak sudah lulus. Dua kali malah mencurigakan.\""],
+    "f_intro": ["\"Isi kuesionernya. Tidak ada jawaban salah. Cuma format yang salah.\""],
+}

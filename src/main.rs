@@ -25,7 +25,8 @@ fn window_conf() -> Conf {
 
 #[macroquad::main(window_conf)]
 async fn main() {
-    let assets = assets::Assets::load().await;
+    let mut lang = save::Save::load().lang;
+    let mut assets = assets::Assets::load(lang).await;
     let fx = fx::Fx::load().await;
     let canvas = Canvas::new();
     let mut scene = Scene::Title(Title::new());
@@ -40,13 +41,16 @@ async fn main() {
         if is_key_pressed(KeyCode::M) {
             fx.toggle_mute();
         }
-        if let Some(next) = scene.update(&ctx) {
-            scene = next;
-        }
+        let changed = scene.update(&ctx).map(|next| scene = next).is_some();
         fx.blip_if_silent(scene::input_pressed());
         canvas.begin();
         scene.draw(&ctx);
         canvas.end(fx.tick(ctx.dt));
         next_frame().await;
+        // The title menu switches language by saving it and reopening itself.
+        if changed && save::Save::load().lang != lang {
+            lang = save::Save::load().lang;
+            assets.data = data::Data::load(lang).await;
+        }
     }
 }
