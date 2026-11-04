@@ -75,12 +75,21 @@ The game runs at <https://antree.franzramadhan.dev> on a homelab k0s cluster.
 The pod runs `antree-server.wasm` under the runwasi wasmtime shim
 (RuntimeClass `wasmtime`). The game itself runs in the visitor's browser.
 
-1. Bump `version` in `Cargo.toml` and push to `main`.
+Release without asking. The owner authorized this on 2026-11-04. After a
+player-visible change is on `main`, run all of these steps, including the
+infra PR, its merge, and the check. Report when the new version is live.
+
+1. Bump the patch `version` in `Cargo.toml` (minor for a big feature), run
+   `cargo update -p antree --offline`, commit `chore: release vX.Y.Z`, and push to `main`.
 2. Push a signed tag that matches: `git tag -s v0.1.1 -m v0.1.1 && git push origin v0.1.1`.
 3. The `release` workflow runs `./build.sh` and `make check`, then pushes
    `ghcr.io/franzramadhan/antree:<version>` (`linux/amd64`).
-4. In the homelab infrastructure repo, pin the new tag and digest in
-   `kubernetes/apps/antree/deployment.yaml` through a PR. Flux applies it.
+4. When the workflow is green, pin the new tag and digest in
+   `kubernetes/apps/antree/deployment.yaml` in the homelab infrastructure
+   repo. Use a branch and a PR, wait for its checks, then squash-merge it
+   with `--admin`. That repo forbids merges from 23:30 to 06:00 WIB. In that
+   window, open the PR and leave the merge to the owner. Then run
+   `flux reconcile kustomization flux-system --with-source`.
 5. Check `https://antree.franzramadhan.dev/healthz` and play one screen.
 
 Get the digest with
