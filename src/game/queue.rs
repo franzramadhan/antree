@@ -6,12 +6,18 @@ pub const TICK_MINUTES: u32 = 10;
 /// Chance the guard sees your first cut. Each cut after that is likelier.
 const CATCH_BASE: u32 = 15;
 const CATCH_STEP: u32 = 25;
+/// Chance you win the argument over a number the machine printed twice.
+const DOUBLE_WIN: u32 = 50;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Event {
-    FixerOffer { price: i64 },
+    FixerOffer {
+        price: i64,
+    },
     InsideMan,
     Auntie,
+    /// The machine printed your number twice. Someone else holds it too.
+    DoubleNumber,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -73,7 +79,10 @@ impl Queue {
     pub fn can(&self, action: Action) -> bool {
         match action {
             Action::Wait | Action::Cut => true,
-            Action::Confront => matches!(self.pending, Some(Event::Auntie | Event::InsideMan)),
+            Action::Confront => matches!(
+                self.pending,
+                Some(Event::Auntie | Event::InsideMan | Event::DoubleNumber)
+            ),
             Action::PayFixer => self.fixer_price().is_some(),
         }
     }
@@ -102,7 +111,19 @@ impl Queue {
             (Action::Wait, Some(Event::FixerOffer { .. })) => {
                 step.message = "q_fixer_ignored";
             }
+            (Action::Wait, Some(Event::DoubleNumber)) => {
+                self.ahead += 1;
+                step.message = "q_double_wait";
+            }
             (Action::Wait, None) => step.message = "q_wait",
+            (Action::Confront, Some(Event::DoubleNumber)) => {
+                if self.rng.chance(DOUBLE_WIN) {
+                    step.message = "q_double_won";
+                } else {
+                    self.ahead += 2;
+                    step.message = "q_double_lost";
+                }
+            }
             (Action::Confront, _) => {
                 let roll = self.rng.range(0, 100);
                 if roll < 50 {
@@ -154,6 +175,7 @@ impl Queue {
             23..=37 => Some(Event::FixerOffer {
                 price: i64::from(self.rng.range(1, 4)) * 50,
             }),
+            38..=45 => Some(Event::DoubleNumber),
             _ => None,
         };
         step
@@ -177,6 +199,30 @@ mod tests {
             }
         }
         (steps, q.ahead)
+    }
+
+    #[test]
+    fn a_double_number_costs_a_place_or_an_argument() {
+        let mut lost = 0;
+        let mut won = 0;
+        for seed in 0..200 {
+            let mut q = Queue::new(Rng::derive(seed, "queue:double"));
+            q.ahead = 20;
+            q.pending = Some(Event::DoubleNumber);
+            let before = q.ahead;
+            let s = q.step(Action::Confront);
+            match s.message {
+                "q_double_won" => won += 1,
+                "q_double_lost" => lost += 1,
+                m => panic!("{m}"),
+            }
+            assert!(q.ahead <= before + 2);
+            q.pending = Some(Event::DoubleNumber);
+            let before = q.ahead;
+            assert_eq!(q.step(Action::Wait).message, "q_double_wait");
+            assert!(q.ahead >= before);
+        }
+        assert!(won > 50 && lost > 50, "{won} {lost}");
     }
 
     #[test]

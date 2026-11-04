@@ -16,12 +16,29 @@ const CORRECTION_CHANCE: u32 = 30;
 /// Chance that a new regulation lands after each document, and the most per run.
 const RULE_CHANCE: u32 = 35;
 const MAX_RULES: usize = 2;
+/// Door checks, rolled on each visit before the clerk.
+const SANDALS_CHANCE: u32 = 20;
+pub const SHOES_PRICE: i64 = 40;
+const SHOES_MINUTES: u32 = 20;
+const PARKING_CHANCE: u32 = 25;
+pub const PARKING_FEE: i64 = 20;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Status {
     Playing,
     Complete,
     Failed,
+}
+
+/// What the guard did at the door.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Door {
+    /// Sandals. You bought shoes from the stall outside.
+    Shoes,
+    /// Sandals, and no money for shoes. Not today.
+    TurnedAway,
+    /// A parking fee, though you walked.
+    Parking,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -48,6 +65,9 @@ pub struct Run {
     pub rules: Vec<String>,
     #[serde(default)]
     rule_pool: Vec<String>,
+    /// Bought at a door after the sandals were refused. Kept for the run.
+    #[serde(default)]
+    pub shoes: bool,
     nonsense_forms: u32,
     declined: Vec<String>,
     greased: Vec<(String, u32)>,
@@ -79,6 +99,7 @@ impl Run {
             correction_due: false,
             rules: Vec::new(),
             rule_pool: quest.rule_pool.clone(),
+            shoes: false,
             nonsense_forms: 0,
             declined: Vec::new(),
             greased: Vec::new(),
@@ -251,6 +272,22 @@ impl Run {
         Some(doc)
     }
 
+    /// The guard at the door of `office`, before the visit is entered.
+    /// Charges the money and the time itself.
+    pub fn door(&mut self, office: &str) -> Option<Door> {
+        let mut rng = self.visit_rng("door", office);
+        if !self.shoes && rng.chance(SANDALS_CHANCE) {
+            if !self.meters.spend(SHOES_PRICE) {
+                return Some(Door::TurnedAway);
+            }
+            self.shoes = true;
+            self.advance(SHOES_MINUTES);
+            return Some(Door::Shoes);
+        }
+        // ponytail: a broke player walks in free, the guard does not argue with Kv 0.
+        (rng.chance(PARKING_CHANCE) && self.meters.spend(PARKING_FEE)).then_some(Door::Parking)
+    }
+
     /// Filled a form with nonsense. Sometimes the database notices.
     pub fn nonsense_form(&mut self) {
         self.nonsense_forms += 1;
@@ -310,6 +347,43 @@ mod tests {
 
     fn run(seed: u64) -> Run {
         Run::new(seed, &quest(), grants(), false)
+    }
+
+    #[test]
+    fn the_door_sells_shoes_once_and_charges_parking_to_walkers() {
+        let mut seen = (0, 0);
+        for seed in 0..100 {
+            let mut r = run(seed);
+            for visit in 0..10 {
+                let money = r.meters.money;
+                let shoes = r.shoes;
+                match r.door("pak_kaling") {
+                    Some(Door::Shoes) => {
+                        assert!(!shoes, "seed {seed} visit {visit}");
+                        assert_eq!(r.meters.money, money - SHOES_PRICE);
+                        seen.0 += 1;
+                    }
+                    Some(Door::Parking) => {
+                        assert_eq!(r.meters.money, money - PARKING_FEE);
+                        seen.1 += 1;
+                    }
+                    Some(Door::TurnedAway) => assert!(money < SHOES_PRICE),
+                    None => assert_eq!(r.meters.money, money),
+                }
+                r.enter("pak_kaling");
+            }
+        }
+        assert!(seen.0 > 0 && seen.1 > 0, "{seen:?}");
+    }
+
+    #[test]
+    fn broke_in_sandals_is_turned_away() {
+        let turned = (0..100).any(|seed| {
+            let mut r = run(seed);
+            r.meters.money = 0;
+            r.door("bkfn") == Some(Door::TurnedAway)
+        });
+        assert!(turned);
     }
 
     #[test]

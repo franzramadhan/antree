@@ -4,7 +4,7 @@ Working title: Antree. Setting: Republik Kuvukiland.
 
 ## 1. Pitch
 
-Antree is a 2D top-down satire game about getting one piece of paper from the government of Kuvukiland. The player is an ordinary citizen with a simple goal, a lost identity card or a birth certificate. The game turns that goal into a chain of offices, stamps, photocopies, and queues. Each office is a small desk minigame. Three meters track the cost: days, money, and conscience. The player finishes a run and says "yeah, that is exactly how it goes."
+Antree is a 2D top-down satire game about getting one piece of paper from the government of Kuvukiland. The player is an ordinary citizen with a simple goal, a lost identity card or a birth certificate. The game turns that goal into a chain of offices, stamps, photocopies, and queues. Each office is a small desk minigame. Three meters track the cost: days, money, and conscience.
 
 All in-game text is English, written in the register of a counter clerk: "Did you photocopy it?", "The system is down. Head office.", "Come back tomorrow.", "Anything for cigarettes?". Proper nouns use the Kuvukiland naming table in section 9.
 
@@ -14,7 +14,7 @@ The player took a day off work to fix a document and wants to go home. The fanta
 
 ## 3. The three meters
 
-All numbers live in data files and are tunable.
+All numbers are tunable.
 
 | Meter | Range | Start | Direction |
 |---|---|---|---|
@@ -78,7 +78,7 @@ Office floor plan with 6 to 10 desks. Exactly one clerk holds the stamp. Other c
 The clerk lists requirements for 4 seconds: copy count, duty stamp value, folder colour, certified or not. The player runs to the BKFN photocopy stall across the road, picks items from a shelf, and runs back. Travel 15 minutes each way. Wrong item: the clerk rejects, run again. Failure: the office closes at 11:30 for new files. Money: each copy and duty stamp costs Kv.
 
 ### 5.4 The Queue
-Queue of 6 to 14 people. Each tick one event may fire: an auntie cuts in with "just a quick question" (15 percent), the inside man walks past (8 percent), a fixer offers a slot (15 percent). Actions: stay quiet (lose the place), confront (roll per section 3), cut the line (Conscience -10), pay the fixer (Money, Conscience -15). The counter serves one number every 1 to 2 ticks, so a patient player is served in 10 to 30 ticks. Failure: the counter closes before your number.
+Queue of 6 to 14 people. Each tick one event may fire: an auntie cuts in with "just a quick question" (15 percent), the inside man walks past (8 percent), a fixer offers a slot (15 percent), the machine printed your number twice (8 percent: wait and lose a place, or argue, 50 percent to lose two). Actions: stay quiet (lose the place), confront (roll per section 3), cut the line (Conscience -10), pay the fixer (Money, Conscience -15). The counter serves one number every 1 to 2 ticks, so a patient player is served in 10 to 30 ticks. Failure: the counter closes before your number.
 
 ### 5.5 System Down
 A progress bar that stalls at random points. Actions: wait (10 minutes per press), refresh (asks the clerk, 3 refreshes in a row annoy them and add 20 minutes), go home (lose the number, come back tomorrow), ask Mas Reronoh (he knows the system comes back in N minutes, costs a cup of coffee, 15 Kv, no Conscience cost). Failure: the office closes.
@@ -106,6 +106,8 @@ Rolled once on arrival at each counter, seeded. Weights are per office in data a
 
 Modifiers: after declining politely in Negotiation, add 20 to every non-Smooth weight at that office for the rest of the run. After grease money, force Smooth at that office for the day. After calling the inside man, halve every non-Smooth weight for the rest of the run.
 
+At the door, the guard may refuse sandals (20 percent until you buy shoes, 40 Kv and 20 minutes) or charge a walker 20 Kv parking (25 percent).
+
 ## 7. Endings and grades
 
 | Grade | Condition | Title | Closing line |
@@ -118,7 +120,7 @@ Modifiers: after declining politely in Negotiation, add 20 to every non-Smooth w
 | X | complete, days <= par_days, conscience <= 40 | Part of the System | "Congratulations, you are now part of the system. The next queue number is your child's." |
 | F | deadline passed or money 0 | Home Empty-Handed | "Come back tomorrow, sir. The day after is also fine." |
 
-Grade X overrides S to D. The ending screen shows the three meters, the grade, a one-line "clerk's note" picked from a pool, the seed, and a restart button. Best grade per quest is saved.
+Grade X overrides S to D. The ending screen shows the meters, the grade, a clerk's note, and the seed. Best grade per quest is saved.
 
 Title screen disclaimer: "Kuvukiland is a fictional country. Any resemblance to any real country is purely coincidental, allegedly." README repeats it.
 
@@ -126,7 +128,7 @@ Title screen disclaimer: "Kuvukiland is a fictional country. Any resemblance to 
 
 Internal canvas 640x360, integer scaled from 2x (fractional on phones), letterboxed. Pixel art, 16x16 tiles. Palette: faded government beige, mint green walls, brown wood counters, one saturated red for stamps and "REJECTED". Original top-down art from tools/sprites.py: 16x24 characters with walk cycles, buildings, trees, and a 3x office interior with a blinking clerk. UI panels look like carbon copy forms with dotted lines. Font: Pixel Operator (CC0), 8 and 16 pixel sizes.
 
-Audio: synthesized at boot. Stamp thud for approvals, buzz for refusals, dot matrix printer for forms, counter bell for queue advances and doors, a modem stutter for system down, a coin clink for Money, a click for other input. Music: "Please Hold", an original 2/4 hold tune that loops forever, synthesized from MIDI at boot. M mutes everything.
+Audio: synthesized at boot. Stamp thud, refusal buzz, dot matrix printer, counter bell, modem stutter, coin clink, click. Music: "Please Hold", an original 2/4 hold tune that loops forever, synthesized from MIDI at boot. M mutes.
 
 Juice: screen shake and a red "REJECTED" stamp on refusals, a stamp slam on approval and the title, cracks in the Conscience bar below 40.
 

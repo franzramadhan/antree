@@ -47,7 +47,7 @@ src/
     tutorial.rs      orientation form ORI-01, shown until approved once
     quest_select.rs  quest list, lock state, best results, seed entry
     overworld.rs     map, information board, travel
-    office.rs        greeting, chain check, obstacle roll, minigame host, issue
+    office.rs        door check, greeting, chain check, obstacle roll, minigame host, issue
     minigame/        one screen per minigame, dispatched through an enum
     ending.rs        grade, save write
 ```
@@ -60,7 +60,7 @@ Minigames are an enum with `match` dispatch in `scene/minigame/mod.rs`, not a tr
 pub enum Outcome { Running, Passed(Option<String>), Granted(String), Failed { line: String, end_day: bool } }
 ```
 
-`Run` holds meters, clock, inventory, the seed, the picked hidden and wrong requirements, which documents the player has learned about, and per-office memory (declined a bribe, paid a bribe, file under review, visit counts).
+`Run` holds meters, clock, inventory, the seed, the picked hidden and wrong requirements, which documents the player has learned about, and per-office memory (declined a bribe, paid a bribe, file under review, visit counts). `Run::door` rolls the guard at each door and remembers bought shoes.
 
 ## 3. Scene state machine
 

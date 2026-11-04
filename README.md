@@ -21,7 +21,7 @@ were.
   replay from a six-letter code
 - Minigames: the queue, forms, stamp hunts, photocopies, and a theory test
 - Random obstacles: the system is down, the clerk is on a break, come back
-  tomorrow
+  tomorrow, a guard who hates sandals and charges walkers for parking
 - A short orientation form that teaches the controls
 - Save your progress in the browser and continue later
 - Original pixel art, synthesized sound, and an original hold-music loop, no downloads after the first load

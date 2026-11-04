@@ -9,7 +9,7 @@ use crate::fx::{Sfx, Slam};
 use crate::game::nego::Who;
 use crate::game::obstacle::{roll, Obstacle};
 use crate::game::quest::Task;
-use crate::game::run::Run;
+use crate::game::run::{Door, Run, PARKING_FEE, SHOES_PRICE};
 use crate::ui;
 
 const INSIDE_MAN_CONSCIENCE: i32 = 25;
@@ -64,7 +64,25 @@ impl Office {
                 end_day: false,
             }
         } else {
-            Phase::Greet(line("greet", &run))
+            let at_door = run.door(&office_id);
+            let door = |key, kv: i64| line(key, &run).replace("{kv}", &kv.to_string());
+            match at_door {
+                Some(Door::TurnedAway) => Phase::Say {
+                    line: door("door_sandals", SHOES_PRICE),
+                    end_day: false,
+                },
+                Some(Door::Shoes) => Phase::Greet(format!(
+                    "{} {}",
+                    door("door_shoes", SHOES_PRICE),
+                    line("greet", &run)
+                )),
+                Some(Door::Parking) => Phase::Greet(format!(
+                    "{} {}",
+                    door("door_parking", PARKING_FEE),
+                    line("greet", &run)
+                )),
+                None => Phase::Greet(line("greet", &run)),
+            }
         };
         run.enter(&office_id);
         Self {

@@ -68,6 +68,7 @@ impl QueueGame {
         let event = match self.queue.pending {
             Some(Event::Auntie) => say(d, office, "q_event_auntie", run),
             Some(Event::InsideMan) => say(d, office, "q_event_inside", run),
+            Some(Event::DoubleNumber) => say(d, office, "q_event_double", run),
             Some(Event::FixerOffer { price }) => {
                 say(d, office, "q_event_fixer", run).replace("{price}", &price.to_string())
             }
