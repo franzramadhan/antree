@@ -6,6 +6,7 @@ use macroquad::prelude::load_string;
 use serde::de::DeserializeOwned;
 use serde::Deserialize;
 
+use crate::assets::join_all;
 use crate::game::form::FieldDef;
 use crate::game::obstacle::Obstacle;
 use crate::game::quest::{closure, Grant, QuestDef, Task};
@@ -89,16 +90,18 @@ const FILES: [&str; 8] = [
 
 impl Data {
     pub async fn load() -> Data {
-        let mut files = HashMap::new();
-        for name in FILES {
-            files.insert(name.to_owned(), fetch(name).await);
-        }
+        let texts = join_all(FILES.map(fetch)).await;
+        let mut files: HashMap<String, String> =
+            FILES.iter().map(|n| n.to_string()).zip(texts).collect();
         let offices: Vec<OfficeDef> = parse("offices.ron", &files["offices.ron"]);
-        for id in offices.iter().map(|o| o.id.as_str()).chain(["common"]) {
-            let name = format!("dialog/{id}.ron");
-            let text = fetch(&name).await;
-            files.insert(name, text);
-        }
+        let dialogs: Vec<String> = offices
+            .iter()
+            .map(|o| o.id.as_str())
+            .chain(["common"])
+            .map(|id| format!("dialog/{id}.ron"))
+            .collect();
+        let texts = join_all(dialogs.iter().map(|n| fetch(n))).await;
+        files.extend(dialogs.into_iter().zip(texts));
         Data::build(|name| files[name].clone())
     }
 

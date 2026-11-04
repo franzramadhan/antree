@@ -1,3 +1,6 @@
+use std::future::{poll_fn, Future};
+use std::task::Poll;
+
 use macroquad::prelude::*;
 
 use crate::art::Sprites;
@@ -26,4 +29,29 @@ impl Assets {
             data: Data::load().await,
         }
     }
+}
+
+/// Await every future at once. On the web each asset load is a fetch, and
+/// awaiting them one by one costs a network round trip per file.
+pub async fn join_all<F: Future>(futures: impl IntoIterator<Item = F>) -> Vec<F::Output> {
+    let mut futures: Vec<_> = futures.into_iter().map(Box::pin).collect();
+    let mut out: Vec<Option<F::Output>> = futures.iter().map(|_| None).collect();
+    poll_fn(|cx| {
+        let mut done = true;
+        for (future, slot) in futures.iter_mut().zip(&mut out) {
+            if slot.is_none() {
+                match future.as_mut().poll(cx) {
+                    Poll::Ready(v) => *slot = Some(v),
+                    Poll::Pending => done = false,
+                }
+            }
+        }
+        if done {
+            Poll::Ready(())
+        } else {
+            Poll::Pending
+        }
+    })
+    .await;
+    out.into_iter().map(Option::unwrap).collect()
 }

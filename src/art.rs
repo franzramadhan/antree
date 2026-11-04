@@ -2,6 +2,8 @@
 
 use macroquad::prelude::*;
 
+use crate::assets::join_all;
+
 pub struct Sprites {
     pub player: Texture2D,
     pub villagers: Texture2D,
@@ -32,24 +34,49 @@ async fn sheet(name: &str) -> Texture2D {
 
 impl Sprites {
     pub async fn load() -> Sprites {
+        let names = [
+            "player",
+            "villagers",
+            "clerks",
+            "tree",
+            "bush",
+            "grass",
+            "path",
+            "roofs",
+            "wall",
+            "door",
+            "window",
+            "shadow",
+            "wallpaper",
+            "floor",
+            "clock",
+            "board",
+            "plant",
+        ];
+        let Ok(
+            [player, villagers, clerks, tree, bush, grass, path, roofs, wall, door, window, shadow, wallpaper, floor, clock, board, plant],
+        ) = <[Texture2D; 17]>::try_from(join_all(names.map(sheet)).await)
+        else {
+            unreachable!()
+        };
         Sprites {
-            player: sheet("player").await,
-            villagers: sheet("villagers").await,
-            clerks: sheet("clerks").await,
-            tree: sheet("tree").await,
-            bush: sheet("bush").await,
-            grass: sheet("grass").await,
-            path: sheet("path").await,
-            roofs: sheet("roofs").await,
-            wall: sheet("wall").await,
-            door: sheet("door").await,
-            window: sheet("window").await,
-            shadow: sheet("shadow").await,
-            wallpaper: sheet("wallpaper").await,
-            floor: sheet("floor").await,
-            clock: sheet("clock").await,
-            board: sheet("board").await,
-            plant: sheet("plant").await,
+            player,
+            villagers,
+            clerks,
+            tree,
+            bush,
+            grass,
+            path,
+            roofs,
+            wall,
+            door,
+            window,
+            shadow,
+            wallpaper,
+            floor,
+            clock,
+            board,
+            plant,
         }
     }
 }
