@@ -1,6 +1,6 @@
 //! Quests, document inventory, and chain resolution.
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use super::grade::Par;
 
@@ -35,7 +35,7 @@ impl QuestDef {
     }
 }
 
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct Inventory(Vec<String>);
 
 impl Inventory {
@@ -101,8 +101,8 @@ mod tests {
     #[test]
     fn closure_follows_chains_and_survives_cycles() {
         let grants = [
-            g("ktpss", &["kelurahan_letter", "loss_report"]),
-            g("kelurahan_letter", &["kaling_letter"]),
+            g("ktpss", &["district_letter", "loss_report"]),
+            g("district_letter", &["kaling_letter"]),
             g("kaling_letter", &["ksk"]),
             g("spusp", &["kaling_letter", "spusp"]),
         ];
@@ -117,8 +117,8 @@ mod tests {
         assert_eq!(
             c,
             [
+                "district_letter",
                 "kaling_letter",
-                "kelurahan_letter",
                 "ksk",
                 "ktpss",
                 "loss_report"

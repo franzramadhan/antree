@@ -1,6 +1,6 @@
 use macroquad::prelude::*;
 
-use super::{escape_pressed, Ctx, Overworld, Scene, Title, Tutorial};
+use super::{draw_town, escape_pressed, Ctx, Overworld, Scene, Title, Tutorial};
 use crate::canvas;
 use crate::game::rng::code_to_seed;
 use crate::game::run::Run;
@@ -76,8 +76,8 @@ impl QuestSelect {
     pub fn draw(&self, ctx: &Ctx) {
         let font = &ctx.assets.font;
         let d = &ctx.assets.data;
-        clear_background(ui::PAPER);
-        draw_rectangle(0.0, 0.0, canvas::WIDTH, 8.0, ui::WALL);
+        draw_town(ctx, None, None);
+        ui::panel(44.0, 22.0, canvas::WIDTH - 88.0, 300.0);
         ui::text_centered(
             font,
             &d.s("qs_title", &[]),

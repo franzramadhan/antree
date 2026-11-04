@@ -1,13 +1,18 @@
-//! Unlocks and best results. localStorage on web, a `local.data` file on native.
+//! Unlocks and best results, and one run in progress. localStorage on web, a
+//! `local.data` file on native.
 
 use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 
 use crate::game::grade::Grade;
+use crate::game::quest::Grant;
+use crate::game::run::Run;
 
-const KEY: &str = "antri.save.v1";
+const KEY: &str = "antree.save.v1";
 const VERSION: u32 = 1;
+const RUN_KEY: &str = "antree.run.v1";
+const RUN_VERSION: u32 = 1;
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Best {
@@ -85,6 +90,44 @@ impl Save {
     }
 }
 
+/// A run saved from town: the run itself and where the player stood.
+#[derive(Serialize, Deserialize)]
+struct SavedRun {
+    version: u32,
+    run: Run,
+    player: (f32, f32),
+}
+
+pub fn store_run(run: &Run, player: (f32, f32)) {
+    let saved = SavedRun {
+        version: RUN_VERSION,
+        run: run.clone(),
+        player,
+    };
+    let text = ron::to_string(&saved).expect("run serializes");
+    quad_storage::STORAGE.lock().unwrap().set(RUN_KEY, &text);
+}
+
+/// The saved run, with its grants restored from the data files.
+pub fn load_run(grants: Vec<Grant>) -> Option<(Run, (f32, f32))> {
+    parse_run(quad_storage::STORAGE.lock().unwrap().get(RUN_KEY))
+        .map(|(run, player)| (run.with_grants(grants), player))
+}
+
+/// Forget the saved run once that same run has ended.
+pub fn clear_run_if_ended(run: &Run) {
+    let saved = parse_run(quad_storage::STORAGE.lock().unwrap().get(RUN_KEY));
+    if saved.is_some_and(|(r, _)| r.seed == run.seed && r.quest_id == run.quest_id) {
+        quad_storage::STORAGE.lock().unwrap().remove(RUN_KEY);
+    }
+}
+
+fn parse_run(text: Option<String>) -> Option<(Run, (f32, f32))> {
+    text.and_then(|t| ron::from_str::<SavedRun>(&t).ok())
+        .filter(|s| s.version == RUN_VERSION)
+        .map(|s| (s.run, s.player))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -122,6 +165,29 @@ mod tests {
         s.record("a", None, best(Grade::A, 75));
         s.record("a", None, best(Grade::B, 60));
         assert_eq!(s.best["a"].total, 75);
+    }
+
+    #[test]
+    fn a_saved_run_comes_back_exactly() {
+        let quest: crate::game::quest::QuestDef = ron::from_str(
+            r#"(id: "q", title: "Q", intro: "", goal_doc: "g", start_docs: ["a"], board: ["g"],
+                hidden_pool: [("h", "o")], wrong_pool: ["w"], par_days: 3, deadline: 6,
+                budget: 400, official_fees: 0)"#,
+        )
+        .unwrap();
+        let mut run = Run::new(77, &quest, vec![], false);
+        run.meters.money -= 40;
+        run.inv.add("loss_report");
+        let saved = SavedRun {
+            version: RUN_VERSION,
+            run: run.clone(),
+            player: (120.0, 182.0),
+        };
+        let (back, player) = parse_run(Some(ron::to_string(&saved).unwrap())).unwrap();
+        assert_eq!(player, (120.0, 182.0));
+        assert_eq!((back.seed, back.meters.money), (77, run.meters.money));
+        assert!(back.inv.has("loss_report") && back.inv.has("a"));
+        assert!(parse_run(Some("(".into())).is_none());
     }
 
     #[test]

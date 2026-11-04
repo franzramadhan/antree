@@ -1,10 +1,21 @@
 // UI strings. Keys are referenced from code. Clerk lines live in dialog/.
 {
-    "title": "ANTRI",
+    "title": "ANTREE",
     "subtitle": "A day off, a lost card, a Republic.",
     "disclaimer": "Kuvukiland is a fictional country. Any resemblance to any real country is purely coincidental, allegedly.",
-    "press_start": "Press Enter to take a number",
-    "sound_hint": "M: sound on/off",
+    "menu_continue": "Continue errand",
+    "menu_new": "Take a number",
+    "menu_orientation": "Orientation form",
+    "menu_sound_on": "Sound: on",
+    "menu_sound_off": "Sound: off",
+    "menu_hint": "Up/Down choose. Enter select. M sound.",
+    "pause_title": "Errand paused",
+    "pause_resume": "Back to the errand",
+    "pause_save": "Save progress",
+    "pause_quit": "Main menu",
+    "pause_hint": "Main menu drops anything not saved.",
+    "progress_saved": "Progress saved in this browser. Continue it from the main menu.",
+    "progress_loaded": "Welcome back. Your papers are where you left them.",
     "stamp_rejected": "REJECTED",
 
     "qs_title": "Which errand today?",
@@ -15,13 +26,13 @@
     "qs_seed_random": "random",
     "qs_seed_hint": "Type a 6 letter seed code to replay a run. Backspace clears.",
     "qs_inside_man": "You have an inside man. One call per run.",
-    "qs_hint": "Up/Down choose. Enter start. Tab orientation form. Esc title.",
+    "qs_hint": "Up/Down choose. Enter start. Tab orientation form. Esc main menu.",
 
     "hud_day": "Day {days}/{deadline}",
     "hud_money": "Kv {money}",
     "hud_conscience": "Conscience",
     "board_title": "The board says you need:",
-    "controls_overworld": "WASD move. E enter. H go home.",
+    "controls_overworld": "WASD move. E enter. H go home. Esc menu.",
     "travel_closed": "You arrive. The shutters are down. 15:00 means 15:00, sir.",
     "day_ended": "Day over. Tomorrow is also a day.",
 
@@ -79,10 +90,10 @@
     "photo_hint": "Up/Down item. Left/Right change. Enter: pay Kv {cost} and run back.",
 
     "off_title": "SYSTEM STATUS",
-    "off_known": "Mas Honorer says: back in {min} minutes",
+    "off_known": "Mas Reronoh says: back in {min} minutes",
     "off_wait": "1. Wait",
     "off_refresh": "2. Ask if it is back",
-    "off_honorer": "3. Coffee for Mas Honorer (Kv 15)",
+    "off_reronoh": "3. Coffee for Mas Reronoh (Kv 15)",
     "off_home": "4. Give up and go home",
 
     "nego_pay": "1. Pay (Kv {price})",

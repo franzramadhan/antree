@@ -1,3 +1,4 @@
+mod art;
 mod assets;
 mod canvas;
 mod data;
@@ -13,7 +14,7 @@ use scene::{Ctx, Scene, Title};
 
 fn window_conf() -> Conf {
     Conf {
-        window_title: "Antri".to_owned(),
+        window_title: "Antree".to_owned(),
         window_width: 1280,
         window_height: 720,
         high_dpi: true,

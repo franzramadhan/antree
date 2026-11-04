@@ -6,7 +6,7 @@ use crate::data::Data;
 use crate::game::grade::{score, Grade, Scored};
 use crate::game::rng::seed_to_code;
 use crate::game::run::{Run, Status};
-use crate::save::{Best, Save};
+use crate::save::{self, Best, Save};
 use crate::ui;
 
 pub struct Ending {
@@ -20,6 +20,7 @@ pub struct Ending {
 impl Ending {
     /// Grades the run and writes the save.
     pub fn new(run: Run, d: &Data) -> Self {
+        save::clear_run_if_ended(&run);
         let scored = score(&run.meters, &run.par, run.status() == Status::Complete);
         let index = d.quests.iter().position(|q| q.id == run.quest_id).unwrap();
         let next = d.quests.get(index + 1);

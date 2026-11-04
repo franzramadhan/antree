@@ -11,8 +11,6 @@ pub const INK: Color = Color::new(0.157, 0.125, 0.094, 1.0);
 pub const WALL: Color = Color::new(0.376, 0.549, 0.471, 1.0);
 pub const WOOD: Color = Color::new(0.478, 0.333, 0.212, 1.0);
 pub const STAMP: Color = Color::new(0.784, 0.118, 0.118, 1.0);
-pub const GRASS: Color = Color::new(0.561, 0.655, 0.420, 1.0);
-pub const ROAD: Color = Color::new(0.541, 0.518, 0.471, 1.0);
 pub const FADED: Color = Color::new(0.4, 0.37, 0.33, 1.0);
 
 pub const HUD_H: f32 = 24.0;
@@ -91,6 +89,57 @@ pub fn panel(x: f32, y: f32, w: f32, h: f32) {
     draw_rectangle(x + 3.0, y + 3.0, w, h, Color::new(0.0, 0.0, 0.0, 0.25));
     draw_rectangle(x, y, w, h, PAPER);
     draw_rectangle_lines(x, y, w, h, 2.0, INK);
+}
+
+const MENU_ROW: f32 = 22.0;
+
+/// Row `i` of a vertical menu whose panel starts at (x, y) and is `w` wide.
+pub fn menu_rect(i: usize, x: f32, y: f32, w: f32) -> Rect {
+    Rect::new(
+        x + 8.0,
+        y + 8.0 + i as f32 * MENU_ROW,
+        w - 16.0,
+        MENU_ROW - 2.0,
+    )
+}
+
+/// Up/Down move the cursor. Enter, Space, or a click on a row picks it.
+pub fn menu_input(
+    cursor: &mut usize,
+    n: usize,
+    mouse: Vec2,
+    x: f32,
+    y: f32,
+    w: f32,
+) -> Option<usize> {
+    *cursor = (*cursor).min(n - 1);
+    if is_key_pressed(KeyCode::Up) || is_key_pressed(KeyCode::W) {
+        *cursor = (*cursor + n - 1) % n;
+    }
+    if is_key_pressed(KeyCode::Down) || is_key_pressed(KeyCode::S) {
+        *cursor = (*cursor + 1) % n;
+    }
+    if is_mouse_button_pressed(MouseButton::Left) {
+        if let Some(i) = (0..n).find(|&i| menu_rect(i, x, y, w).contains(mouse)) {
+            *cursor = i;
+            return Some(i);
+        }
+    }
+    (is_key_pressed(KeyCode::Enter) || is_key_pressed(KeyCode::Space)).then_some(*cursor)
+}
+
+/// A paper panel of menu rows, the cursor row highlighted.
+pub fn menu(font: &Font, items: &[String], cursor: usize, x: f32, y: f32, w: f32) {
+    panel(x, y, w, 16.0 + items.len() as f32 * MENU_ROW - 2.0);
+    for (i, item) in items.iter().enumerate() {
+        let r = menu_rect(i, x, y, w);
+        if i == cursor {
+            draw_rectangle(r.x, r.y, r.w, r.h, Color::new(1.0, 0.98, 0.9, 1.0));
+            draw_rectangle_lines(r.x, r.y, r.w, r.h, 2.0, INK);
+            text(font, ">", r.x + 6.0, r.y + 15.0, 16, STAMP);
+        }
+        text(font, item, r.x + 20.0, r.y + 15.0, 16, INK);
+    }
 }
 
 /// A button. Returns true when clicked this frame. Hotkey handled by caller.
@@ -229,6 +278,10 @@ pub fn picker_row(font: &Font, label: &str, value: &str, r: Rect, selected: bool
 }
 
 pub fn hint(font: &Font, s: &str) {
+    let w = text_width(font, s, 16) + 16.0;
+    let x = ((canvas::WIDTH - w) / 2.0).round();
+    draw_rectangle(x, canvas::HEIGHT - 20.0, w, 20.0, PAPER);
+    draw_rectangle_lines(x, canvas::HEIGHT - 20.0, w, 21.0, 1.0, INK);
     text_centered(
         font,
         s,

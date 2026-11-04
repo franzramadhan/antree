@@ -2,11 +2,11 @@
 // kind: Text (capitals rule), Date (stored YYYY-MM-DD), Number (stored with dashes).
 [
     (labels: ["Full name", "Name (as on KTPSS)", "APPLICANT NAME"], value: "Warga Biasa", kind: Text),
-    (labels: ["Place of birth", "Born in", "PLACE OF BIRTH"], value: "Kota Antri Raya", kind: Text),
+    (labels: ["Place of birth", "Born in", "PLACE OF BIRTH"], value: "Kota Antree Raya", kind: Text),
     (labels: ["Date of birth", "Born on", "D.O.B."], value: "1987-03-09", kind: Date),
     (labels: ["Address", "Home address", "Domicile (current)"], value: "Jl. Sabar No. 3", kind: Text),
-    (labels: ["Village", "Kelurahan", "Administrative village"], value: "Sabar Menanti", kind: Text),
-    (labels: ["Sub-district", "Kecamatan"], value: "Besok Lagi", kind: Text),
+    (labels: ["Village", "District", "Small district"], value: "Sabar Menanti", kind: Text),
+    (labels: ["Sub-district", "Ketamacan"], value: "Besok Lagi", kind: Text),
     (labels: ["KSK number", "Family card no.", "No. KSK"], value: "9901-0909-0003", kind: Number),
     (labels: ["Phone", "Mobile no.", "Contact (active)"], value: "0999-1234-5678", kind: Number),
     (labels: ["Occupation", "Job", "Livelihood"], value: "Private employee", kind: Text),

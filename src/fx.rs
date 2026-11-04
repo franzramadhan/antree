@@ -163,6 +163,10 @@ impl Fx {
         }
     }
 
+    pub fn muted(&self) -> bool {
+        self.muted.get()
+    }
+
     pub fn toggle_mute(&self) {
         self.muted.set(!self.muted.get());
     }

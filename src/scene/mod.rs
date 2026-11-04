@@ -17,7 +17,7 @@ use crate::game::run::Run;
 
 pub use ending::Ending;
 pub use office::Office;
-pub use overworld::Overworld;
+pub use overworld::{draw_town, Overworld};
 pub use quest_select::QuestSelect;
 pub use title::Title;
 pub use tutorial::Tutorial;

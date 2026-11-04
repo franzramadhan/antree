@@ -1,5 +1,5 @@
 //! System Down, GDD 5.5. The system comes back at a hidden time. Only Mas
-//! Honorer knows when, and he takes coffee.
+//! Reronoh knows when, and he takes coffee.
 
 use super::rng::Rng;
 
@@ -11,7 +11,7 @@ pub const COFFEE: i64 = 15;
 pub enum Act {
     Wait,
     Refresh,
-    AskHonorer,
+    AskReronoh,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -67,12 +67,12 @@ impl SystemDown {
                     }
                 }
             }
-            Act::AskHonorer => {
+            Act::AskReronoh => {
                 self.revealed = true;
                 Tick {
                     minutes: 0,
                     money: COFFEE,
-                    key: "o_honorer",
+                    key: "o_reronoh",
                 }
             }
         };
@@ -129,10 +129,10 @@ mod tests {
     }
 
     #[test]
-    fn honorer_costs_coffee_not_time() {
+    fn reronoh_costs_coffee_not_time() {
         let mut s = SystemDown::new(&mut Rng::new(2));
         let before = s.remaining();
-        let t = s.act(Act::AskHonorer);
+        let t = s.act(Act::AskReronoh);
         assert_eq!((t.minutes, t.money), (0, COFFEE));
         assert!(s.revealed);
         assert_eq!(s.remaining(), before);

@@ -1,4 +1,4 @@
-# Antri: Architecture
+# Antree: Architecture
 
 Single Rust crate, macroquad, wasm32-unknown-unknown. No backend, no network calls at runtime.
 
@@ -20,8 +20,9 @@ src/
   canvas.rs          640x360 render target, integer scale, letterbox, mouse coordinate mapping
   fx.rs              synthesized sounds as WAV bytes, mute, screen shake, stamp slam animation
   assets.rs          loads the font, sprites, and Data once at boot
+  art.rs             sprite sheets, tile fill, character walk frames
   data.rs            Rust structs mirroring the RON files, loading, validation, dialog lookup
-  save.rs            quad-storage read and write of Save
+  save.rs            quad-storage read and write of Save and the saved run
   ui.rs              text, wrapping, panels, dialog box, choice buttons, picker rows, HUD
   game/              pure logic, no macroquad imports, unit tested
     rng.rs           SplitMix64, tag-derived child streams, 6 char seed codes, shuffle
@@ -63,6 +64,8 @@ pub enum Outcome { Running, Passed(Option<String>), Granted(String), Failed { li
 
 ```
 Boot -> Title -> Tutorial (until approved once) -> QuestSelect -> Overworld
+Title -> Overworld             Continue, when a saved run exists
+Overworld -> Title             Esc opens the pause menu, Main menu
 QuestSelect -> Tutorial        Tab
 Overworld -> Office(id)        enter a building
 Office: Say | Greet -> [obstacles] -> [minigame steps] -> Issue -> Overworld
@@ -90,7 +93,7 @@ All writer-facing content is RON under `assets/data/`. macroquad loads them with
     goal_doc: "ktpss",
     start_docs: ["ksk"],
     par_days: 4, deadline: 8, budget: 400, official_fees: 0,
-    board: ["loss_report", "kaling_letter", "kelurahan_letter", "ktpss"],
+    board: ["loss_report", "kaling_letter", "district_letter", "ktpss"],
     hidden_pool: [("ksk_copy_3", "ktpss"), ("photo_red", "ktpss")],
     wrong_pool: ["sktpa", "duty_stamps_2"],
 )
@@ -132,13 +135,17 @@ The seed is a u64 shown as a 6 character base32 code. Quest select has a text fi
 
 ## 6. Save format
 
-One key in quad-storage, `antri.save.v1`, holding RON text. RON rather than JSON because serde_json would be the only reason to add another crate.
+One key in quad-storage, `antree.save.v1`, holding RON text. RON rather than JSON because serde_json would be the only reason to add another crate.
 
 ```ron
 (version:1,unlocked:["sktpa"],best:{"ktpss_hilang":(grade:S,total:89,days:4,money:329,conscience:80,seed:"PVZZ3T")},inside_man:true,tutorial_done:true)
 ```
 
-The first quest is always unlocked. A non-F ending unlocks the next quest and the inside man. Best keeps the highest total, and an F never replaces a completion. Unknown version or unparsable text: ignore the save and start fresh. `tutorial_done` defaults to false, so saves from before it still load. Written after every ending and when the tutorial is approved. Nothing is saved mid-run, a reload restarts the quest.
+The first quest is always unlocked. A non-F ending unlocks the next quest and the inside man. Best keeps the highest total, and an F never replaces a completion. Unknown version or unparsable text: ignore the save and start fresh. `tutorial_done` defaults to false, so saves from before it still load. Written after every ending and when the tutorial is approved.
+
+A run in progress goes in a second key, `antree.run.v1`, only when the player picks Save progress in the pause menu. It holds `(version, run, player)`: the whole `Run` and the player's position. Grants are not stored. They come back from the data files on load, so a data edit never fights an old save. The title shows Continue while this key parses. The ending removes it when its seed and quest match the finished run. Main menu without saving keeps the last saved state.
+
+The town (`overworld::draw_town`) is also the backdrop of the title, quest select, and tutorial screens.
 
 ## 7. Rendering and scaling
 

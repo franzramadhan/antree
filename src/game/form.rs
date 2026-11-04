@@ -151,7 +151,7 @@ mod tests {
         };
         vec![
             f("Warga Biasa", Kind::Text),
-            f("Kota Antri Raya", Kind::Text),
+            f("Kota Antree Raya", Kind::Text),
             f("1987-03-09", Kind::Date),
             f("2026-11-02", Kind::Date),
             f("9901-0909-0003", Kind::Number),

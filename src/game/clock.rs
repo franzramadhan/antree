@@ -1,10 +1,12 @@
 //! In-game day: 08:00 to 15:00, queue numbers stop at 11:30.
 
+use serde::{Deserialize, Serialize};
+
 pub const DAY_START: u32 = 8 * 60;
 pub const DAY_END: u32 = 15 * 60;
 pub const LAST_NUMBER: u32 = 11 * 60 + 30;
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Clock {
     pub minutes: u32,
 }

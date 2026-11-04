@@ -29,7 +29,7 @@ impl Grade {
     }
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub struct Par {
     pub par_days: u32,
     pub deadline: u32,

@@ -2,6 +2,7 @@ use macroquad::prelude::*;
 
 use super::minigame::{Kind, Minigame, Outcome};
 use super::{confirm_pressed, escape_pressed, say, Ctx, Overworld, Scene};
+use crate::art::{self, Sprites};
 use crate::canvas;
 use crate::data::Data;
 use crate::fx::{Sfx, Slam};
@@ -301,9 +302,8 @@ impl Office {
         let font = &ctx.assets.font;
         let d = &ctx.assets.data;
         let office = d.office(&self.office_id);
-        clear_background(ui::WALL);
-        draw_rectangle(0.0, 200.0, canvas::WIDTH, 50.0, ui::WOOD);
-        draw_rectangle(0.0, 196.0, canvas::WIDTH, 4.0, ui::INK);
+        let index = d.offices.iter().position(|o| o.id == self.office_id);
+        draw_room(&ctx.assets.art, index.unwrap_or(0));
         let name_w = ui::text_width(font, &office.name, 16) + 24.0;
         ui::panel((canvas::WIDTH - name_w) / 2.0, 36.0, name_w, 26.0);
         ui::text_centered(font, &office.name, canvas::WIDTH / 2.0, 54.0, 16, ui::INK);
@@ -345,4 +345,79 @@ impl Office {
         }
         ui::hud(font, d, &self.run);
     }
+}
+
+/// The back wall, the clerk, and the counter, at 3x so the room feels close.
+fn draw_room(art: &Sprites, index: usize) {
+    const K: f32 = 3.0;
+    const COUNTER: f32 = 196.0;
+    let tile = Rect::new(0.0, 0.0, 16.0, 16.0);
+    art::fill(
+        &art.wallpaper,
+        tile,
+        Rect::new(0.0, 0.0, canvas::WIDTH, COUNTER),
+        K,
+        0.0,
+    );
+    draw_rectangle(
+        0.0,
+        160.0,
+        canvas::WIDTH,
+        COUNTER - 160.0,
+        Color::from_hex(0x8a5530),
+    );
+    draw_rectangle(0.0, 158.0, canvas::WIDTH, 3.0, Color::from_hex(0x6a3e22));
+    art::image(&art.window, 56.0, 72.0, K);
+    art::image(&art.clock, 176.0, 74.0, K);
+    art::image(&art.board, 456.0, 70.0, K);
+    art::image(&art.plant, 572.0, 160.0 - 24.0 * K + 18.0, K);
+
+    // The clerk blinks now and then. Each office has its own.
+    let blink = (get_time() % 3.7) < 0.14;
+    let row = (index % 4) as f32;
+    let src = Rect::new(if blink { 16.0 } else { 0.0 }, row * 18.0, 16.0, 18.0);
+    art::blit(
+        &art.clerks,
+        src,
+        canvas::WIDTH / 2.0 - 8.0 * K,
+        COUNTER - 18.0 * K + 6.0,
+        K,
+        false,
+    );
+
+    draw_rectangle(0.0, COUNTER, canvas::WIDTH, 12.0, Color::from_hex(0xc88a50));
+    draw_rectangle(
+        0.0,
+        COUNTER + 2.0,
+        canvas::WIDTH,
+        2.0,
+        Color::from_hex(0xe0a868),
+    );
+    draw_rectangle(
+        0.0,
+        COUNTER + 12.0,
+        canvas::WIDTH,
+        44.0,
+        Color::from_hex(0xa06a3a),
+    );
+    let mut x = 24.0;
+    while x < canvas::WIDTH {
+        draw_rectangle(x, COUNTER + 12.0, 3.0, 44.0, Color::from_hex(0x7e5230));
+        x += 64.0;
+    }
+    draw_rectangle(0.0, COUNTER - 1.0, canvas::WIDTH, 2.0, ui::INK);
+    draw_rectangle(0.0, COUNTER + 11.0, canvas::WIDTH, 2.0, ui::INK);
+    art::fill(
+        &art.floor,
+        tile,
+        Rect::new(
+            0.0,
+            COUNTER + 56.0,
+            canvas::WIDTH,
+            canvas::HEIGHT - COUNTER - 56.0,
+        ),
+        K,
+        0.0,
+    );
+    draw_rectangle(0.0, COUNTER + 55.0, canvas::WIDTH, 2.0, ui::INK);
 }

@@ -67,7 +67,7 @@
     "o_wait": ["You wait. The bar does not move.", "You wait. Someone says it is the cable. Someone else says it is the rain."],
     "o_refresh": ["\"Has it come back?\" \"No.\""],
     "o_annoyed": ["\"Sir. If you ask again it will take longer.\" It takes longer."],
-    "o_honorer": ["Mas Honorer sips your coffee. \"{min} more minutes. Trust me.\""],
+    "o_reronoh": ["Mas Reronoh sips your coffee. \"{min} more minutes. Trust me.\""],
     "o_back": ["The system is back. Everyone pretends it never left."],
     "o_home": ["You give up your number and go home. Tomorrow the system will be up. Probably."],
 

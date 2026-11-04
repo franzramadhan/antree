@@ -3,7 +3,7 @@
 
 use macroquad::prelude::*;
 
-use super::{confirm_pressed, escape_pressed, Ctx, QuestSelect, Scene};
+use super::{confirm_pressed, draw_town, escape_pressed, Ctx, QuestSelect, Scene};
 use crate::canvas;
 use crate::data::Data;
 use crate::fx::{Sfx, Slam};
@@ -124,7 +124,7 @@ impl Tutorial {
         let font = &ctx.assets.font;
         let d = &ctx.assets.data;
         let form = &d.tutorial;
-        clear_background(ui::WALL);
+        draw_town(ctx, None, None);
         ui::panel(32.0, 20.0, canvas::WIDTH - 64.0, 316.0);
         ui::text(font, &form.title, 44.0, 42.0, 16, ui::INK);
         draw_line(44.0, 52.0, canvas::WIDTH - 44.0, 52.0, 1.0, ui::FADED);

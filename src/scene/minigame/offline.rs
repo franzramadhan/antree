@@ -34,7 +34,7 @@ impl OfflineGame {
                 self.msg = cannot_pay(d, office, run, COFFEE);
                 return Outcome::Running;
             }
-            2 => Act::AskHonorer,
+            2 => Act::AskReronoh,
             _ => {
                 return Outcome::Failed {
                     line: say(d, office, "o_home", run),
@@ -80,7 +80,7 @@ impl OfflineGame {
             ui::text(font, &known, 136.0, 154.0, 16, ui::FADED);
         }
         ui::message(font, &self.msg);
-        let labels = ["off_wait", "off_refresh", "off_honorer", "off_home"].map(|k| d.s(k, &[]));
+        let labels = ["off_wait", "off_refresh", "off_reronoh", "off_home"].map(|k| d.s(k, &[]));
         ui::choice_buttons(font, &labels, ctx.mouse, |i| i != 2 || !self.sys.revealed);
         ui::hint(font, &d.s("hint_walkout", &[]));
     }

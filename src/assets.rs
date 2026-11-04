@@ -1,10 +1,12 @@
 use macroquad::prelude::*;
 
+use crate::art::Sprites;
 use crate::data::Data;
 
 pub struct Assets {
     pub font: Font,
     pub stamp: Texture2D,
+    pub art: Sprites,
     pub data: Data,
 }
 
@@ -20,6 +22,7 @@ impl Assets {
         Assets {
             font,
             stamp,
+            art: Sprites::load().await,
             data: Data::load().await,
         }
     }

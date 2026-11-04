@@ -1,7 +1,9 @@
 //! Days, Money, Conscience.
 
+use serde::{Deserialize, Serialize};
+
 /// `days` is the current day number, starting at 1.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Meters {
     pub days: u32,
     pub money: i64,

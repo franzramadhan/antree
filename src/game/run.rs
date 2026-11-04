@@ -1,6 +1,8 @@
 //! One attempt at one quest. Owns the meters, the clock, the inventory, and
 //! everything the offices remember about you.
 
+use serde::{Deserialize, Serialize};
+
 use super::clock::Clock;
 use super::grade::Par;
 use super::meters::Meters;
@@ -19,7 +21,7 @@ pub enum Status {
     Failed,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Run {
     pub seed: u64,
     pub quest_id: String,
@@ -43,7 +45,9 @@ pub struct Run {
     greased: Vec<(String, u32)>,
     under_review: Vec<(String, u32)>,
     visits: Vec<String>,
-    /// Every grant of every office, for chain resolution.
+    /// Every grant of every office, for chain resolution. Not saved: it comes
+    /// from the data files, which may change between sessions.
+    #[serde(skip)]
     grants: Vec<Grant>,
 }
 
@@ -72,6 +76,12 @@ impl Run {
             visits: Vec::new(),
             grants,
         }
+    }
+
+    /// A saved run gets its grants back from the data files.
+    pub fn with_grants(mut self, grants: Vec<Grant>) -> Self {
+        self.grants = grants;
+        self
     }
 
     /// A stream for one purpose, stable for the whole day.

@@ -1,10 +1,10 @@
-# Antri: Game Design Document
+# Antree: Game Design Document
 
-Working title: Antri. Setting: Republik Kuvukiland.
+Working title: Antree. Setting: Republik Kuvukiland.
 
 ## 1. Pitch
 
-Antri is a 2D top-down satire game about getting one piece of paper from the government of Kuvukiland. The player is an ordinary citizen with a simple goal, a lost identity card or a birth certificate. The game turns that goal into a chain of offices, stamps, photocopies, and queues. Each office is a small desk minigame. Three meters track the cost: days, money, and conscience. Every obstacle is one a real citizen recognizes. The player finishes a run and says "yeah, that is exactly how it goes."
+Antree is a 2D top-down satire game about getting one piece of paper from the government of Kuvukiland. The player is an ordinary citizen with a simple goal, a lost identity card or a birth certificate. The game turns that goal into a chain of offices, stamps, photocopies, and queues. Each office is a small desk minigame. Three meters track the cost: days, money, and conscience. Every obstacle is one a real citizen recognizes. The player finishes a run and says "yeah, that is exactly how it goes."
 
 All in-game text is English, written in the register of a counter clerk: "Did you photocopy it?", "The system is down. Head office.", "Come back tomorrow.", "Anything for cigarettes?". Proper nouns (offices, documents, titles) use the Kuvukiland naming table in section 9. Code, comments, commits, and docs are English.
 
@@ -55,11 +55,11 @@ Quests unlock in order. Finishing a quest with any grade except F unlocks the ne
 
 | # | Quest | Visible chain | Hidden requirement pool | Wrong requirement pool | Par days | Deadline | Budget | Official fees |
 |---|---|---|---|---|---|---|---|---|
-| 1 | Lost KTPSS | Polsek SK (loss report), Pak Kaling (cover letter), Kelurahan Sabar Menanti (cover letter), Dukcatan (KTPSS) | KSK photocopy in triplicate, red background photo | SKTPA, 2 duty stamps | 4 | 8 | 400 Kv | 0 Kv |
-| 2 | Get an SKTPA | Pak Kaling, Kelurahan, Polsek SK (SKTPA), BKFN (certified copies, 5) | 4x6 photo, health letter from Puskesnung | SPUSP, yellow folder | 5 | 10 | 500 Kv | 30 Kv |
-| 3 | Renew the SIM | Puskesnung (health letter), Klinik Sabar (queue psychology test), Satpan (new SIM) | Old SIM expired one day ago, so the theory test is required | Kelurahan cover letter | 3 | 7 | 600 Kv | 120 Kv |
-| 4 | Birth certificate | Puskesnung (birth note), Pak Kaling, Kelurahan, Dukcatan (certificate) | Parent names must match the KTPSS exactly, one typo triggers the data correction loop | Marriage certificate certified by BKFN | 5 | 10 | 500 Kv | 0 Kv |
-| 5 | Building permit (PBYM) | BPYMS (land letter), DTRYB (zoning recommendation), Kelurahan (neighbour no-objection), DPSPTD (PBYM) | DPSPTD front door is locked, side door opens via the inside man or after 2 days of waiting; SPUSP needed before the cover letter | SKTPA, health letter | 8 | 16 | 1500 Kv | 250 Kv |
+| 1 | Lost KTPSS | Poldur SK (loss report), Pak Kaling (cover letter), Kuvuvavaland Small District Sabar Menanti (cover letter), Dukcatan (KTPSS) | KSK photocopy in triplicate, red background photo | SKTPA, 2 duty stamps | 4 | 8 | 400 Kv | 0 Kv |
+| 2 | Get an SKTPA | Pak Kaling, Small District, Poldur SK (SKTPA), BKFN (certified copies, 5) | 4x6 photo, health letter from Puskesnung | SPUSP, yellow folder | 5 | 10 | 500 Kv | 30 Kv |
+| 3 | Renew the SIM | Puskesnung (health letter), Klinik Sabar (queue psychology test), Satpan (new SIM) | Old SIM expired one day ago, so the theory test is required | Small District cover letter | 3 | 7 | 600 Kv | 120 Kv |
+| 4 | Birth certificate | Puskesnung (birth note), Pak Kaling, Small District, Dukcatan (certificate) | Parent names must match the KTPSS exactly, one typo triggers the data correction loop | Marriage certificate certified by BKFN | 5 | 10 | 500 Kv | 0 Kv |
+| 5 | Building permit (PBYM) | BPYMS (land letter), DTRYB (zoning recommendation), Small District (neighbour no-objection), DPSPTD (PBYM) | DPSPTD front door is locked, side door opens via the inside man or after 2 days of waiting; SPUSP needed before the cover letter | SKTPA, health letter | 8 | 16 | 1500 Kv | 250 Kv |
 
 Chain resolution: an office grants a document when the player holds its required document ids. The quest completes when the final document is in the inventory. The chain is a directed graph, so offices can be visited in any order.
 
@@ -80,7 +80,7 @@ The clerk lists requirements for 4 seconds: copy count, duty stamp value, folder
 Queue of 6 to 14 people. Each tick one event may fire: an auntie cuts in with "just a quick question" (15 percent), the inside man walks past (8 percent), a fixer offers a slot (15 percent). Actions: stay quiet (lose the place), confront (roll per section 3), cut the line (Conscience -10), pay the fixer (Money, Conscience -15). The counter serves one number every 1 to 2 ticks, so a patient player is served in 10 to 30 ticks. Failure: the counter closes before your number.
 
 ### 5.5 System Down
-A progress bar that stalls at random points. Actions: wait (10 minutes per press), refresh (asks the clerk, 3 refreshes in a row annoy them and add 20 minutes), go home (lose the number, come back tomorrow), ask Mas Honorer (he knows the system comes back in N minutes, costs a cup of coffee, 15 Kv, no Conscience cost). Failure: the office closes.
+A progress bar that stalls at random points. Actions: wait (10 minutes per press), refresh (asks the clerk, 3 refreshes in a row annoy them and add 20 minutes), go home (lose the number, come back tomorrow), ask Mas Reronoh (he knows the system comes back in N minutes, costs a cup of coffee, 15 Kv, no Conscience cost). Failure: the office closes.
 
 ### 5.6 Negotiation
 Dialog tree. The clerk hints at an "unofficial administrative fee" without ever saying a number first. Options: pay (Money, Conscience -20, skip remaining obstacles here today), decline politely (no cost, obstacle roll gets +20 weight on bad outcomes), report it (10 percent: free pass and a clerk replaced, 90 percent: your file becomes "under review" for 2 days). A fixer cannot be reported. The game never comments on the choice.
@@ -123,7 +123,7 @@ Title screen disclaimer: "Kuvukiland is a fictional country. Any resemblance to 
 
 ## 8. Art and audio direction
 
-Internal canvas 640x360, integer scaled, letterboxed. Pixel art, 16x16 tiles. Palette: faded government beige, mint green walls, brown wood counters, one saturated red for stamps and "REJECTED". Overworld tiles and characters from Kenney CC0 packs (Tiny Town, Roguelike Characters, Roguelike Modern City). Office interiors are code-drawn rectangles plus Kenney furniture tiles. UI panels look like carbon copy forms with dotted lines. Font: Pixel Operator (CC0), 8 and 16 pixel sizes.
+Internal canvas 640x360, integer scaled, letterboxed. Pixel art, 16x16 tiles. Palette: faded government beige, mint green walls, brown wood counters, one saturated red for stamps and "REJECTED". Original cozy top-down art drawn by tools/sprites.py: 16x24 characters with 4-way walk cycles, composed buildings, trees, and a 3x office interior with a blinking clerk. UI panels look like carbon copy forms with dotted lines. Font: Pixel Operator (CC0), 8 and 16 pixel sizes.
 
 Audio: synthesized at boot, no third-party files. Stamp thud for approvals, buzz for refusals, dot matrix printer for forms, counter bell for queue advances and doors, a modem stutter for system down, a coin clink for Money, a click for other input. M mutes. No music.
 
@@ -136,14 +136,14 @@ Tutorial: form ORI-01 before the first errand. Each row explains one control. Bl
 | Role | Kuvukiland name |
 |---|---|
 | Country | Republik Kuvukiland |
-| Capital | Kota Antri Raya |
-| Village office | Kelurahan Sabar Menanti |
-| Sub-district | Kecamatan Besok Lagi |
+| Capital | Kota Antree Raya |
+| Village office | Kuvuvavaland Small District Sabar Menanti |
+| Sub-district | Ketamacan Besok Lagi |
 | District | Kabupaten Tunggu Sebentar |
 | Neighbourhood head | Pos Ketua Lingkungan, Pak Kaling |
 | Civil registry | Dinas Kependudukan dan Pencatatan Antrian (Dukcatan) |
 | One-stop licensing | Dinas Perizinan Satu Pintu Tapi Pintunya Dikunci (DPSPTD) |
-| Police certificate desk | Kantor Polisi Sektor Surat Keterangan (Polsek SK) |
+| Police certificate desk | Kantor Polpolan Sektor Tidur (Poldur SK) |
 | Licence issuing unit | Satuan Penyelenggara Antrian (Satpan) |
 | National photocopy agency | Badan Koordinasi Fotokopi Nasional (BKFN) |
 | Public clinic | Pusat Kesehatan Menunggu (Puskesnung) |
@@ -152,13 +152,13 @@ Tutorial: form ORI-01 before the first errand. Each row explains one control. Bl
 | Spatial planning | Dinas Tata Ruang Yang Berubah (DTRYB) |
 | Identity card | Kartu Tanda Penduduk Sementara Selamanya (KTPSS) |
 | Family card | Kartu Susunan Keluarga (KSK) |
-| Police clearance | Surat Keterangan Tidak Pernah Antri (SKTPA) |
+| Police clearance | Surat Keterangan Tidak Pernah Antree (SKTPA) |
 | Driving licence | Surat Izin Mengantri (SIM) |
 | Cover letter | Surat Pengantar Untuk Surat Pengantar (SPUSP) |
 | Building permit | Persetujuan Bangunan Yang Mungkin (PBYM) |
 | Birth certificate | Akta Kelahiran Yang Sah Katanya |
 | Currency | Kuvuk (Kv) |
-| Titles | Pak Lurah, Bu Camat, Pak Kabid, Mas Honorer, Ibu Loket 3, Pak Satpam |
+| Titles | Pah Harul, Bu Tamac, Pak Dibak, Mas Reronoh, Ibu Tekol 3, Pak Maptas |
 | Archetypes | clerk, fixer, line-cutting auntie, inside man, security guard, angry uncle |
 
 ## 10. Cut list
