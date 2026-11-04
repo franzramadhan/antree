@@ -132,7 +132,7 @@ Title screen disclaimer: "Kuvukiland is a fictional country. Any resemblance to 
 
 ## 8. Art and audio direction
 
-Internal canvas 640x360, integer scaled from 2x (fractional on phones), letterboxed. Pixel art, 16x16 tiles. Palette: faded government beige, mint green walls, brown wood counters, one saturated red for stamps and "REJECTED". Original top-down art from tools/sprites.py: 16x24 characters with walk cycles, buildings, trees, and a 3x office interior with a blinking clerk. UI panels look like carbon copy forms with dotted lines. Font: Pixel Operator (CC0), 8 and 16 pixel sizes.
+Internal canvas 640x360, integer scaled from 2x (fractional on phones), letterboxed. Touch screens get on-screen keys. Pixel art, 16x16 tiles. Palette: faded government beige, mint green walls, brown wood counters, one saturated red for stamps and "REJECTED". Original top-down art from tools/sprites.py: 16x24 characters with walk cycles, buildings, trees, and a 3x office interior with a blinking clerk. UI panels look like carbon copy forms with dotted lines. Font: Pixel Operator (CC0), 8 and 16 pixel sizes.
 
 Audio: synthesized at boot. Stamp thud, refusal buzz, dot matrix printer, counter bell, modem stutter, coin clink, click. Music: "Please Hold", an original 2/4 hold tune that loops forever, synthesized from MIDI at boot. M mutes.
 
@@ -185,11 +185,10 @@ Tutorial: form ORI-01 before the first errand. Each row explains one control. Bl
 2. Quest 5 (PBYM).
 3. Queue Theory Test minigame (Quest 3 falls back to Form Filling).
 4. Report option in Negotiation.
-5. Touch input.
-6. Stamp Hunt wrong directions.
-7. Quest 4 (birth certificate).
-8. Photocopy Run memory element.
-9. Seed sharing UI.
+5. Stamp Hunt wrong directions.
+6. Quest 4 (birth certificate).
+7. Photocopy Run memory element.
+8. Seed sharing UI.
 10. Inside man contact unlock.
 
 Phase 5 cut item 1: a fan loop needs a recording.

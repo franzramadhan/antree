@@ -37,6 +37,9 @@ were.
 | Esc | Pause menu: save progress or go back to the main menu |
 | M | Sound on or off |
 
+On a phone or tablet, on-screen buttons send the same keys: a D-pad, OK
+(Enter), Esc, and the letter keys.
+
 To save progress, pick "Save progress" in the pause menu. Nothing saves on
 its own. Saves
 live in your browser's local storage, so clearing site data removes them.

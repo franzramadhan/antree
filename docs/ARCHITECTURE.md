@@ -151,13 +151,15 @@ The town (`overworld::draw_town`) is also the backdrop of the title, quest selec
 
 ## 7. Rendering and scaling
 
-`canvas.rs` owns a 640x360 render target. Every scene draws into it with a fixed camera. After the scene draws, main computes `scale = floor(min(w / 640, h / 360))`, at least 1, and blits the target centred with black bars. Mouse coordinates are mapped back through the same transform. Nearest neighbour filtering on the target.
+`canvas.rs` owns a 640x360 render target. Every scene draws into it with a fixed camera. After the scene draws, main computes `scale = floor(min(w / 640, h / 360))` from 2x up, or the exact fraction below 2x so phones fit, and blits the target centred with black bars. Mouse coordinates are mapped back through the same transform. Nearest neighbour filtering on the target.
 
 ## 8. Build and deploy
 
-`make web`: `cargo build --release --target wasm32-unknown-unknown`, copy the wasm, `index.html`, the vendored and pinned `mq_js_bundle.js`, the quad-storage plugins `sapp_jsutils.js` and `quad-storage.js`, and `assets/` into `dist/`. `.cargo/config.toml` passes `--allow-undefined` to the wasm linker, because recent rustc rejects the JS imports those plugins provide at load time. The `index.html` is static, no bundler. nginx serves `dist/` with `application/wasm` for `.wasm`, which `nginx:alpine` already maps.
+`make web`: `cargo build --release --target wasm32-unknown-unknown`, copy the wasm, `index.html`, `boot.js`, `pad.js`, the vendored and pinned `mq_js_bundle.js`, the quad-storage plugins `sapp_jsutils.js` and `quad-storage.js`, and `assets/` into `dist/`. `.cargo/config.toml` passes `--allow-undefined` to the wasm linker, because recent rustc rejects the JS imports those plugins provide at load time. The `index.html` is static, no bundler.
 
-Dockerfile: stage one is `rust:1-slim` with the wasm target, runs `make web`. Stage two is `nginx:alpine` with `dist/` copied to `/usr/share/nginx/html`. Kustomize in `deploy/` with Deployment, Service, Ingress.
+`pad.js` adds on-screen buttons when the page matches `(pointer: coarse)`. Each button dispatches a `KeyboardEvent` with a `code` to the canvas, which is what the macroquad bundle reads, so the game sees a real key and needs no touch code.
+
+`server/` is `antree-server`, a wasi:http component that embeds `dist/` at build time and serves it with a CSP, `no-cache`, and one ETag per build. `build.sh` runs `make web` and builds the component. The Dockerfile copies `antree-server.wasm` into a `FROM scratch` `linux/amd64` image, which the cluster runs under the runwasi wasmtime shim.
 
 ## 9. Testing
 

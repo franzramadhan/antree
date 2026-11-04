@@ -10,7 +10,7 @@ web:
 	rm -rf dist
 	mkdir -p dist
 	cp $(WASM) dist/antree.wasm
-	cp web/index.html web/mq_js_bundle.js web/sapp_jsutils.js web/quad-storage.js web/boot.js dist/
+	cp web/index.html web/mq_js_bundle.js web/sapp_jsutils.js web/quad-storage.js web/boot.js web/pad.js dist/
 	cp -r assets dist/assets
 
 # Regenerate the pixel art sheets in assets/sprites (needs Pillow).
