@@ -131,7 +131,7 @@ A grant may set a `fee`, and a `task` that replaces the random pick from the off
 
 `dialog/common.ron` and `dialog/<office>.ron`: maps from a dialog key to a list of variants. An office file overrides single keys, and `common.ron` is the fallback. A missing key renders as `??key??`. The variant is picked from the clock, so it is stable within a moment. `{doc}`, `{fee}`, and similar placeholders are filled by the scene.
 
-`id/` holds the Indonesian text. With `Lang::Id`, `Data::build` lays it over the English data: `strings.ron` and every dialog file merge by key, `quests.ron` maps a quest id to its title and intro, and `docs.ron`, `forms.ron`, `theory.ron`, and `tutorial.ron` replace the English lists. Ids, tuning, and answers come only from the English files. The title menu stores `lang` in the save and reopens, and main reloads `Data`. The test `id_overlay_matches_english` checks matching keys, placeholders, ids, answers, and ASCII only text.
+`id/` holds the Indonesian text. With `Lang::Id`, `Data::build` lays it over the English data: `strings.ron` and every dialog file merge by key, `quests.ron` maps a quest id to its title and intro, and `docs.ron`, `forms.ron`, `theory.ron`, and `tutorial.ron` replace the English lists. Ids, tuning, and answers come only from the English files. Boot loads both languages. The title menu stores `lang` in the save and reopens, and main swaps `Assets::data` with `Assets::other`, so the switch never waits on a fetch. The test `id_overlay_matches_english` checks matching keys, placeholders, ids, answers, and ASCII only text.
 
 ## 5. Seeded randomness
 

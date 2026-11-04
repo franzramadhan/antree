@@ -49,8 +49,8 @@ async fn main() {
         next_frame().await;
         // The title menu switches language by saving it and reopening itself.
         if changed && save::Save::load().lang != lang {
-            lang = save::Save::load().lang;
-            assets.data = data::Data::load(lang).await;
+            lang = lang.next();
+            std::mem::swap(&mut assets.data, &mut assets.other);
         }
     }
 }

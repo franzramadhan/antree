@@ -11,6 +11,8 @@ pub struct Assets {
     pub stamp: Texture2D,
     pub art: Sprites,
     pub data: Data,
+    /// The other language, loaded at boot so switching never waits on a fetch.
+    pub other: Data,
 }
 
 impl Assets {
@@ -22,11 +24,16 @@ impl Assets {
             .await
             .expect("stamp");
         stamp.set_filter(FilterMode::Nearest);
+        let [data, other]: [Data; 2] = join_all([Data::load(lang), Data::load(lang.next())])
+            .await
+            .try_into()
+            .unwrap_or_else(|_| unreachable!());
         Assets {
             font,
             stamp,
             art: Sprites::load().await,
-            data: Data::load(lang).await,
+            data,
+            other,
         }
     }
 }
