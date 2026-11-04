@@ -1,3 +1,4 @@
 /target
 /dist
 local.data
+/antree-server.wasm

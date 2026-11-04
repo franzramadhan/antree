@@ -10,7 +10,7 @@ web:
 	rm -rf dist
 	mkdir -p dist
 	cp $(WASM) dist/antree.wasm
-	cp web/index.html web/mq_js_bundle.js web/sapp_jsutils.js web/quad-storage.js dist/
+	cp web/index.html web/mq_js_bundle.js web/sapp_jsutils.js web/quad-storage.js web/boot.js dist/
 	cp -r assets dist/assets
 
 # Regenerate the pixel art sheets in assets/sprites (needs Pillow).
@@ -21,13 +21,16 @@ serve:
 	python3 -m http.server 8080 --directory dist
 
 image:
-	docker build -t antree:local .
+	./build.sh && docker build --platform linux/amd64 -t antree:local .
 
 check: words
 	cargo fmt --all -- --check
 	cargo clippy --all-targets -- -D warnings
 	cargo clippy --target wasm32-unknown-unknown -- -D warnings
 	cargo test
+	cargo fmt --manifest-path server/Cargo.toml -- --check
+	cargo clippy --manifest-path server/Cargo.toml --target-dir target/server --all-targets -- -D warnings
+	cargo test --manifest-path server/Cargo.toml --target-dir target/server
 
 # Fail if any real-world reference slipped into the repo.
 words:

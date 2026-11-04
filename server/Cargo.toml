@@ -1,0 +1,22 @@
+[package]
+name = "antree-server"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "Serves the Antree web build (dist/) as a wasi:http component"
+publish = false
+
+# Not part of the game's build: its own lock file and target dir.
+[workspace]
+
+[dependencies]
+wstd = { version = "0.6.8", default-features = false }
+# Pinned to WASI 0.2.4: the runwasi wasmtime shim (wasmtime 36) serves WASI
+# 0.2.6 and refuses components that import newer versions.
+wasip2 = "=1.0.1"
+
+[profile.release]
+opt-level = "s"
+lto = true
+strip = true
+codegen-units = 1
