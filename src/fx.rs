@@ -4,10 +4,12 @@
 use std::cell::Cell;
 use std::f32::consts::TAU;
 
-use macroquad::audio::{load_sound_from_bytes, play_sound_once, Sound};
+use macroquad::audio::{
+    load_sound_from_bytes, play_sound, play_sound_once, set_sound_volume, PlaySoundParams, Sound,
+};
 use macroquad::prelude::*;
 
-const RATE: u32 = 22050;
+const RATE: u32 = crate::music::RATE;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Sfx {
@@ -133,9 +135,12 @@ pub fn wav(samples: &[f32]) -> Vec<u8> {
     out
 }
 
-/// Sounds, mute, and screen shake. Shared by every scene through `Ctx`.
+const MUSIC_VOLUME: f32 = 0.35;
+
+/// Sounds, music, mute, and screen shake. Shared by every scene through `Ctx`.
 pub struct Fx {
     sounds: Vec<Sound>,
+    music: Sound,
     muted: Cell<bool>,
     shake: Cell<f32>,
     played: Cell<bool>,
@@ -148,8 +153,21 @@ impl Fx {
             let bytes = wav(&synth(sfx));
             sounds.push(load_sound_from_bytes(&bytes).await.expect("sfx"));
         }
+        let (notes, end) =
+            crate::music::parse(include_bytes!("../assets/music/hold.mid")).expect("song");
+        let music = load_sound_from_bytes(&wav(&crate::music::render(&notes, end)))
+            .await
+            .expect("song");
+        play_sound(
+            &music,
+            PlaySoundParams {
+                looped: true,
+                volume: MUSIC_VOLUME,
+            },
+        );
         Fx {
             sounds,
+            music,
             muted: Cell::new(false),
             shake: Cell::new(0.0),
             played: Cell::new(false),
@@ -169,6 +187,8 @@ impl Fx {
 
     pub fn toggle_mute(&self) {
         self.muted.set(!self.muted.get());
+        let volume = if self.muted.get() { 0.0 } else { MUSIC_VOLUME };
+        set_sound_volume(&self.music, volume);
     }
 
     pub fn shake(&self, secs: f32) {

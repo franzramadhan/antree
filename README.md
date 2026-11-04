@@ -24,7 +24,7 @@ were.
   tomorrow
 - A short orientation form that teaches the controls
 - Save your progress in the browser and continue later
-- Original pixel art and synthesized sound, no downloads after the first load
+- Original pixel art, synthesized sound, and an original hold-music loop, no downloads after the first load
 
 ## Controls
 

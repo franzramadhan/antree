@@ -9,6 +9,7 @@ Single Rust crate, macroquad, wasm32-unknown-unknown. No backend, no network cal
 | macroquad | Window, input, rendering, text, asset loading on web |
 | serde, ron | Data files |
 | quad-storage | localStorage on web, a file on native. The only storage wrapper |
+| midly | Reads the background song MIDI |
 
 No other runtime dependencies. RNG is a hand-written SplitMix64 in `game/rng.rs` so determinism does not depend on a crate's version.
 
@@ -18,7 +19,8 @@ No other runtime dependencies. RNG is a hand-written SplitMix64 in `game/rng.rs`
 src/
   main.rs            macroquad entry, game loop, calls scene::update and scene::draw
   canvas.rs          640x360 render target, integer scale, letterbox, mouse coordinate mapping
-  fx.rs              synthesized sounds as WAV bytes, mute, screen shake, stamp slam animation
+  fx.rs              synthesized sounds as WAV bytes, music loop, mute, screen shake, stamp slam animation
+  music.rs           parses assets/music/hold.mid (midly) and renders it to samples, pure and tested
   assets.rs          loads the font, sprites, and Data once at boot
   art.rs             sprite sheets, tile fill, character walk frames
   data.rs            Rust structs mirroring the RON files, loading, validation, dialog lookup

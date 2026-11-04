@@ -4,6 +4,7 @@ mod canvas;
 mod data;
 mod fx;
 mod game;
+mod music;
 mod save;
 mod scene;
 mod ui;

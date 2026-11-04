@@ -119,15 +119,15 @@ Modifiers: after declining politely in Negotiation, add 20 to every non-Smooth w
 
 Grade X overrides S to D. The ending screen shows the three meters, the grade, a one-line "clerk's note" picked from a pool, the seed, and a restart button. Best grade per quest is saved.
 
-Title screen disclaimer: "Kuvukiland is a fictional country. Any resemblance to any real country is purely coincidental, allegedly." The same line goes in README and NOTICE.
+Title screen disclaimer: "Kuvukiland is a fictional country. Any resemblance to any real country is purely coincidental, allegedly." README repeats it.
 
 ## 8. Art and audio direction
 
 Internal canvas 640x360, integer scaled, letterboxed. Pixel art, 16x16 tiles. Palette: faded government beige, mint green walls, brown wood counters, one saturated red for stamps and "REJECTED". Original cozy top-down art drawn by tools/sprites.py: 16x24 characters with 4-way walk cycles, composed buildings, trees, and a 3x office interior with a blinking clerk. UI panels look like carbon copy forms with dotted lines. Font: Pixel Operator (CC0), 8 and 16 pixel sizes.
 
-Audio: synthesized at boot, no third-party files. Stamp thud for approvals, buzz for refusals, dot matrix printer for forms, counter bell for queue advances and doors, a modem stutter for system down, a coin clink for Money, a click for other input. M mutes. No music.
+Audio: synthesized at boot. Stamp thud for approvals, buzz for refusals, dot matrix printer for forms, counter bell for queue advances and doors, a modem stutter for system down, a coin clink for Money, a click for other input. Music: "Please Hold", an original 2/4 hold tune that loops forever, synthesized from MIDI at boot. M mutes everything.
 
-Juice: screen shake and a red "REJECTED" stamp on every refusal, a slow stamp slam on approval and on the title, cracks in the Conscience bar below 40.
+Juice: screen shake and a red "REJECTED" stamp on refusals, a stamp slam on approval and the title, cracks in the Conscience bar below 40.
 
 Tutorial: form ORI-01 before the first errand. Each row explains one control. Blank rows are refused, and the complete form is refused once for the wrong ink. Tab on quest select replays it.
 
@@ -163,8 +163,6 @@ Tutorial: form ORI-01 before the first errand. Each row explains one control. Bl
 
 ## 10. Cut list
 
-Drop from the top when time runs out.
-
 1. Ambient fan audio loop (cut in Phase 5).
 2. Quest 5 (PBYM). Longest chain, most new offices.
 3. Queue Theory Test minigame (Quest 3 falls back to Form Filling).
@@ -176,6 +174,6 @@ Drop from the top when time runs out.
 9. Seed sharing UI (seed still shown on the ending screen).
 10. Inside man contact unlock.
 
-Phase 4 cut nothing. Phase 5 cut item 1. Kenney blocks scripted downloads, so sounds are synthesized, and a fan loop needs a recording. Touch stays optional.
+Phase 5 cut item 1, because a fan loop needs a recording. Touch stays optional.
 
 Minimum shippable: Quests 1 to 3, minigames 5.1 to 5.6, obstacle table, grades, save, title with disclaimer.

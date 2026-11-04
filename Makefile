@@ -1,4 +1,4 @@
-.PHONY: dev web serve image check words sprites
+.PHONY: dev web serve image check words sprites music
 
 WASM := target/wasm32-unknown-unknown/release/antree.wasm
 
@@ -16,6 +16,10 @@ web:
 # Regenerate the pixel art sheets in assets/sprites (needs Pillow).
 sprites:
 	python3 tools/sprites.py
+
+# Rewrite the background song, assets/music/hold.mid.
+music:
+	python3 tools/music.py
 
 serve:
 	python3 -m http.server 8080 --directory dist

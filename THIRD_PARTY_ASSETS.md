@@ -10,3 +10,5 @@
 | web/quad-storage.js | https://raw.githubusercontent.com/optozorax/quad-storage/master/js/quad-storage.js (fetched 2026-11-03) | optozorax | MIT or Apache-2.0 (quad-storage) |
 
 Sound effects have no file. `src/fx.rs` synthesizes them at boot, so no third-party audio ships.
+
+The background song, "Please Hold (Ministry Waltz Not Included)", is `assets/music/hold.mid`. It is an original composition for this game, written by `tools/music.py`, and released under CC0. `src/music.rs` turns the MIDI notes into a chiptune loop at boot.
