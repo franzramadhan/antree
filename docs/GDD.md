@@ -53,16 +53,22 @@ A run fails when days exceeds the deadline or money reaches 0 with a required fe
 
 All quests are open from the start. Each chain has one hidden requirement that the first office does not mention, and one wrong requirement that the information board lists but no office asks for. Both are picked by seed from a small pool per quest. After an office issues a document, a new regulation (35 percent, twice per run at most) adds one more document from the quest's rule pool to the goal and the board.
 
-| # | Quest | Visible chain | Hidden requirement pool | Wrong requirement pool | Par days | Deadline | Budget | Official fees |
-|---|---|---|---|---|---|---|---|---|
-| 1 | Lost KTPSS | Poldur SK (loss report), Pak Gnilak (cover letter), Kuvukiland Small District Sabar Menanti (cover letter), Dukcatan (KTPSS) | KSK photocopy in triplicate, red background photo | SKTPA, 2 duty stamps | 4 | 8 | 400 Kv | 0 Kv |
-| 2 | Get an SKTPA | Pak Gnilak, Small District, Poldur SK (SKTPA), BKFN (certified copies, 5) | 4x6 photo, health letter from Puskesnung | SPUSP, yellow folder | 5 | 10 | 500 Kv | 30 Kv |
-| 3 | Renew the SIM | Puskesnung (health letter), Klinik Sabar (queue psychology test), Satpan (new SIM) | Old SIM expired one day ago, so the theory test is required | Small District cover letter | 3 | 7 | 600 Kv | 120 Kv |
-| 4 | Birth certificate | Puskesnung (birth note), Pak Gnilak, Small District, Dukcatan (certificate) | Parent names must match the KTPSS exactly, one typo triggers the data correction loop | Marriage certificate certified by BKFN | 5 | 10 | 500 Kv | 0 Kv |
-| 5 | Building permit (PBYM) | BPYMS (land letter), DTRYB (zoning recommendation), Small District (neighbour no-objection), DPSPTD (PBYM) | DPSPTD front door is locked, side door opens via the inside man or after 2 days of waiting; SPUSP needed before the cover letter | SKTPA, health letter | 8 | 16 | 1500 Kv | 250 Kv |
-| 6 | Death certificate | Puskesnung (death note), Pak Gnilak, Small District, Dukcatan (certificate) | Proof from Pak Gnilak that the deceased was alive, KSK photocopy in triplicate | Red background photo, yellow folder | 5 | 10 | 500 Kv | 0 Kv |
+Hidden, wrong, and rule pools live in `assets/data/quests.ron`.
 
-Chain resolution: an office grants a document when the player holds its requirements. The quest ends when the goal document is in the inventory. Offices can be visited in any order.
+| # | Quest | Visible chain | Par | Deadline | Budget | Fees |
+|---|---|---|---|---|---|---|
+| 1 | Lost KTPSS | Poldur SK, Pak Gnilak, Small District, Dukcatan | 4 | 8 | 400 | 0 |
+| 2 | Get an SKTPA | Pak Gnilak, Small District, BKFN, Poldur SK | 5 | 10 | 500 | 30 |
+| 3 | Renew the SIM | Puskesnung, Klinik Sabar, Satpan (theory test) | 3 | 7 | 600 | 120 |
+| 4 | Birth certificate | Puskesnung, Pak Gnilak, Small District, Dukcatan | 5 | 10 | 500 | 0 |
+| 5 | Building permit | BPYMS, DTRYB, Small District, DPSPTD (locked until day 3) | 8 | 16 | 1500 | 250 |
+| 6 | Death certificate | Puskesnung, Pak Gnilak, Small District, Dukcatan | 5 | 10 | 500 | 0 |
+| 7 | Passport | BKFN (copies, white photo), KUPJ (application, passport) | 4 | 9 | 700 | 300 |
+| 8 | Tax clearance | KPYP (NPWS), Pak Gnilak (income note), BKFN, KPYP | 3 | 7 | 450 | 150 |
+| 9 | Vehicle papers | Samsan (engine rubbing), BKFN, Samsan (STNKK) | 4 | 8 | 600 | 200 |
+| 10 | Food stall licence | Pak Gnilak, Small District, Puskesnung, KPYP, DPSPTD | 6 | 12 | 900 | 200 |
+
+An office grants a document when the player holds its requirements. The quest ends when the goal document is in the inventory. Offices can be visited in any order.
 
 ## 5. Minigame catalog
 
@@ -87,7 +93,7 @@ A progress bar that stalls at random points. Actions: wait (10 minutes per press
 Dialog tree. The clerk hints at an "unofficial administrative fee" without ever saying a number first. Options: pay (Money, Conscience -20, skip remaining obstacles here today), decline politely (no cost, obstacle roll gets +20 weight on bad outcomes), report it (10 percent: free pass and a clerk replaced, 90 percent: your file becomes "under review" for 2 days). A fixer cannot be reported. The game never comments on the choice.
 
 ### 5.7 Queue Theory Test
-Quest 3 only. Ten multiple choice questions about queue etiquette, written as a real theory test with absurd content. Pass at 7 correct. Fail: retake tomorrow, 25 Kv per attempt.
+Quest 3 only. Ten absurd multiple choice questions about queue etiquette. Pass at 7 correct. Fail: retake tomorrow, 25 Kv per attempt.
 
 ## 6. Obstacle table
 
@@ -122,7 +128,7 @@ At the door, the guard may refuse sandals (20 percent until you buy shoes, 40 Kv
 
 Grade X overrides S to D. The ending screen shows the meters, the grade, a clerk's note, and the seed. Best grade per quest is saved.
 
-Title screen disclaimer: "Kuvukiland is a fictional country. Any resemblance to any real country is purely coincidental, allegedly." README repeats it.
+Title screen disclaimer: "Kuvukiland is a fictional country. Any resemblance to any real country is purely coincidental, allegedly."
 
 ## 8. Art and audio direction
 
@@ -152,6 +158,9 @@ Tutorial: form ORI-01 before the first errand. Each row explains one control. Bl
 | Public clinic | Pusat Kesehatan Menunggu (Puskesnung) |
 | Psych test clinic | Klinik Sabar |
 | Land office | Badan Pertanahan Yang Masih Sengketa (BPYMS) |
+| Immigration office | Kantor Urusan Pergi Jauh (KUPJ) |
+| Tax office | Kantor Pungutan Yang Pasti (KPYP) |
+| Vehicle registration | Sistem Administrasi Manunggal Satu Antrian (Samsan) |
 | Spatial planning | Dinas Tata Ruang Yang Berubah (DTRYB) |
 | Identity card | Kartu Tanda Penduduk Sementara Selamanya (KTPSS) |
 | Family card | Kartu Susunan Keluarga (KSK) |
@@ -161,6 +170,11 @@ Tutorial: form ORI-01 before the first errand. Each row explains one control. Bl
 | Building permit | Persetujuan Bangunan Yang Mungkin (PBYM) |
 | Birth certificate | Akta Kelahiran Yang Sah Katanya |
 | Death certificate | Akta Kematian Menunggu Konfirmasi |
+| Passport | Paspor Pergi Belum Tentu Pulang |
+| Taxpayer number | Nomor Pokok Wajib Setor (NPWS) |
+| Tax clearance | Surat Bebas Tunggakan Untuk Sementara |
+| Vehicle letter | Surat Tanda Nunggu Kendaraan Kembali (STNKK) |
+| Micro business licence | Izin Usaha Mikro Sekali (IUMS) |
 | Currency | Kuvuk (Kv) |
 | Titles | Pah Harul, Bu Tamac, Pak Dibak, Mas Reronoh, Ibu Tekol 3, Pak Maptas |
 | Archetypes | clerk, fixer, line-cutting auntie, inside man, security guard, angry uncle |

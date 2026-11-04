@@ -1,0 +1,9 @@
+// Vehicle registration. A yard full of motorbikes and one pencil.
+{
+    "greet": ["\"Motorbike? Bring it round the back. Not that back. The other back.\"", "\"Change of owner? The previous owner must come. He cannot? Then it gets complicated.\""],
+    "missing": ["\"The {doc}, sir. A vehicle without it is just metal.\""],
+    "issued.vehicle_check": ["The officer rubs a pencil over the engine number. Half of it shows. \"Good enough.\""],
+    "issued.stnkk": ["\"Your STNKK. The motorbike is officially yours. So are its old parking tickets.\""],
+    "issued": ["\"Stamped. Next vehicle.\""],
+    "nothing": ["\"Your papers are done. The motorbike is not. That is a mechanic problem.\""],
+}

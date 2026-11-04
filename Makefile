@@ -38,6 +38,6 @@ check: words
 
 # Fail if any real-world reference slipped into the repo.
 words:
-	@! grep -rniE 'indonesia|\bKTP\b|\bSKCK\b|\bIMB\b|\bNIK\b|dukcapil|puskesmas|satpas|\bRT/RW\b|polsek|kelurahan|lurah|camat|kabid|loket|satpam|honorer' \
+	@! grep -rniE 'indonesia|\bKTP\b|\bSKCK\b|\bIMB\b|\bNIK\b|dukcapil|puskesmas|satpas|\bRT/RW\b|polsek|kelurahan|lurah|camat|kabid|loket|satpam|honorer|imigrasi|npwp|samsat|\bSPT\b|\bSTNK\b|\bBPKB\b|\bKUA\b|\bKPP\b|\bNIB\b' \
 		--exclude-dir=target --exclude-dir=dist --exclude-dir=.git --exclude=Makefile . \
 		|| (echo "banned word found" && exit 1)

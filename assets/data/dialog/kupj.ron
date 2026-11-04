@@ -1,0 +1,10 @@
+// The immigration office. Leaving is a privilege, coming back is a form.
+{
+    "greet": ["\"Going abroad? Why? Is something wrong with here?\"", "\"Passport? Take a number. Numbers are for today only. Today is almost over.\""],
+    "missing": ["\"No {doc}, no passport. How would we know you are you?\""],
+    "issued.passport_form": ["\"Application received. Received is not approved. Approved is not printed.\""],
+    "issued.paspor": ["\"Your Paspor Pergi Belum Tentu Pulang. Thirty-two pages. Please do not use them all.\""],
+    "issued": ["\"Stamped. Do not fold it. Do not unfold it either.\""],
+    "nothing": ["\"You have your passport. Go. Or stay. Staying is cheaper.\""],
+    "ob_system": ["\"The photo server is down. Your face cannot be uploaded today.\""],
+}

@@ -1,0 +1,10 @@
+// The tax office. Very sure about the money, unsure about everything else.
+{
+    "greet": ["\"Paying or asking? Asking is in the other queue. Paying is this queue.\"", "\"Taxpayer? Everyone is a taxpayer. Some just do not know it yet.\""],
+    "missing": ["\"Without the {doc} you do not exist for tax purposes. You still owe, though.\""],
+    "issued.npws": ["\"Your NPWS. Congratulations, the state can now find you.\""],
+    "issued.tax_clear": ["\"You owe nothing. For now. The letter is valid until we look again.\""],
+    "issued": ["\"Stamped. Keep the receipt. Keep the receipt of the receipt.\""],
+    "nothing": ["\"You are clear. Leave before we find something.\""],
+    "ob_system": ["\"The tax system is down. Penalties are still running. Those have their own server.\""],
+}

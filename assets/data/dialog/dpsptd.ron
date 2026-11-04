@@ -3,6 +3,7 @@
     "greet": ["\"Welcome to the one-stop service. This is stop one of many.\""],
     "missing": ["\"One stop, sir, but you must bring everything first. Including the {doc}.\""],
     "issued": ["\"Your PBYM. Building is now possibly allowed. Do not build anything yet.\""],
+    "issued.iums": ["\"Your IUMS. You may now sell fried rice. Not near the office. We are hungry, not stupid.\""],
     "nothing": ["\"Your permit is done. The door is now locked from the inside. Please leave through it.\""],
     "locked": ["The only door is locked. A guard says the side door opens \"in a couple of days\". There is no side door."],
 }

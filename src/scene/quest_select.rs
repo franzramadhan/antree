@@ -16,7 +16,7 @@ pub struct QuestSelect {
 }
 
 fn row_rect(i: usize) -> Rect {
-    Rect::new(60.0, 70.0 + i as f32 * 30.0, canvas::WIDTH - 120.0, 26.0)
+    Rect::new(60.0, 56.0 + i as f32 * 22.0, canvas::WIDTH - 120.0, 20.0)
 }
 
 impl QuestSelect {
@@ -77,7 +77,7 @@ impl QuestSelect {
         let font = &ctx.assets.font;
         let d = &ctx.assets.data;
         draw_town(ctx, None, None);
-        ui::panel(44.0, 22.0, canvas::WIDTH - 88.0, 300.0);
+        ui::panel(44.0, 22.0, canvas::WIDTH - 88.0, 316.0);
         ui::text_centered(
             font,
             &d.s("qs_title", &[]),
@@ -97,7 +97,7 @@ impl QuestSelect {
                 font,
                 &format!("{}. {}", i + 1, q.title),
                 r.x + 8.0,
-                r.y + 18.0,
+                r.y + 15.0,
                 16,
                 color,
             );
@@ -108,9 +108,9 @@ impl QuestSelect {
                     &[("grade", b.grade.letter()), ("total", &b.total.to_string())],
                 ),
             };
-            ui::text(font, &status, r.x + r.w - 160.0, r.y + 18.0, 16, color);
+            ui::text(font, &status, r.x + r.w - 160.0, r.y + 15.0, 16, color);
         }
-        let y = row_rect(d.quests.len()).y + 20.0;
+        let y = row_rect(d.quests.len()).y + 14.0;
         let seed = if self.seed.is_empty() {
             d.s("qs_seed_random", &[])
         } else {

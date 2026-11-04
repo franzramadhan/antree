@@ -2,5 +2,6 @@
     "greet": ["\"Yes? Lost something? Everybody has.\"", "\"Take a number. The machine is broken, so take a mental one.\""],
     "missing": ["\"You are missing the {doc}. Did you photocopy it?\""],
     "issued": ["\"Signed, stamped, slightly crooked. Next.\"", "\"Here. Try not to lose this one as well.\""],
+    "issued.no_theft_letter": ["\"Your motorbike is not stolen. As far as we know. We do not know much.\""],
     "nothing": ["\"We already gave you your paper, sir. Go bother someone else.\""],
 }

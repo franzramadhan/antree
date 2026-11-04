@@ -3,6 +3,8 @@
     "greet": ["Pak Gnilak comes out in a sarong. \"A letter? Sit. Tea? No tea. Sit.\"", "\"Ah, you. The one who never comes to the neighbourhood meetings.\""],
     "missing": ["\"Bring the {doc} first. I know you, but the stamp does not know you.\""],
     "issued.life_proof": ["He stamps it on his knee. \"He was alive. He paid his neighbourhood dues last month. Late.\""],
+    "issued.return_letter": ["He writes slowly. \"I, Pak Gnilak, promise this citizen will come back. If not, I keep his chickens.\""],
+    "issued.income_note": ["He looks you up and down. \"Income: modest. Shoes: new.\" He stamps it on his knee."],
     "issued": ["He stamps it on his knee. \"Do not forget the neighbourhood dues.\""],
     "nothing": ["\"I already gave you a letter. A letter for a letter? Go to the Small District.\""],
     "ob_break": ["\"Pak Gnilak is at a wedding, then at the coffee stall, then napping.\" You wait {min} minutes on his porch."],

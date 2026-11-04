@@ -3,6 +3,7 @@
     "greet": ["\"Copies? Photos? Folders? Duty stamps? We have all of it. The copier is warming up since 2009.\""],
     "missing": ["\"I copy what you bring. Bring the {doc}.\""],
     "issued": ["\"Done. Still warm. Next!\"", "\"Here. The colour is close enough. Probably.\""],
+    "issued.photo_white": ["\"Ears out. More. Do not smile, the state does not smile.\" Flash."],
     "nothing": ["\"You need nothing else? Then why are you at a photocopy stall? Everyone needs something.\""],
     "ob_system": ["\"Copier is jammed. The technician is on the way. He has been on the way since Monday.\""],
 }
