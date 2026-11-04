@@ -49,7 +49,7 @@ src/
     overworld.rs     map, information board, travel
     office.rs        greeting, chain check, obstacle roll, minigame host, issue
     minigame/        one screen per minigame, dispatched through an enum
-    ending.rs        grade, save write, unlock notice
+    ending.rs        grade, save write
 ```
 
 Rule: `game/` never imports macroquad. Game logic returns dialog keys (`&'static str`), and scenes turn them into text through `Data::line`. Tests live next to the code in `game/`, `data.rs`, and `save.rs`.
@@ -101,7 +101,7 @@ All writer-facing content is RON under `assets/data/`. macroquad loads them with
 )
 ```
 
-`hidden_pool` entries are `(document, the document that secretly requires it)`. One hidden and one wrong entry are picked per run. The wrong one shows on the board but no grant needs it. Unlock order is the file order.
+`hidden_pool` entries are `(document, the document that secretly requires it)`. One hidden and one wrong entry are picked per run. The wrong one shows on the board but no grant needs it. Menu order is the file order. `rule_pool` lists the documents a surprise regulation may add to the goal.
 
 `offices.ron`
 
@@ -140,10 +140,10 @@ The seed is a u64 shown as a 6 character base32 code. Quest select has a text fi
 One key in quad-storage, `antree.save.v1`, holding RON text. RON rather than JSON because serde_json would be the only reason to add another crate.
 
 ```ron
-(version:1,unlocked:["sktpa"],best:{"ktpss_hilang":(grade:S,total:89,days:4,money:329,conscience:80,seed:"PVZZ3T")},inside_man:true,tutorial_done:true)
+(version:1,best:{"ktpss_hilang":(grade:S,total:89,days:4,money:329,conscience:80,seed:"PVZZ3T")},inside_man:true,tutorial_done:true)
 ```
 
-The first quest is always unlocked. A non-F ending unlocks the next quest and the inside man. Best keeps the highest total, and an F never replaces a completion. Unknown version or unparsable text: ignore the save and start fresh. `tutorial_done` defaults to false, so saves from before it still load. Written after every ending and when the tutorial is approved.
+Every quest is open. A non-F ending unlocks the inside man. Old saves with an `unlocked` list still load, and the field is ignored. Best keeps the highest total, and an F never replaces a completion. Unknown version or unparsable text: ignore the save and start fresh. `tutorial_done` defaults to false, so saves from before it still load. Written after every ending and when the tutorial is approved.
 
 A run in progress goes in a second key, `antree.run.v1`, only when the player picks Save progress in the pause menu. It holds `(version, run, player)`: the whole `Run` and the player's position. Grants are not stored. They come back from the data files on load, so a data edit never fights an old save. The title shows Continue while this key parses. The ending removes it when its seed and quest match the finished run. Main menu without saving keeps the last saved state.
 

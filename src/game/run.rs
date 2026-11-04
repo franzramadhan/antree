@@ -13,6 +13,9 @@ use super::rng::Rng;
 /// Issued when a nonsense form comes back to haunt you.
 pub const DATA_CORRECTION: &str = "data_correction";
 const CORRECTION_CHANCE: u32 = 30;
+/// Chance that a new regulation lands after each document, and the most per run.
+const RULE_CHANCE: u32 = 35;
+const MAX_RULES: usize = 2;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Status {
@@ -40,6 +43,11 @@ pub struct Run {
     /// You used the inside man. Things go smoother from now on.
     pub connected: bool,
     pub correction_due: bool,
+    /// Documents that new regulations added to the goal during the run.
+    #[serde(default)]
+    pub rules: Vec<String>,
+    #[serde(default)]
+    rule_pool: Vec<String>,
     nonsense_forms: u32,
     declined: Vec<String>,
     greased: Vec<(String, u32)>,
@@ -69,6 +77,8 @@ impl Run {
             inside_man,
             connected: false,
             correction_due: false,
+            rules: Vec::new(),
+            rule_pool: quest.rule_pool.clone(),
             nonsense_forms: 0,
             declined: Vec::new(),
             greased: Vec::new(),
@@ -119,8 +129,11 @@ impl Run {
         if self.hidden.1 == doc {
             req.push(self.hidden.0.clone());
         }
-        if self.correction_due && doc == self.goal_doc {
-            req.push(DATA_CORRECTION.to_owned());
+        if doc == self.goal_doc {
+            if self.correction_due {
+                req.push(DATA_CORRECTION.to_owned());
+            }
+            req.extend(self.rules.iter().cloned());
         }
         req
     }
@@ -212,6 +225,32 @@ impl Run {
             .any(|(o, until)| o == office && self.meters.days < *until)
     }
 
+    /// After a document is issued, a new regulation may add one more to the
+    /// goal. Returns the added document, which goes straight onto the board.
+    pub fn new_regulation(&mut self) -> Option<String> {
+        if self.rules.len() >= MAX_RULES || self.inv.has(&self.goal_doc) {
+            return None;
+        }
+        let mut rng = Rng::derive(self.seed, &format!("rule:{}", self.visits.len()));
+        if !rng.chance(RULE_CHANCE) {
+            return None;
+        }
+        let needed = closure(&[&self.goal_doc], |d| self.requires(d));
+        let fresh: Vec<String> = self
+            .rule_pool
+            .iter()
+            .filter(|d| !self.inv.has(d) && !needed.contains(d))
+            .cloned()
+            .collect();
+        if fresh.is_empty() {
+            return None;
+        }
+        let doc = rng.pick(&fresh).clone();
+        self.rules.push(doc.clone());
+        self.learn(&doc);
+        Some(doc)
+    }
+
     /// Filled a form with nonsense. Sometimes the database notices.
     pub fn nonsense_form(&mut self) {
         self.nonsense_forms += 1;
@@ -265,6 +304,7 @@ mod tests {
                 ("photo_red".into(), "kaling_letter".into()),
             ],
             wrong_pool: vec!["sktpa".into()],
+            rule_pool: vec!["ksk_copy_3".into(), "photo_red".into(), "unrelated".into()],
         }
     }
 
@@ -352,6 +392,24 @@ mod tests {
         }
         assert!(r.missing("ktpss").contains(&DATA_CORRECTION.to_owned()));
         assert_eq!(r.offer(&grants()[7..]).unwrap().doc, DATA_CORRECTION);
+    }
+
+    #[test]
+    fn regulations_add_to_the_goal_and_the_board_at_most_twice() {
+        let mut r = run(1);
+        for _ in 0..200 {
+            r.enter("x");
+            if let Some(doc) = r.new_regulation() {
+                assert!(r.missing("ktpss").contains(&doc) && r.known.contains(&doc));
+            }
+        }
+        assert_eq!(r.rules.len(), 2);
+        r.inv.add("ktpss");
+        r.rules.clear();
+        assert!((0..50).all(|_| {
+            r.enter("x");
+            r.new_regulation().is_none()
+        }));
     }
 
     #[test]

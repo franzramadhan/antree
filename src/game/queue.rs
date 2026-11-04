@@ -3,6 +3,9 @@
 use super::rng::Rng;
 
 pub const TICK_MINUTES: u32 = 10;
+/// Chance the guard sees your first cut. Each cut after that is likelier.
+const CATCH_BASE: u32 = 15;
+const CATCH_STEP: u32 = 25;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Event {
@@ -23,8 +26,8 @@ pub enum Action {
 pub enum Outcome {
     Waiting,
     Served,
-    /// A confrontation turned into a fight. The guard throws you out for the day.
-    Fight,
+    /// A fight, or the guard caught you cutting. Thrown out for the day.
+    ThrownOut,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -39,9 +42,9 @@ pub struct Step {
 #[derive(Clone, Debug)]
 pub struct Queue {
     pub ahead: u32,
-    pub start_ahead: u32,
     pub serve_every: u32,
     pub pending: Option<Event>,
+    cuts: u32,
     ticks: u32,
     rng: Rng,
 }
@@ -52,9 +55,9 @@ impl Queue {
         let serve_every = rng.range(1, 3);
         Self {
             ahead,
-            start_ahead: ahead,
             serve_every,
             pending: None,
+            cuts: 0,
             ticks: 0,
             rng,
         }
@@ -105,7 +108,7 @@ impl Queue {
                 if roll < 50 {
                     step.message = "q_confront_ok";
                 } else if roll < 70 {
-                    step.outcome = Outcome::Fight;
+                    step.outcome = Outcome::ThrownOut;
                     step.message = "q_confront_fight";
                     return step;
                 } else {
@@ -115,9 +118,12 @@ impl Queue {
             }
             (Action::Cut, _) => {
                 step.conscience = 10;
-                if self.rng.chance(15) {
-                    self.ahead = self.start_ahead;
+                let catch = (CATCH_BASE + CATCH_STEP * self.cuts).min(90);
+                self.cuts += 1;
+                if self.rng.chance(catch) {
+                    step.outcome = Outcome::ThrownOut;
                     step.message = "q_cut_caught";
+                    return step;
                 } else {
                     let skip = self.rng.range(3, 7);
                     self.ahead = self.ahead.saturating_sub(skip);
@@ -199,6 +205,18 @@ mod tests {
             .iter()
             .all(|s| s.conscience == 10 || s.outcome == Outcome::Served));
         assert!(steps.len() < play(3, Action::Wait).0.len());
+    }
+
+    #[test]
+    fn the_guard_catches_repeat_cutters() {
+        let caught_on = |seed| {
+            let mut q = Queue::new(Rng::derive(seed, "queue:guard"));
+            q.ahead = 1000;
+            (1..=20).find(|_| q.step(Action::Cut).outcome == Outcome::ThrownOut)
+        };
+        let first_try = (0..200).filter(|&s| caught_on(s) == Some(1)).count();
+        assert!((10..60).contains(&first_try), "{first_try}");
+        assert!((0..200).all(|s| caught_on(s).is_some_and(|n| n <= 8)));
     }
 
     #[test]

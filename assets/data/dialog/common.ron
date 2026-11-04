@@ -38,7 +38,7 @@
     "q_confront_ok": ["\"Oh, sorry sir, did not see you.\" The line is restored."],
     "q_confront_fight": ["Voices rise. The guard picks you. Come back tomorrow."],
     "q_confront_fail": ["\"I am only asking!\" She stays. So does everyone behind you."],
-    "q_cut_caught": ["\"Sir. Sir! Back of the line.\" Everyone watched."],
+    "q_cut_caught": ["The guard taps your head with his baton. Tok. \"Out. Come back tomorrow and queue like a citizen.\" Everyone watched.", "A whistle. The guard marches you out by the collar while the whole line claps. Come back tomorrow."],
     "q_cut_ok": ["You slid forward. Nobody said anything. You feel it anyway."],
     "q_fixer_paid": ["A folded note, a nod, and your name is suddenly next."],
     "q_event_auntie": ["An auntie slides in front of you. \"Just a quick question.\""],

@@ -22,6 +22,9 @@ pub struct QuestDef {
     pub hidden_pool: Vec<(String, String)>,
     /// Listed on the board, needed by nobody. One per run.
     pub wrong_pool: Vec<String>,
+    /// Documents a surprise new regulation can add to the goal mid-run.
+    #[serde(default)]
+    pub rule_pool: Vec<String>,
 }
 
 impl QuestDef {

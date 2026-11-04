@@ -28,7 +28,7 @@ Conscience costs per shortcut:
 
 | Action | Conscience | Money | Effect |
 |---|---|---|---|
-| Cut the line | -10 | 0 | Skip 3 to 6 places, 15 percent chance of being sent to the back |
+| Cut the line | -10 | 0 | Skip 3 to 6 places. The guard catches 15 percent, plus 25 per earlier cut, and throws you out for the day |
 | Pay the fixer | -15 | 50 to 150 Kv | Skip to the front of the queue |
 | Grease money (negotiation) | -20 | 100 to 300 Kv | Skip all remaining obstacles at that office today |
 | Call the inside man | -25 | 0 | The current counter issues at once. Once per run, after the first completed quest |
@@ -51,7 +51,7 @@ A run fails when days exceeds the deadline or money reaches 0 with a required fe
 
 ## 4. Quests and document chains
 
-Quests unlock in order. Finishing a quest with any grade except F unlocks the next. Each chain has one hidden requirement that the first office does not mention, and one wrong requirement that the information board lists but no office asks for. Both are picked by seed from a small pool per quest.
+All quests are open from the start. Each chain has one hidden requirement that the first office does not mention, and one wrong requirement that the information board lists but no office asks for. Both are picked by seed from a small pool per quest. After an office issues a document, a new regulation (35 percent, twice per run at most) adds one more document from the quest's rule pool to the goal and the board.
 
 | # | Quest | Visible chain | Hidden requirement pool | Wrong requirement pool | Par days | Deadline | Budget | Official fees |
 |---|---|---|---|---|---|---|---|---|
@@ -166,14 +166,14 @@ Tutorial: form ORI-01 before the first errand. Each row explains one control. Bl
 ## 10. Cut list
 
 1. Ambient fan audio loop (cut in Phase 5).
-2. Quest 5 (PBYM). Longest chain, most new offices.
+2. Quest 5 (PBYM).
 3. Queue Theory Test minigame (Quest 3 falls back to Form Filling).
 4. Report option in Negotiation.
 5. Touch input.
-6. Stamp Hunt wrong directions (holder shown directly, status roll stays).
-7. Quest 4 (birth certificate). Quests 2 and 3 cover the mechanics.
-8. Photocopy Run memory element (requirements stay on screen).
-9. Seed sharing UI (seed still shown on the ending screen).
+6. Stamp Hunt wrong directions.
+7. Quest 4 (birth certificate).
+8. Photocopy Run memory element.
+9. Seed sharing UI.
 10. Inside man contact unlock.
 
-Phase 5 cut item 1, because a fan loop needs a recording. Touch stays optional.
+Phase 5 cut item 1: a fan loop needs a recording.

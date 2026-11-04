@@ -297,7 +297,17 @@ impl Office {
                 if confirm_pressed() {
                     let doc = doc.clone();
                     self.run.inv.add(&doc);
-                    return self.leave(None);
+                    let d = &ctx.assets.data;
+                    let notice = self.run.new_regulation().map(|rule| {
+                        d.s(
+                            "notice_rule",
+                            &[
+                                ("goal", d.doc_name(&self.run.goal_doc)),
+                                ("doc", d.doc_phrase(&rule)),
+                            ],
+                        )
+                    });
+                    return self.leave(notice);
                 }
             }
         }

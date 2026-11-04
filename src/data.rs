@@ -166,6 +166,7 @@ impl Data {
             q.start_docs.iter().for_each(|d| doc_ok(d, &q.id));
             q.board.iter().for_each(|d| doc_ok(d, &q.id));
             q.wrong_pool.iter().for_each(|d| doc_ok(d, &q.id));
+            q.rule_pool.iter().for_each(|d| doc_ok(d, &q.id));
             assert!(
                 !q.hidden_pool.is_empty() && !q.wrong_pool.is_empty(),
                 "{}: empty pool",
@@ -179,6 +180,7 @@ impl Data {
                     run.hidden = (doc.clone(), by.clone());
                     run.wrong = wrong.clone();
                     run.correction_due = true;
+                    run.rules = q.rule_pool.clone();
                     for need in closure(&[&q.goal_doc, wrong], |d| run.requires(d)) {
                         assert!(
                             grantable(&need) || q.start_docs.contains(&need),

@@ -1,4 +1,5 @@
-// Quests in unlock order. Finishing one with any grade but F unlocks the next.
+// Quests in menu order. All are open from the start.
+// rule_pool: documents a surprise new regulation can add to the goal mid-run.
 // hidden_pool: (document, the document that secretly requires it). One is picked per run.
 // wrong_pool: listed on the board, needed by nobody. One is picked per run.
 [
@@ -12,6 +13,7 @@
         board: ["loss_report", "kaling_letter", "district_letter", "ktpss"],
         hidden_pool: [("ksk_copy_3", "ktpss"), ("photo_red", "ktpss")],
         wrong_pool: ["sktpa", "duty_stamps_2"],
+        rule_pool: ["photo_4x6", "duty_stamps_2", "yellow_folder"],
     ),
     (
         id: "sktpa",
@@ -23,6 +25,7 @@
         board: ["kaling_letter", "district_letter", "ktpss_copies", "sktpa"],
         hidden_pool: [("photo_4x6", "sktpa"), ("health_letter", "sktpa")],
         wrong_pool: ["spusp", "yellow_folder"],
+        rule_pool: ["photo_red", "duty_stamps_2", "ksk_copy_3"],
     ),
     (
         id: "sim",
@@ -34,6 +37,7 @@
         board: ["health_letter", "psych_result", "sim"],
         hidden_pool: [("theory_pass", "sim")],
         wrong_pool: ["district_letter", "photo_4x6"],
+        rule_pool: ["photo_4x6", "yellow_folder", "duty_stamps_2"],
     ),
     (
         id: "birth_cert",
@@ -45,6 +49,7 @@
         board: ["birth_note", "kaling_letter", "district_letter", "birth_cert"],
         hidden_pool: [("data_correction", "birth_cert"), ("ksk_copy_3", "birth_cert")],
         wrong_pool: ["marriage_copy"],
+        rule_pool: ["ksk_copy_3", "duty_stamps_2", "yellow_folder"],
     ),
     (
         id: "pbym",
@@ -56,6 +61,7 @@
         board: ["land_letter", "zoning_rec", "neighbour_letter", "pbym"],
         hidden_pool: [("spusp", "neighbour_letter"), ("spusp", "kaling_letter")],
         wrong_pool: ["sktpa", "health_letter"],
+        rule_pool: ["duty_stamps_2", "ksk_copy_3", "ktpss_copies"],
     ),
     (
         id: "death_cert",
@@ -67,5 +73,6 @@
         board: ["death_note", "kaling_letter", "district_letter", "death_cert"],
         hidden_pool: [("life_proof", "death_cert"), ("ksk_copy_3", "death_cert")],
         wrong_pool: ["photo_red", "yellow_folder"],
+        rule_pool: ["duty_stamps_2", "ksk_copy_3", "marriage_copy"],
     ),
 ]

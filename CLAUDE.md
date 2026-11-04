@@ -46,9 +46,12 @@ Run `make web` first on a clean checkout.
 - Unit-test pure logic in `src/game/` and `src/save.rs`. No rendering tests.
 - clippy clean with `-D warnings`. Run `cargo fmt`.
 - No em dashes or en dashes anywhere: code, comments, docs, commits, strings.
-- `docs/GDD.md` and `docs/ARCHITECTURE.md` stay under 2500 words each. Update
-  If a module, a save key, or a scene transition changes, update
-  ARCHITECTURE.
+- `docs/GDD.md` and `docs/ARCHITECTURE.md` stay under 2500 words each.
+- Before every push and every release, update `README.md`, `docs/GDD.md`,
+  `docs/ARCHITECTURE.md`, and this file so they match the code. A changed
+  mechanic, rule, number, module, save key, scene transition, command, or
+  deploy step goes into the docs in the same commit. Remove text that is no
+  longer true.
 
 ## Git
 
@@ -79,7 +82,7 @@ Release without asking. The owner authorized this on 2026-11-04. After a
 player-visible change is on `main`, run all of these steps, including the
 infra PR, its merge, and the check. Report when the new version is live.
 
-1. Bump the patch `version` in `Cargo.toml` (minor for a big feature), run
+1. Check that the docs match the shipped behavior (see Rules). Then bump the patch `version` in `Cargo.toml` (minor for a big feature), run
    `cargo update -p antree --offline`, commit `chore: release vX.Y.Z`, and push to `main`.
 2. Push a signed tag that matches: `git tag -s v0.1.1 -m v0.1.1 && git push origin v0.1.1`.
 3. The `release` workflow runs `./build.sh` and `make check`, then pushes

@@ -59,7 +59,7 @@ impl QuestSelect {
             }
         }
         let quest = &d.quests[self.cursor];
-        if !start || !self.save.is_unlocked(self.cursor, &quest.id) {
+        if !start {
             return None;
         }
         let seed = code_to_seed(&self.seed)
@@ -88,12 +88,11 @@ impl QuestSelect {
         );
         for (i, q) in d.quests.iter().enumerate() {
             let r = row_rect(i);
-            let open = self.save.is_unlocked(i, &q.id);
             if i == self.cursor {
                 draw_rectangle(r.x, r.y, r.w, r.h, Color::new(1.0, 0.98, 0.9, 1.0));
                 draw_rectangle_lines(r.x, r.y, r.w, r.h, 2.0, ui::INK);
             }
-            let color = if open { ui::INK } else { ui::FADED };
+            let color = ui::INK;
             ui::text(
                 font,
                 &format!("{}. {}", i + 1, q.title),
@@ -102,10 +101,9 @@ impl QuestSelect {
                 16,
                 color,
             );
-            let status = match (open, self.save.best.get(&q.id)) {
-                (false, _) => d.s("qs_locked", &[]),
-                (true, None) => d.s("qs_new", &[]),
-                (true, Some(b)) => d.s(
+            let status = match self.save.best.get(&q.id) {
+                None => d.s("qs_new", &[]),
+                Some(b) => d.s(
                     "qs_best",
                     &[("grade", b.grade.letter()), ("total", &b.total.to_string())],
                 ),

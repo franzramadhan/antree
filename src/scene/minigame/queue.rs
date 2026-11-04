@@ -50,11 +50,12 @@ impl QueueGame {
         self.msg = say(d, office, step.message, run);
         match step.outcome {
             Step::Served => return Outcome::Passed(None),
-            Step::Fight => {
+            Step::ThrownOut => {
+                ctx.fx.shake(0.4);
                 return Outcome::Failed {
                     line: self.msg.clone(),
                     end_day: true,
-                }
+                };
             }
             Step::Waiting => {}
         }

@@ -19,7 +19,6 @@
     "stamp_rejected": "REJECTED",
 
     "qs_title": "Which errand today?",
-    "qs_locked": "(locked)",
     "qs_new": "(not done yet)",
     "qs_best": "Best: {grade} ({total})",
     "qs_seed": "Seed: {seed}",
@@ -44,6 +43,7 @@
     "hint_enter": "E: go in",
     "hint_walkout": "Esc: walk out",
     "issued_fee": "Official fee: Kv {fee}.",
+    "notice_rule": "NEW REGULATION, effective immediately: the {goal} now also needs one more thing: {doc}. Someone has already updated the board. Nobody knows who.",
 
     "queue_ahead": "{n} people ahead of you",
     "act_wait": "1. Wait",
@@ -104,7 +104,6 @@
     "theory_hint": "Press 1 to 4 or click an answer.",
 
     "ending_seed": "Seed {seed}",
-    "ending_unlocked": "Unlocked: {quest}",
     "ending_restart": "Enter: back to the errand list",
     "grade_S_title": "Model Citizen",
     "grade_S_line": "You did it. Nobody believes you, but you did it.",
