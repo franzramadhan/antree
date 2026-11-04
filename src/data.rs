@@ -247,6 +247,10 @@ impl Data {
 
     /// A dialog line: the office's own version if it has one, else the common one.
     /// `salt` picks among variants.
+    pub fn has_line(&self, office: &str, key: &str) -> bool {
+        self.dialog.get(office).is_some_and(|d| d.contains_key(key))
+    }
+
     pub fn line(&self, office: &str, key: &str, salt: usize) -> String {
         let lines = self.dialog.get(office).and_then(|d| d.get(key));
         match lines.or_else(|| self.dialog["common"].get(key)) {

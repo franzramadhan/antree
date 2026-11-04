@@ -57,4 +57,15 @@
         hidden_pool: [("spusp", "neighbour_letter"), ("spusp", "kaling_letter")],
         wrong_pool: ["sktpa", "health_letter"],
     ),
+    (
+        id: "death_cert",
+        title: "Death certificate",
+        intro: "Grandpa died peacefully at 91. The bank will not close his account until the state agrees he is dead. The state has not been told, and it will need convincing.",
+        goal_doc: "death_cert",
+        start_docs: ["ksk", "ktpss"],
+        par_days: 5, deadline: 10, budget: 500, official_fees: 0,
+        board: ["death_note", "kaling_letter", "district_letter", "death_cert"],
+        hidden_pool: [("life_proof", "death_cert"), ("ksk_copy_3", "death_cert")],
+        wrong_pool: ["photo_red", "yellow_folder"],
+    ),
 ]

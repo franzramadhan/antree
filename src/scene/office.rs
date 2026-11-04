@@ -209,7 +209,13 @@ impl Office {
             return;
         }
         let mut line = lead.map(|l| l + " ").unwrap_or_default();
-        line.push_str(&self.say(d, "issued"));
+        let key = format!("issued.{}", grant.doc);
+        let key = if d.has_line(&self.office_id, &key) {
+            key.as_str()
+        } else {
+            "issued"
+        };
+        line.push_str(&self.say(d, key));
         if grant.fee > 0 {
             line.push(' ');
             line.push_str(&d.s("issued_fee", &[("fee", &grant.fee.to_string())]));

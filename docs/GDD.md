@@ -4,13 +4,13 @@ Working title: Antree. Setting: Republik Kuvukiland.
 
 ## 1. Pitch
 
-Antree is a 2D top-down satire game about getting one piece of paper from the government of Kuvukiland. The player is an ordinary citizen with a simple goal, a lost identity card or a birth certificate. The game turns that goal into a chain of offices, stamps, photocopies, and queues. Each office is a small desk minigame. Three meters track the cost: days, money, and conscience. Every obstacle is one a real citizen recognizes. The player finishes a run and says "yeah, that is exactly how it goes."
+Antree is a 2D top-down satire game about getting one piece of paper from the government of Kuvukiland. The player is an ordinary citizen with a simple goal, a lost identity card or a birth certificate. The game turns that goal into a chain of offices, stamps, photocopies, and queues. Each office is a small desk minigame. Three meters track the cost: days, money, and conscience. The player finishes a run and says "yeah, that is exactly how it goes."
 
-All in-game text is English, written in the register of a counter clerk: "Did you photocopy it?", "The system is down. Head office.", "Come back tomorrow.", "Anything for cigarettes?". Proper nouns (offices, documents, titles) use the Kuvukiland naming table in section 9. Code, comments, commits, and docs are English.
+All in-game text is English, written in the register of a counter clerk: "Did you photocopy it?", "The system is down. Head office.", "Come back tomorrow.", "Anything for cigarettes?". Proper nouns use the Kuvukiland naming table in section 9.
 
 ## 2. Player fantasy
 
-The player took a day off work to fix a document and wants to go home. The fantasy is survival with dignity: can you get through the system without becoming part of it? The game offers shortcuts at every step. A fixer, an inside man, grease money, cutting the line. Each one works. Each one costs something. The player decides what kind of citizen they are, and the ending tells them, with no mercy and no praise.
+The player took a day off work to fix a document and wants to go home. The fantasy is survival with dignity: can you get through the system without becoming part of it? Every step offers a shortcut: a fixer, an inside man, grease money, cutting the line. Each one works and costs something. The player decides what kind of citizen they are, and the ending tells them, with no mercy and no praise.
 
 ## 3. The three meters
 
@@ -60,8 +60,9 @@ Quests unlock in order. Finishing a quest with any grade except F unlocks the ne
 | 3 | Renew the SIM | Puskesnung (health letter), Klinik Sabar (queue psychology test), Satpan (new SIM) | Old SIM expired one day ago, so the theory test is required | Small District cover letter | 3 | 7 | 600 Kv | 120 Kv |
 | 4 | Birth certificate | Puskesnung (birth note), Pak Gnilak, Small District, Dukcatan (certificate) | Parent names must match the KTPSS exactly, one typo triggers the data correction loop | Marriage certificate certified by BKFN | 5 | 10 | 500 Kv | 0 Kv |
 | 5 | Building permit (PBYM) | BPYMS (land letter), DTRYB (zoning recommendation), Small District (neighbour no-objection), DPSPTD (PBYM) | DPSPTD front door is locked, side door opens via the inside man or after 2 days of waiting; SPUSP needed before the cover letter | SKTPA, health letter | 8 | 16 | 1500 Kv | 250 Kv |
+| 6 | Death certificate | Puskesnung (death note), Pak Gnilak, Small District, Dukcatan (certificate) | Proof from Pak Gnilak that the deceased was alive, KSK photocopy in triplicate | Red background photo, yellow folder | 5 | 10 | 500 Kv | 0 Kv |
 
-Chain resolution: an office grants a document when the player holds its required document ids. The quest completes when the final document is in the inventory. The chain is a directed graph, so offices can be visited in any order.
+Chain resolution: an office grants a document when the player holds its requirements. The quest ends when the goal document is in the inventory. Offices can be visited in any order.
 
 ## 5. Minigame catalog
 
@@ -157,6 +158,7 @@ Tutorial: form ORI-01 before the first errand. Each row explains one control. Bl
 | Cover letter | Surat Pengantar Untuk Surat Pengantar (SPUSP) |
 | Building permit | Persetujuan Bangunan Yang Mungkin (PBYM) |
 | Birth certificate | Akta Kelahiran Yang Sah Katanya |
+| Death certificate | Akta Kematian Menunggu Konfirmasi |
 | Currency | Kuvuk (Kv) |
 | Titles | Pah Harul, Bu Tamac, Pak Dibak, Mas Reronoh, Ibu Tekol 3, Pak Maptas |
 | Archetypes | clerk, fixer, line-cutting auntie, inside man, security guard, angry uncle |
@@ -175,5 +177,3 @@ Tutorial: form ORI-01 before the first errand. Each row explains one control. Bl
 10. Inside man contact unlock.
 
 Phase 5 cut item 1, because a fan loop needs a recording. Touch stays optional.
-
-Minimum shippable: Quests 1 to 3, minigames 5.1 to 5.6, obstacle table, grades, save, title with disclaimer.

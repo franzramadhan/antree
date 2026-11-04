@@ -2,6 +2,8 @@
     "greet": ["\"Did you take a number? The number machine is at the back. It is also broken.\"", "\"KTPSS? New or lost? Lost. Of course lost.\""],
     "missing": ["\"No {doc}, no processing. The other offices close at eleven thirty, sir.\""],
     "issued": ["\"Congratulations. Valid until further notice. Further notice never comes.\""],
+    "issued.birth_cert": ["\"Your child now exists. Welcome to the queue.\""],
+    "issued.death_cert": ["\"Your grandfather is now officially dead. He stays on the voter list. That is a different desk.\""],
     "nothing": ["\"Sir, there is nothing more for you here. Why are you here? Go home.\""],
     "ob_system": ["\"The system is down. Head office. Again. Still.\""],
 }

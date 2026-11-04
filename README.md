@@ -17,7 +17,7 @@ were.
 
 ## Features
 
-- Five errands, unlocked one at a time, each with a seeded run you can
+- Six errands, unlocked one at a time, each with a seeded run you can
   replay from a six-letter code
 - Minigames: the queue, forms, stamp hunts, photocopies, and a theory test
 - Random obstacles: the system is down, the clerk is on a break, come back

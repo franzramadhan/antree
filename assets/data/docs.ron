@@ -26,4 +26,7 @@
     (id: "land_letter", name: "Land letter, BPYMS", phrase: Some("land letter from BPYMS")),
     (id: "zoning_rec", name: "Zoning recommendation, DTRYB", phrase: Some("zoning recommendation from DTRYB")),
     (id: "pbym", name: "PBYM"),
+    (id: "death_note", name: "Death note, Puskesnung", phrase: Some("death note from Puskesnung")),
+    (id: "life_proof", name: "Proof of life, Pak Gnilak", phrase: Some("proof from Pak Gnilak that he was alive")),
+    (id: "death_cert", name: "Akta Kematian Menunggu Konfirmasi"),
 ]

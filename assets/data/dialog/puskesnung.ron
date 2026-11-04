@@ -2,6 +2,8 @@
     "greet": ["\"Registration is over there. The doctor is over there. The over there is closed.\""],
     "missing": ["\"For that I need the {doc}. Health is important. So is paperwork.\""],
     "issued": ["\"You are healthy. The letter says so. Your back does not, but the letter wins.\""],
+    "issued.birth_note": ["\"A healthy baby. Come back when it needs a health letter.\""],
+    "issued.death_note": ["\"Cause of death: waiting. It is the most common cause here.\""],
     "nothing": ["\"You are not sick and you have your letter. Please leave room for the sick.\""],
     "ob_break": ["\"Doctor is visiting another clinic.\" You wait {min} minutes on a plastic chair shaped like suffering."],
 }

@@ -1,7 +1,7 @@
 // Offices on the overworld. pos and size are canvas pixels on a 640x360 map.
 // tasks: what the counter makes you do (Queue, Form, Stamp, Photocopy, Theory).
 // weights: overrides for obstacles.ron. opens_day: front door locked before that day.
-// Dialog for each office lives in dialog/<id>.ron.
+// Dialog for each office lives in dialog/<id>.ron. "issued.<doc>" overrides "issued" for one document.
 [
     (
         id: "pak_kaling",
@@ -11,6 +11,7 @@
         grants: [
             (doc: "kaling_letter", requires: ["ksk"]),
             (doc: "spusp", requires: ["ksk"]),
+            (doc: "life_proof", requires: ["ksk"]),
         ],
         tasks: [Form, Queue],
         weights: { SystemDown: 0, CounterMoved: 0, ClerkBreak: 30 },
@@ -45,6 +46,7 @@
         grants: [
             (doc: "ktpss", requires: ["loss_report", "district_letter"]),
             (doc: "birth_cert", requires: ["birth_note", "district_letter"]),
+            (doc: "death_cert", requires: ["death_note", "district_letter"]),
             (doc: "data_correction", requires: ["ksk"], task: Some(Form)),
         ],
         tasks: [Queue, Form, Stamp],
@@ -75,6 +77,7 @@
         grants: [
             (doc: "health_letter", requires: ["ktpss"]),
             (doc: "birth_note", requires: ["ksk"]),
+            (doc: "death_note", requires: ["ksk"]),
         ],
         tasks: [Queue],
         weights: { ClerkBreak: 25 },

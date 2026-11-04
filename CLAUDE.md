@@ -86,7 +86,9 @@ infra PR, its merge, and the check. Report when the new version is live.
    `ghcr.io/franzramadhan/antree:<version>` (`linux/amd64`).
 4. When the workflow is green, pin the new tag and digest in
    `kubernetes/apps/antree/deployment.yaml` in the homelab infrastructure
-   repo. Use a branch and a PR, wait for its checks, then squash-merge it
+   repo. Use a branch and a PR titled `bump(kubernetes): antree X.Y.Z` (the
+   title check allows only the scopes lab, modules, kubernetes, and
+   terraform). Wait for its checks, then squash-merge it
    with `--admin`. That repo forbids merges from 23:30 to 06:00 WIB. In that
    window, open the PR and leave the merge to the owner. Then run
    `flux reconcile kustomization flux-system --with-source`.
