@@ -55,10 +55,10 @@ Quests unlock in order. Finishing a quest with any grade except F unlocks the ne
 
 | # | Quest | Visible chain | Hidden requirement pool | Wrong requirement pool | Par days | Deadline | Budget | Official fees |
 |---|---|---|---|---|---|---|---|---|
-| 1 | Lost KTPSS | Poldur SK (loss report), Pak Kaling (cover letter), Kuvuvavaland Small District Sabar Menanti (cover letter), Dukcatan (KTPSS) | KSK photocopy in triplicate, red background photo | SKTPA, 2 duty stamps | 4 | 8 | 400 Kv | 0 Kv |
-| 2 | Get an SKTPA | Pak Kaling, Small District, Poldur SK (SKTPA), BKFN (certified copies, 5) | 4x6 photo, health letter from Puskesnung | SPUSP, yellow folder | 5 | 10 | 500 Kv | 30 Kv |
+| 1 | Lost KTPSS | Poldur SK (loss report), Pak Gnilak (cover letter), Kuvukiland Small District Sabar Menanti (cover letter), Dukcatan (KTPSS) | KSK photocopy in triplicate, red background photo | SKTPA, 2 duty stamps | 4 | 8 | 400 Kv | 0 Kv |
+| 2 | Get an SKTPA | Pak Gnilak, Small District, Poldur SK (SKTPA), BKFN (certified copies, 5) | 4x6 photo, health letter from Puskesnung | SPUSP, yellow folder | 5 | 10 | 500 Kv | 30 Kv |
 | 3 | Renew the SIM | Puskesnung (health letter), Klinik Sabar (queue psychology test), Satpan (new SIM) | Old SIM expired one day ago, so the theory test is required | Small District cover letter | 3 | 7 | 600 Kv | 120 Kv |
-| 4 | Birth certificate | Puskesnung (birth note), Pak Kaling, Small District, Dukcatan (certificate) | Parent names must match the KTPSS exactly, one typo triggers the data correction loop | Marriage certificate certified by BKFN | 5 | 10 | 500 Kv | 0 Kv |
+| 4 | Birth certificate | Puskesnung (birth note), Pak Gnilak, Small District, Dukcatan (certificate) | Parent names must match the KTPSS exactly, one typo triggers the data correction loop | Marriage certificate certified by BKFN | 5 | 10 | 500 Kv | 0 Kv |
 | 5 | Building permit (PBYM) | BPYMS (land letter), DTRYB (zoning recommendation), Small District (neighbour no-objection), DPSPTD (PBYM) | DPSPTD front door is locked, side door opens via the inside man or after 2 days of waiting; SPUSP needed before the cover letter | SKTPA, health letter | 8 | 16 | 1500 Kv | 250 Kv |
 
 Chain resolution: an office grants a document when the player holds its required document ids. The quest completes when the final document is in the inventory. The chain is a directed graph, so offices can be visited in any order.
@@ -137,10 +137,10 @@ Tutorial: form ORI-01 before the first errand. Each row explains one control. Bl
 |---|---|
 | Country | Republik Kuvukiland |
 | Capital | Kota Antree Raya |
-| Village office | Kuvuvavaland Small District Sabar Menanti |
+| Village office | Kuvukiland Small District Sabar Menanti |
 | Sub-district | Ketamacan Besok Lagi |
 | District | Kabupaten Tunggu Sebentar |
-| Neighbourhood head | Pos Ketua Lingkungan, Pak Kaling |
+| Neighbourhood head | Pos Ketua Lingkungan, Pak Gnilak |
 | Civil registry | Dinas Kependudukan dan Pencatatan Antrian (Dukcatan) |
 | One-stop licensing | Dinas Perizinan Satu Pintu Tapi Pintunya Dikunci (DPSPTD) |
 | Police certificate desk | Kantor Polpolan Sektor Tidur (Poldur SK) |

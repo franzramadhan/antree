@@ -6,7 +6,7 @@
     (
         id: "pak_kaling",
         name: "Pos Ketua Lingkungan",
-        short: "Pak Kaling",
+        short: "Pak Gnilak",
         pos: (12, 36), size: (88, 56),
         grants: [
             (doc: "kaling_letter", requires: ["ksk"]),
@@ -17,7 +17,7 @@
     ),
     (
         id: "small_district",
-        name: "Kuvuvavaland Small District Sabar Menanti",
+        name: "Kuvukiland Small District Sabar Menanti",
         short: "Small District",
         pos: (108, 36), size: (88, 56),
         grants: [

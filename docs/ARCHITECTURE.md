@@ -107,7 +107,7 @@ All writer-facing content is RON under `assets/data/`. macroquad loads them with
 (
     id: "pak_kaling",
     name: "Pos Ketua Lingkungan",
-    short: "Pak Kaling",
+    short: "Pak Gnilak",
     pos: (12, 36), size: (88, 56),
     grants: [ (doc: "kaling_letter", requires: ["ksk"]) ],
     tasks: [Form, Queue],

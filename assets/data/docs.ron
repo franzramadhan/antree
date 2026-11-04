@@ -4,7 +4,7 @@
     (id: "ktpss", name: "KTPSS"),
     (id: "old_sim", name: "Old SIM, expired yesterday", phrase: Some("old SIM")),
     (id: "loss_report", name: "Loss report, Poldur SK", phrase: Some("loss report from Poldur SK")),
-    (id: "kaling_letter", name: "Cover letter, Pak Kaling", phrase: Some("cover letter from Pak Kaling")),
+    (id: "kaling_letter", name: "Cover letter, Pak Gnilak", phrase: Some("cover letter from Pak Gnilak")),
     (id: "district_letter", name: "Cover letter, Small District", phrase: Some("cover letter from the Small District")),
     (id: "spusp", name: "SPUSP"),
     (id: "neighbour_letter", name: "Neighbour no-objection letter", phrase: Some("neighbour no-objection letter")),
